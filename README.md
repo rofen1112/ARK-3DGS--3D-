@@ -29,6 +29,23 @@ Auto-load the bundled SOG scene:
 http://127.0.0.1:5173/?autoload=1
 ```
 
+## Repository Backup Scope
+
+The GitHub backup intentionally excludes local-only heavy Gaussian source files.
+The `3D-model/` directory is for local experiments and is not required to run the
+browser demo. The full source PLY at
+`public/scenes/demo_room_001/gaussian/scene.ply` is also ignored because it is a
+large diagnostic/source asset.
+
+Tracked runtime assets are enough to open and inspect the demo scene:
+
+- `public/scenes/demo_room_001/gaussian/scene.sog`
+- `public/scenes/demo_room_001/gaussian/scene.spz`
+- `public/scenes/demo_room_001/gaussian/scene-preview-100k.ply`
+
+Scripts that validate or regenerate data derived from the full source PLY may
+need the ignored local PLY files to be present on the development machine.
+
 ## Browser Controls
 
 - Drag: free-look around the current camera position
