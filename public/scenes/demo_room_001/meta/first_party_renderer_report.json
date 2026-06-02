@@ -1,0 +1,186 @@
+{
+  "generated_at": "2026-06-01T20:02:18.931Z",
+  "target": "ARK first-party diagnostic point renderer preview QA",
+  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-point",
+  "summary": {
+    "passed": true,
+    "checks": {
+      "visualQualityPassed": true,
+      "isArkRenderer": true,
+      "hasDepthSorting": true,
+      "hasScaleAwarePipeline": true
+    },
+    "runtime": "Loaded",
+    "renderer": "ark-point-webgl2",
+    "pipeline": {
+      "shader": "sh0-scale-aware-point-cloud",
+      "sorting": "cpu-back-to-front",
+      "scaleAware": true,
+      "opacityAware": true,
+      "gaussianProjection": false
+    },
+    "renderInfo": {
+      "lastLoadMs": 139,
+      "lastSortMs": 17.5,
+      "sortEnabled": true,
+      "sortReason": "camera-depth-order",
+      "sortedSplats": 99966,
+      "sortVersion": 1,
+      "pointSize": {
+        "min": 1.2,
+        "max": 22,
+        "scaleMultiplier": 4
+      },
+      "radius": {
+        "min": 0.0001,
+        "max": 0.337948,
+        "mean": 0.005467
+      },
+      "note": "Scale-aware diagnostic point renderer; not full Gaussian splatting."
+    },
+    "splats": 99966,
+    "visual_quality": "Passed (216)",
+    "contrast": 216,
+    "duration_seconds": 1.39
+  },
+  "result": {
+    "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-point",
+    "screenshot": "artifacts/first-party/ark-point-preview.png",
+    "passed": true,
+    "checks": {
+      "visualQualityPassed": true,
+      "isArkRenderer": true,
+      "hasDepthSorting": true,
+      "hasScaleAwarePipeline": true
+    },
+    "exitCode": 0,
+    "pageState": {
+      "runtime": "Loaded",
+      "status": "scene-preview-100k.ply loaded in 0.1s.",
+      "fitBounds": "broad_01_99 (sidecar)",
+      "visualQuality": "Passed (216)",
+      "canvas": {
+        "width": 1424,
+        "height": 805,
+        "clientWidth": 1424,
+        "clientHeight": 805
+      },
+      "activeInfo": {
+        "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+        "format": "PLY",
+        "splats": 99966,
+        "shDegree": 0,
+        "denseMin": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "denseMax": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "displayScale": 0.2825170004605027,
+        "fitRadius": 2.9999999999999996,
+        "fitBoundsId": "broad_01_99",
+        "fitBoundsSource": "sidecar",
+        "source": "bundled"
+      },
+      "visualQualityGate": {
+        "status": "passed",
+        "reason": "Visual sample passed all runtime checks.",
+        "checks": {
+          "sceneLoaded": {
+            "passed": true,
+            "value": 99966,
+            "message": "Scene has renderable splats."
+          },
+          "canvasReady": {
+            "passed": true,
+            "value": {
+              "width": 1424,
+              "height": 805,
+              "clientWidth": 1424,
+              "clientHeight": 805
+            },
+            "message": "Renderer canvas has non-zero drawing and display size."
+          },
+          "fitBoundsResolved": {
+            "passed": true,
+            "value": "broad_01_99",
+            "message": "Camera fit bounds are resolved."
+          },
+          "bundledSidecarApplied": {
+            "passed": true,
+            "value": "broad_01_99 (sidecar)",
+            "message": "Bundled scenes should use sidecar fit bounds."
+          },
+          "renderVisible": {
+            "passed": true,
+            "value": "visible",
+            "message": "Pixel sample detects visible rendered content."
+          },
+          "contrastAboveThreshold": {
+            "passed": true,
+            "value": 216,
+            "message": "Pixel contrast is at least 12."
+          }
+        },
+        "thresholds": {
+          "minContrast": 12,
+          "settleFrames": 8
+        },
+        "sample": {
+          "status": "visible",
+          "averageRgb": [
+            25,
+            26.11111111111111,
+            25.88888888888889
+          ],
+          "contrast": 216
+        },
+        "evaluatedAtMs": 294
+      },
+      "renderer": {
+        "id": "ark-point-webgl2",
+        "backend": {
+          "family": "ark-first-party",
+          "mode": "scale-aware-point-renderer"
+        }
+      },
+      "pipeline": {
+        "shader": "sh0-scale-aware-point-cloud",
+        "sorting": "cpu-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": false
+      },
+      "scene": {
+        "splats": 99966,
+        "splatCounts": 99966,
+        "sceneVersion": 1
+      },
+      "renderInfo": {
+        "lastLoadMs": 139,
+        "lastSortMs": 17.5,
+        "sortEnabled": true,
+        "sortReason": "camera-depth-order",
+        "sortedSplats": 99966,
+        "sortVersion": 1,
+        "pointSize": {
+          "min": 1.2,
+          "max": 22,
+          "scaleMultiplier": 4
+        },
+        "radius": {
+          "min": 0.0001,
+          "max": 0.337948,
+          "mean": 0.005467
+        },
+        "note": "Scale-aware diagnostic point renderer; not full Gaussian splatting."
+      }
+    },
+    "parseError": null,
+    "stderr": ""
+  }
+}

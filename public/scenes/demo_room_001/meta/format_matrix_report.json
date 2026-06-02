@@ -1,0 +1,350 @@
+{
+  "generated_at": "2026-06-01T19:24:09.271Z",
+  "target": "ARK-3DGS bundled format visual QA matrix",
+  "base_url": "http://127.0.0.1:5173/?autoload=1",
+  "timeout_ms": 240000,
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "all_passed": true,
+    "duration_seconds": 11.455
+  },
+  "rows": [
+    {
+      "format": "sog",
+      "passed": true,
+      "runtime": "Loaded",
+      "viewer_format": "SOG",
+      "splats": 1855266,
+      "sh_degree": 0,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "visual_quality": "Passed (114.3)",
+      "contrast": 114.33333333333333,
+      "evaluated_at_ms": 1679,
+      "screenshot": "artifacts/format-matrix/scene-sog.png",
+      "failure_reason": null
+    },
+    {
+      "format": "spz",
+      "passed": true,
+      "runtime": "Loaded",
+      "viewer_format": "SPZ",
+      "splats": 1855266,
+      "sh_degree": 0,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "visual_quality": "Passed (116.1)",
+      "contrast": 116.11111111111111,
+      "evaluated_at_ms": 1923,
+      "screenshot": "artifacts/format-matrix/scene-spz.png",
+      "failure_reason": null
+    },
+    {
+      "format": "ply",
+      "passed": true,
+      "runtime": "Loaded",
+      "viewer_format": "PLY",
+      "splats": 1855266,
+      "sh_degree": 0,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "visual_quality": "Passed (101.9)",
+      "contrast": 101.88888888888889,
+      "evaluated_at_ms": 2670,
+      "screenshot": "artifacts/format-matrix/scene-ply.png",
+      "failure_reason": null
+    }
+  ],
+  "raw_results": [
+    {
+      "format": "sog",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=sog",
+      "screenshot": "artifacts/format-matrix/scene-sog.png",
+      "passed": true,
+      "exitCode": 0,
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.sog loaded in 0.5s.",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "visualQuality": "Passed (114.3)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (SOG runtime)",
+          "format": "SOG",
+          "splats": 1855266,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1855266,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 114.33333333333333,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              20.22222222222222,
+              21.77777777777778,
+              21.666666666666668
+            ],
+            "contrast": 114.33333333333333
+          },
+          "evaluatedAtMs": 1679
+        }
+      },
+      "parseError": null,
+      "stderr": ""
+    },
+    {
+      "format": "spz",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=spz",
+      "screenshot": "artifacts/format-matrix/scene-spz.png",
+      "passed": true,
+      "exitCode": 0,
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.spz loaded in 0.6s.",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "visualQuality": "Passed (116.1)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (SPZ runtime)",
+          "format": "SPZ",
+          "splats": 1855266,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1855266,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 116.11111111111111,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19.88888888888889,
+              22,
+              22
+            ],
+            "contrast": 116.11111111111111
+          },
+          "evaluatedAtMs": 1923
+        }
+      },
+      "parseError": null,
+      "stderr": ""
+    },
+    {
+      "format": "ply",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply",
+      "screenshot": "artifacts/format-matrix/scene-ply.png",
+      "passed": true,
+      "exitCode": 0,
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.ply loaded in 1.3s.",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "visualQuality": "Passed (101.9)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Source PLY)",
+          "format": "PLY",
+          "splats": 1855266,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1855266,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 101.88888888888889,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19.22222222222222,
+              21.22222222222222,
+              21.666666666666668
+            ],
+            "contrast": 101.88888888888889
+          },
+          "evaluatedAtMs": 2670
+        }
+      },
+      "parseError": null,
+      "stderr": ""
+    }
+  ]
+}

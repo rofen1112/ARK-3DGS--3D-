@@ -1,0 +1,30 @@
+{
+  "name": "ark-3dgs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test:gaussian": "node scripts/test-gaussian-parser.mjs",
+    "validate:manifest": "node scripts/validate-scene-manifest.mjs",
+    "validate:ply": "node scripts/validate-gaussian-ply.mjs",
+    "prepare:ply-preview": "node scripts/create-gaussian-ply-preview.mjs",
+    "qa:visual": "node scripts/cdp-screenshot.mjs http://127.0.0.1:5173/?autoload=1 artifacts/visual-qa.png 60000",
+    "qa:formats": "node scripts/qa-format-matrix.mjs",
+    "qa:baseline": "node scripts/qa-baseline-compare.mjs",
+    "qa:independent": "node scripts/qa-independent-compare.mjs",
+    "qa:first-party": "node scripts/qa-first-party-preview.mjs"
+  },
+  "dependencies": {
+    "@manycore/aholo-viewer": "^1.2.9"
+  },
+  "devDependencies": {
+    "@mkkellogg/gaussian-splats-3d": "^0.4.7",
+    "@types/three": "^0.177.0",
+    "three": "^0.177.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-06-01T19:19:19.071Z",
+  "requested_source_ply": "public/scenes/demo_room_001/gaussian/scene.ply",
+  "source_ply": "3D-model/东莞非遗.ply",
+  "output_ply": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+  "source_file_size_bytes": 460107500,
+  "output_file_size_bytes": 24793098,
+  "target_count": 100000,
+  "selected_count": 99966,
+  "invalid_skipped": 34,
+  "source_vertex_count": 1855266,
+  "source_visited_count": 1855266,
+  "stride": 248,
+  "property_count": 62,
+  "header_bytes": 1532,
+  "duration_seconds": 0.42
+}

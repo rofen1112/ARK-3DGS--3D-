@@ -1,0 +1,277 @@
+{
+  "generated_at": "2026-06-01T19:29:04.451Z",
+  "target": "ARK-3DGS vs independent GaussianSplats3D PLY baseline",
+  "ark_url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview",
+  "independent_url": "http://127.0.0.1:5173/kellogg-baseline.html?asset=ply-preview",
+  "timeout_ms": 300000,
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "all_passed": true,
+    "visual_compatibility_passed": true,
+    "data_equivalence_passed": true,
+    "duration_seconds": 13.627
+  },
+  "comparisons": [
+    {
+      "format": "ply-preview",
+      "passed": true,
+      "visual_compatibility_passed": true,
+      "data_equivalence_passed": true,
+      "ark": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "PLY",
+        "splats": 99966,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (128.9)",
+        "contrast": 128.88888888888889,
+        "evaluated_at_ms": 454,
+        "screenshot": "artifacts/independent-compare/ark-ply.png",
+        "failure_reason": null
+      },
+      "independent": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "PLY",
+        "splats": 99966,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (162.7)",
+        "contrast": 162.66666666666666,
+        "evaluated_at_ms": 8786,
+        "screenshot": "artifacts/independent-compare/kellogg-ply.png",
+        "failure_reason": null
+      },
+      "deltas": {
+        "splats": 0,
+        "contrast": -33.77777777777777
+      },
+      "interpretation": "ARK and the independent Three.js GaussianSplats3D baseline both load and visibly render the same bundled PLY under ARK sidecar fit bounds. Data equivalence is tracked separately by splat-count delta."
+    }
+  ],
+  "raw_results": {
+    "ark": {
+      "label": "ark-ply",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview",
+      "screenshot": "artifacts/independent-compare/ark-ply.png",
+      "passed": true,
+      "exitCode": 0,
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.1s.",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "visualQuality": "Passed (128.9)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 128.88888888888889,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              21,
+              22.555555555555557,
+              20.555555555555557
+            ],
+            "contrast": 128.88888888888889
+          },
+          "evaluatedAtMs": 454
+        }
+      },
+      "parseError": null,
+      "stderr": ""
+    },
+    "independent": {
+      "label": "kellogg-ply",
+      "url": "http://127.0.0.1:5173/kellogg-baseline.html?asset=ply-preview",
+      "screenshot": "artifacts/independent-compare/kellogg-ply.png",
+      "passed": true,
+      "exitCode": 0,
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "GaussianSplats3D PLY preview baseline loaded with independent Three.js Gaussian renderer.",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "visualQuality": "Passed (162.7)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "GaussianSplats3D PLY preview baseline",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Independent baseline should use ARK sidecar fit bounds for comparable framing."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 162.66666666666666,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 12
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              8.11111111111111,
+              6.333333333333333,
+              5.888888888888889
+            ],
+            "contrast": 162.66666666666666
+          },
+          "evaluatedAtMs": 8786
+        }
+      },
+      "parseError": null,
+      "stderr": ""
+    }
+  }
+}

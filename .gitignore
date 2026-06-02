@@ -1,0 +1,13 @@
+node_modules/
+dist/
+artifacts/
+.npm-cache/
+
+.vite-dev.err
+.vite-dev.log
+
+.chrome-profile*/
+.chrome-cdp-profile*/
+
+3D-model/
+public/scenes/demo_room_001/gaussian/scene.ply

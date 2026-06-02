@@ -1,0 +1,780 @@
+{
+  "generated_at": "2026-06-01T19:27:33.120Z",
+  "target": "ARK-3DGS vs Aholo direct baseline comparison",
+  "ark_base_url": "http://127.0.0.1:5173/?autoload=1",
+  "baseline_base_url": "http://127.0.0.1:5173/baseline.html",
+  "timeout_ms": 240000,
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "all_passed": true,
+    "duration_seconds": 18.522
+  },
+  "comparisons": [
+    {
+      "format": "sog",
+      "passed": true,
+      "ark": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SOG",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (114.3)",
+        "contrast": 114.33333333333333,
+        "evaluated_at_ms": 1712,
+        "screenshot": "artifacts/baseline-compare/ark-sog.png",
+        "failure_reason": null
+      },
+      "baseline": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SOG",
+        "splats": 1855266,
+        "sh_degree": 3,
+        "fit_bounds": "sog_meta_dense (renderer)",
+        "fit_bounds_id": "sog_meta_dense",
+        "fit_bounds_source": "renderer",
+        "dense_min": [
+          -1.7244828278583595,
+          -2.0118710851177815,
+          -1.8867884778786876
+        ],
+        "dense_max": [
+          2.596758502228941,
+          1.7930607055860268,
+          2.637783499665059
+        ],
+        "display_scale": 0.8840615244608131,
+        "visual_quality": "Passed (492.6)",
+        "contrast": 492.55555555555554,
+        "evaluated_at_ms": 920,
+        "screenshot": "artifacts/baseline-compare/baseline-sog.png",
+        "failure_reason": null
+      },
+      "deltas": {
+        "splats": 0,
+        "contrast": -378.22222222222223,
+        "max_abs_bounds": 7.2311665003349415
+      },
+      "interpretation": "Both ARK and Aholo direct baseline loaded the same format and splat count. Bounds may differ because ARK uses sidecar fit bounds and baseline uses renderer-computed bounds."
+    },
+    {
+      "format": "spz",
+      "passed": true,
+      "ark": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SPZ",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (116.1)",
+        "contrast": 116.11111111111111,
+        "evaluated_at_ms": 2085,
+        "screenshot": "artifacts/baseline-compare/ark-spz.png",
+        "failure_reason": null
+      },
+      "baseline": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SPZ",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "aholo_dense_98 (renderer)",
+        "fit_bounds_id": "aholo_dense_98",
+        "fit_bounds_source": "renderer",
+        "dense_min": [
+          -2.6359986590240423,
+          -4.170985107701275,
+          -4.3974477311443785
+        ],
+        "dense_max": [
+          3.0268239262357426,
+          1.2423586498984323,
+          8.81758852616922
+        ],
+        "display_scale": 0.3026855108162325,
+        "visual_quality": "Passed (429.9)",
+        "contrast": 429.88888888888886,
+        "evaluated_at_ms": 1065,
+        "screenshot": "artifacts/baseline-compare/baseline-spz.png",
+        "failure_reason": null
+      },
+      "deltas": {
+        "splats": 0,
+        "contrast": -313.7777777777777,
+        "max_abs_bounds": 1.8362240737642574
+      },
+      "interpretation": "Both ARK and Aholo direct baseline loaded the same format and splat count. Bounds may differ because ARK uses sidecar fit bounds and baseline uses renderer-computed bounds."
+    },
+    {
+      "format": "ply",
+      "passed": true,
+      "ark": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "PLY",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (101.9)",
+        "contrast": 101.88888888888889,
+        "evaluated_at_ms": 2751,
+        "screenshot": "artifacts/baseline-compare/ark-ply.png",
+        "failure_reason": null
+      },
+      "baseline": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "PLY",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "aholo_dense_98 (renderer)",
+        "fit_bounds_id": "aholo_dense_98",
+        "fit_bounds_source": "renderer",
+        "dense_min": [
+          -4.609628200531006,
+          -6.477488994598389,
+          -5.598247051239014
+        ],
+        "dense_max": [
+          2.856094311492762,
+          1.1978667431222574,
+          8.728005863085505
+        ],
+        "display_scale": 0.2792076912170442,
+        "visual_quality": "Passed (358.9)",
+        "contrast": 358.88888888888886,
+        "evaluated_at_ms": 1839,
+        "screenshot": "artifacts/baseline-compare/baseline-ply.png",
+        "failure_reason": null
+      },
+      "deltas": {
+        "splats": 0,
+        "contrast": -257,
+        "max_abs_bounds": 2.2189919945983885
+      },
+      "interpretation": "Both ARK and Aholo direct baseline loaded the same format and splat count. Bounds may differ because ARK uses sidecar fit bounds and baseline uses renderer-computed bounds."
+    }
+  ],
+  "raw_results": [
+    {
+      "format": "sog",
+      "ark": {
+        "label": "ark-sog",
+        "url": "http://127.0.0.1:5173/?autoload=1&asset=sog",
+        "screenshot": "artifacts/baseline-compare/ark-sog.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.sog loaded in 0.6s.",
+          "fitBounds": "broad_01_99 (sidecar)",
+          "visualQuality": "Passed (114.3)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Dongguan Heritage Gaussian (SOG runtime)",
+            "format": "SOG",
+            "splats": 1855266,
+            "shDegree": 0,
+            "denseMin": [
+              -2.535121,
+              -4.258497,
+              -4.28949
+            ],
+            "denseMax": [
+              4.863048,
+              1.211781,
+              9.86895
+            ],
+            "displayScale": 0.2825170004605027,
+            "fitRadius": 2.9999999999999996,
+            "fitBoundsId": "broad_01_99",
+            "fitBoundsSource": "sidecar",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all runtime checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "broad_01_99",
+                "message": "Camera fit bounds are resolved."
+              },
+              "bundledSidecarApplied": {
+                "passed": true,
+                "value": "broad_01_99 (sidecar)",
+                "message": "Bundled scenes should use sidecar fit bounds."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 114.33333333333333,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                20.22222222222222,
+                21.77777777777778,
+                21.666666666666668
+              ],
+              "contrast": 114.33333333333333
+            },
+            "evaluatedAtMs": 1712
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      },
+      "baseline": {
+        "label": "baseline-sog",
+        "url": "http://127.0.0.1:5173/baseline.html?asset=sog",
+        "screenshot": "artifacts/baseline-compare/baseline-sog.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.sog loaded in 0.2s.",
+          "fitBounds": "sog_meta_dense (renderer)",
+          "visualQuality": "Passed (492.6)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Aholo Direct (SOG)",
+            "format": "SOG",
+            "splats": 1855266,
+            "shDegree": 3,
+            "denseMin": [
+              -1.7244828278583595,
+              -2.0118710851177815,
+              -1.8867884778786876
+            ],
+            "denseMax": [
+              2.596758502228941,
+              1.7930607055860268,
+              2.637783499665059
+            ],
+            "displayScale": 0.8840615244608131,
+            "fitRadius": 3,
+            "fitBoundsId": "sog_meta_dense",
+            "fitBoundsSource": "renderer",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all baseline checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "sog_meta_dense",
+                "message": "Camera fit bounds are resolved."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 492.55555555555554,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                68.88888888888889,
+                70.55555555555556,
+                79
+              ],
+              "contrast": 492.55555555555554
+            },
+            "evaluatedAtMs": 920
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      }
+    },
+    {
+      "format": "spz",
+      "ark": {
+        "label": "ark-spz",
+        "url": "http://127.0.0.1:5173/?autoload=1&asset=spz",
+        "screenshot": "artifacts/baseline-compare/ark-spz.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.spz loaded in 0.5s.",
+          "fitBounds": "broad_01_99 (sidecar)",
+          "visualQuality": "Passed (116.1)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Dongguan Heritage Gaussian (SPZ runtime)",
+            "format": "SPZ",
+            "splats": 1855266,
+            "shDegree": 0,
+            "denseMin": [
+              -2.535121,
+              -4.258497,
+              -4.28949
+            ],
+            "denseMax": [
+              4.863048,
+              1.211781,
+              9.86895
+            ],
+            "displayScale": 0.2825170004605027,
+            "fitRadius": 2.9999999999999996,
+            "fitBoundsId": "broad_01_99",
+            "fitBoundsSource": "sidecar",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all runtime checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "broad_01_99",
+                "message": "Camera fit bounds are resolved."
+              },
+              "bundledSidecarApplied": {
+                "passed": true,
+                "value": "broad_01_99 (sidecar)",
+                "message": "Bundled scenes should use sidecar fit bounds."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 116.11111111111111,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                19.88888888888889,
+                22,
+                22
+              ],
+              "contrast": 116.11111111111111
+            },
+            "evaluatedAtMs": 2085
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      },
+      "baseline": {
+        "label": "baseline-spz",
+        "url": "http://127.0.0.1:5173/baseline.html?asset=spz",
+        "screenshot": "artifacts/baseline-compare/baseline-spz.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.spz loaded in 0.5s.",
+          "fitBounds": "aholo_dense_98 (renderer)",
+          "visualQuality": "Passed (429.9)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Aholo Direct (SPZ)",
+            "format": "SPZ",
+            "splats": 1855266,
+            "shDegree": 0,
+            "denseMin": [
+              -2.6359986590240423,
+              -4.170985107701275,
+              -4.3974477311443785
+            ],
+            "denseMax": [
+              3.0268239262357426,
+              1.2423586498984323,
+              8.81758852616922
+            ],
+            "displayScale": 0.3026855108162325,
+            "fitRadius": 3,
+            "fitBoundsId": "aholo_dense_98",
+            "fitBoundsSource": "renderer",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all baseline checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "aholo_dense_98",
+                "message": "Camera fit bounds are resolved."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 429.88888888888886,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                31.22222222222222,
+                35.111111111111114,
+                36.77777777777778
+              ],
+              "contrast": 429.88888888888886
+            },
+            "evaluatedAtMs": 1065
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      }
+    },
+    {
+      "format": "ply",
+      "ark": {
+        "label": "ark-ply",
+        "url": "http://127.0.0.1:5173/?autoload=1&asset=ply",
+        "screenshot": "artifacts/baseline-compare/ark-ply.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.ply loaded in 1.3s.",
+          "fitBounds": "broad_01_99 (sidecar)",
+          "visualQuality": "Passed (101.9)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Dongguan Heritage Gaussian (Source PLY)",
+            "format": "PLY",
+            "splats": 1855266,
+            "shDegree": 0,
+            "denseMin": [
+              -2.535121,
+              -4.258497,
+              -4.28949
+            ],
+            "denseMax": [
+              4.863048,
+              1.211781,
+              9.86895
+            ],
+            "displayScale": 0.2825170004605027,
+            "fitRadius": 2.9999999999999996,
+            "fitBoundsId": "broad_01_99",
+            "fitBoundsSource": "sidecar",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all runtime checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "broad_01_99",
+                "message": "Camera fit bounds are resolved."
+              },
+              "bundledSidecarApplied": {
+                "passed": true,
+                "value": "broad_01_99 (sidecar)",
+                "message": "Bundled scenes should use sidecar fit bounds."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 101.88888888888889,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                19.22222222222222,
+                21.22222222222222,
+                21.666666666666668
+              ],
+              "contrast": 101.88888888888889
+            },
+            "evaluatedAtMs": 2751
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      },
+      "baseline": {
+        "label": "baseline-ply",
+        "url": "http://127.0.0.1:5173/baseline.html?asset=ply",
+        "screenshot": "artifacts/baseline-compare/baseline-ply.png",
+        "passed": true,
+        "exitCode": 0,
+        "pageState": {
+          "runtime": "Loaded",
+          "status": "scene.ply loaded in 1.3s.",
+          "fitBounds": "aholo_dense_98 (renderer)",
+          "visualQuality": "Passed (358.9)",
+          "canvas": {
+            "width": 1424,
+            "height": 805,
+            "clientWidth": 1424,
+            "clientHeight": 805
+          },
+          "activeInfo": {
+            "name": "Aholo Direct (PLY)",
+            "format": "PLY",
+            "splats": 1855266,
+            "shDegree": 0,
+            "denseMin": [
+              -4.609628200531006,
+              -6.477488994598389,
+              -5.598247051239014
+            ],
+            "denseMax": [
+              2.856094311492762,
+              1.1978667431222574,
+              8.728005863085505
+            ],
+            "displayScale": 0.2792076912170442,
+            "fitRadius": 2.9999999999999996,
+            "fitBoundsId": "aholo_dense_98",
+            "fitBoundsSource": "renderer",
+            "source": "bundled"
+          },
+          "visualQualityGate": {
+            "status": "passed",
+            "reason": "Visual sample passed all baseline checks.",
+            "checks": {
+              "sceneLoaded": {
+                "passed": true,
+                "value": 1855266,
+                "message": "Scene has renderable splats."
+              },
+              "canvasReady": {
+                "passed": true,
+                "value": {
+                  "width": 1424,
+                  "height": 805,
+                  "clientWidth": 1424,
+                  "clientHeight": 805
+                },
+                "message": "Renderer canvas has non-zero drawing and display size."
+              },
+              "fitBoundsResolved": {
+                "passed": true,
+                "value": "aholo_dense_98",
+                "message": "Camera fit bounds are resolved."
+              },
+              "renderVisible": {
+                "passed": true,
+                "value": "visible",
+                "message": "Pixel sample detects visible rendered content."
+              },
+              "contrastAboveThreshold": {
+                "passed": true,
+                "value": 358.88888888888886,
+                "message": "Pixel contrast is at least 12."
+              }
+            },
+            "thresholds": {
+              "minContrast": 12,
+              "settleFrames": 8
+            },
+            "sample": {
+              "status": "visible",
+              "averageRgb": [
+                32.44444444444444,
+                36.22222222222222,
+                40.44444444444444
+              ],
+              "contrast": 358.88888888888886
+            },
+            "evaluatedAtMs": 1839
+          }
+        },
+        "parseError": null,
+        "stderr": ""
+      }
+    }
+  ]
+}

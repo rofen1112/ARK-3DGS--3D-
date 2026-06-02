@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-06-01T19:19:19.675Z",
+  "source_manifest": "public/scenes/demo_room_001/manifest.json",
+  "source_asset_id": "source-ply",
+  "requested_source_ply": "public/scenes/demo_room_001/gaussian/scene.ply",
+  "source_ply": "3D-model/东莞非遗.ply",
+  "vertex_count": 1855266,
+  "valid_vertex_count": 1854627,
+  "config": {
+    "cellSize": 0.25,
+    "maxComponents": 12,
+    "minComponentCells": 3,
+    "minComponentPoints": 800,
+    "padding": 0.08
+  },
+  "bounds": {
+    "broad_01_99": {
+      "min": [
+        -2.5351219177246094,
+        -4.258497714996338,
+        -4.289493560791016
+      ],
+      "max": [
+        4.863042831420898,
+        1.2117786407470703,
+        9.868938446044922
+      ]
+    },
+    "solid_05_95": {
+      "min": [
+        -2.4126133918762207,
+        -3.5933427810668945,
+        -1.4353739023208618
+      ],
+      "max": [
+        2.3957436084747314,
+        1.1352651119232178,
+        7.139608383178711
+      ]
+    }
+  },
+  "occupancy": {
+    "threshold": 131,
+    "cell_count": 1323,
+    "dense_cell_count": 861,
+    "component_count": 3
+  },
+  "colliders": [
+    {
+      "id": "scan-floor-proxy",
+      "kind": "floor",
+      "position": [
+        1.164,
+        -4.2735,
+        2.7897
+      ],
+      "size": [
+        7.7982,
+        0.47,
+        14.5584
+      ],
+      "color": "#5b6470"
+    },
+    {
+      "id": "scan-main-body",
+      "kind": "furniture",
+      "position": [
+        -0.0084,
+        -1.229,
+        2.8521
+      ],
+      "size": [
+        4.9684,
+        4.8886,
+        8.735
+      ],
+      "color": "#4d8a72"
+    },
+    {
+      "id": "scan-cluster-01",
+      "kind": "furniture",
+      "position": [
+        1.1637,
+        -1.5234,
+        3.7899
+      ],
+      "size": [
+        7.4777,
+        5.5503,
+        12.2374
+      ],
+      "color": "#2f7ca0"
+    },
+    {
+      "id": "scan-cluster-02",
+      "kind": "furniture",
+      "position": [
+        -1.6598,
+        -0.7791,
+        -3.4173
+      ],
+      "size": [
+        1.8284,
+        4.0616,
+        1.8244
+      ],
+      "color": "#2f7ca0"
+    },
+    {
+      "id": "scan-cluster-03",
+      "kind": "furniture",
+      "position": [
+        4.5391,
+        -0.5153,
+        -1.2654
+      ],
+      "size": [
+        0.728,
+        3.5272,
+        2.0278
+      ],
+      "color": "#2f7ca0"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "demo_room_001",
+  "name": "Dongguan Heritage Gaussian",
+  "description": "Bundled ARK-3DGS browser test asset.",
+  "gaussian": {
+    "type": "sog",
+    "url": "gaussian/scene.sog",
+    "position": [0, 0, 0],
+    "scale": [1, 1, 1]
+  },
+  "gaussians": {
+    "default": "runtime-sog",
+    "items": [
+      {
+        "id": "runtime-sog",
+        "role": "runtime",
+        "label": "SOG runtime",
+        "type": "sog",
+        "url": "gaussian/scene.sog",
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "splats": 1855266,
+        "sizeBytes": 22887509
+      },
+      {
+        "id": "runtime-spz",
+        "role": "runtime",
+        "label": "SPZ runtime",
+        "type": "spz",
+        "url": "gaussian/scene.spz",
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "splats": 1855266,
+        "sizeBytes": 35364142
+      },
+      {
+        "id": "source-ply",
+        "role": "source",
+        "label": "Source PLY",
+        "type": "ply",
+        "url": "gaussian/scene.ply",
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "splats": 1855266,
+        "sizeBytes": 460111596,
+        "dataBytes": 460107500
+      },
+      {
+        "id": "preview-ply",
+        "role": "preview",
+        "label": "Preview PLY 100k",
+        "type": "ply",
+        "url": "gaussian/scene-preview-100k.ply",
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "splats": 99966,
+        "sizeBytes": 24793098,
+        "sourceAssetId": "source-ply"
+      }
+    ]
+  },
+  "scale": {
+    "unit": "meter"
+  }
+}

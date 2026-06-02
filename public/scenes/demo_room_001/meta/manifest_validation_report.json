@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-06-02T01:40:07.457Z",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "summary": {
+    "passed": true,
+    "total_checks": 8,
+    "failed_checks": 0,
+    "asset_count": 4
+  },
+  "checks": [
+    {
+      "id": "legacy_gaussian_present",
+      "passed": true,
+      "value": "gaussian/scene.sog",
+      "message": "Legacy manifest.gaussian remains available for backward compatibility."
+    },
+    {
+      "id": "gaussian_asset_set_present",
+      "passed": true,
+      "value": 4,
+      "message": "Manifest defines gaussians.items."
+    },
+    {
+      "id": "default_asset_exists",
+      "passed": true,
+      "value": "runtime-sog",
+      "message": "Default Gaussian asset id exists in gaussians.items."
+    },
+    {
+      "id": "source_ply_exists",
+      "passed": true,
+      "value": [
+        "runtime-sog:runtime:sog",
+        "runtime-spz:runtime:spz",
+        "source-ply:source:ply",
+        "preview-ply:preview:ply"
+      ],
+      "message": "Manifest defines a source PLY asset."
+    },
+    {
+      "id": "preview_ply_exists",
+      "passed": true,
+      "value": [
+        "runtime-sog:runtime:sog",
+        "runtime-spz:runtime:spz",
+        "source-ply:source:ply",
+        "preview-ply:preview:ply"
+      ],
+      "message": "Manifest defines a preview PLY asset."
+    },
+    {
+      "id": "no_duplicate_asset_ids",
+      "passed": true,
+      "value": [],
+      "message": "Gaussian asset ids are unique."
+    },
+    {
+      "id": "all_asset_files_exist",
+      "passed": true,
+      "value": [],
+      "message": "All Gaussian asset URLs resolve to local files."
+    },
+    {
+      "id": "declared_sizes_match",
+      "passed": true,
+      "value": [],
+      "message": "Declared asset sizes or PLY data sizes match files on disk."
+    }
+  ],
+  "assets": [
+    {
+      "id": "runtime-sog",
+      "role": "runtime",
+      "type": "sog",
+      "url": "gaussian/scene.sog",
+      "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+      "exists": true,
+      "size_bytes": 22887509,
+      "declared_size_bytes": 22887509,
+      "declared_data_bytes": null,
+      "size_matches": true
+    },
+    {
+      "id": "runtime-spz",
+      "role": "runtime",
+      "type": "spz",
+      "url": "gaussian/scene.spz",
+      "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+      "exists": true,
+      "size_bytes": 35364142,
+      "declared_size_bytes": 35364142,
+      "declared_data_bytes": null,
+      "size_matches": true
+    },
+    {
+      "id": "source-ply",
+      "role": "source",
+      "type": "ply",
+      "url": "gaussian/scene.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "exists": true,
+      "size_bytes": 460111596,
+      "declared_size_bytes": 460111596,
+      "declared_data_bytes": 460107500,
+      "size_matches": true
+    },
+    {
+      "id": "preview-ply",
+      "role": "preview",
+      "type": "ply",
+      "url": "gaussian/scene-preview-100k.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+      "exists": true,
+      "size_bytes": 24793098,
+      "declared_size_bytes": 24793098,
+      "declared_data_bytes": null,
+      "size_matches": true
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "scene_id": "demo_room_001",
+  "phase": "phase_1_real_gaussian",
+  "visual_layer": {
+    "status": "real_gaussian_loaded",
+    "expected_formats": ["ply", "spz", "splat", "ksplat", "sog"],
+    "real_asset_loaded": true,
+    "runtime_asset": "public/scenes/demo_room_001/gaussian/scene.sog",
+    "source_asset": "public/scenes/demo_room_001/gaussian/scene.ply",
+    "preview_asset": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+    "manifest_asset_contract": "public/scenes/demo_room_001/meta/manifest_validation_report.json",
+    "source_asset_size_bytes": 460111596,
+    "source_asset_data_bytes": 460107500,
+    "preview_asset_size_bytes": 24793098,
+    "gaussian_vertex_count": 1855266,
+    "preview_vertex_count": 99966,
+    "transform": {
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0, 1],
+      "scale": [0.282517, 0.282517, 0.282517],
+      "fit_method": "broad_01_99_sidecar_bounds"
+    },
+    "runtime_visual_quality_gate": {
+      "status": "passed",
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "min_contrast": 12,
+      "settle_frames": 8,
+      "sample": {
+        "status": "visible",
+        "average_rgb": [20.222222, 21.777778, 21.666667],
+        "contrast": 114.333333
+      },
+      "checks": {
+        "scene_loaded": true,
+        "canvas_ready": true,
+        "fit_bounds_resolved": true,
+        "bundled_sidecar_applied": true,
+        "render_visible": true,
+        "contrast_above_threshold": true
+      }
+    },
+    "format_matrix": {
+      "status": "passed",
+      "report": "public/scenes/demo_room_001/meta/format_matrix_report.json",
+      "formats": [
+        {
+          "format": "sog",
+          "visual_quality": "Passed (114.3)",
+          "contrast": 114.333333,
+          "screenshot": "artifacts/format-matrix/scene-sog.png"
+        },
+        {
+          "format": "spz",
+          "visual_quality": "Passed (116.1)",
+          "contrast": 116.111111,
+          "screenshot": "artifacts/format-matrix/scene-spz.png"
+        },
+        {
+          "format": "ply",
+          "visual_quality": "Passed (101.9)",
+          "contrast": 101.888889,
+          "screenshot": "artifacts/format-matrix/scene-ply.png"
+        }
+      ]
+    },
+    "baseline_comparison": {
+      "status": "passed",
+      "report": "public/scenes/demo_room_001/meta/baseline_comparison_report.json",
+      "baseline": "dev-only direct Aholo harness",
+      "comparisons": [
+        {
+          "format": "sog",
+          "ark_fit_bounds": "broad_01_99 (sidecar)",
+          "baseline_fit_bounds": "sog_meta_dense (renderer)",
+          "splat_delta": 0,
+          "max_abs_bounds_delta": 7.231167,
+          "ark_screenshot": "artifacts/baseline-compare/ark-sog.png",
+          "baseline_screenshot": "artifacts/baseline-compare/baseline-sog.png"
+        },
+        {
+          "format": "spz",
+          "ark_fit_bounds": "broad_01_99 (sidecar)",
+          "baseline_fit_bounds": "aholo_dense_98 (renderer)",
+          "splat_delta": 0,
+          "max_abs_bounds_delta": 1.836224,
+          "ark_screenshot": "artifacts/baseline-compare/ark-spz.png",
+          "baseline_screenshot": "artifacts/baseline-compare/baseline-spz.png"
+        },
+        {
+          "format": "ply",
+          "ark_fit_bounds": "broad_01_99 (sidecar)",
+          "baseline_fit_bounds": "aholo_dense_98 (renderer)",
+          "splat_delta": 0,
+          "max_abs_bounds_delta": 2.218992,
+          "ark_screenshot": "artifacts/baseline-compare/ark-ply.png",
+          "baseline_screenshot": "artifacts/baseline-compare/baseline-ply.png"
+        }
+      ]
+    },
+    "independent_viewer_comparison": {
+      "status": "passed",
+      "report": "public/scenes/demo_room_001/meta/independent_viewer_comparison_report.json",
+      "baseline": "dev-only @mkkellogg/gaussian-splats-3d preview harness",
+      "preview_report": "public/scenes/demo_room_001/meta/ply_preview_report.json",
+      "comparison": {
+        "asset": "scene-preview-100k.ply",
+        "ark_fit_bounds": "broad_01_99 (sidecar)",
+        "independent_fit_bounds": "broad_01_99 (sidecar)",
+        "splat_delta": 0,
+        "ark_visual_quality": "Passed (128.9)",
+        "independent_visual_quality": "Passed (162.7)",
+        "ark_screenshot": "artifacts/independent-compare/ark-ply.png",
+        "independent_screenshot": "artifacts/independent-compare/kellogg-ply.png"
+      }
+    },
+    "first_party_renderer": {
+      "status": "passed",
+      "report": "public/scenes/demo_room_001/meta/first_party_renderer_report.json",
+      "renderer": "ark-point-webgl2",
+      "asset": "scene-preview-100k.ply",
+      "splats": 99966,
+      "visual_quality": "Passed (216.0)",
+      "contrast": 216,
+      "pipeline": {
+        "shader": "sh0-scale-aware-point-cloud",
+        "sorting": "cpu-back-to-front",
+        "scale_aware": true,
+        "opacity_aware": true,
+        "gaussian_projection": false
+      },
+      "sort": {
+        "enabled": true,
+        "sorted_splats": 99966,
+        "last_sort_ms": 17.5
+      },
+      "radius": {
+        "min": 0.0001,
+        "max": 0.337948,
+        "mean": 0.005467
+      },
+      "screenshot": "artifacts/first-party/ark-point-preview.png",
+      "limitation": "Scale-aware diagnostic point renderer; not full Gaussian covariance projection."
+    }
+  },
+  "physical_layer": {
+    "collider_source": "public/scenes/demo_room_001/physics/colliders.generated.json",
+    "collider_count": 5,
+    "generation_method": "PLY percentile bounds plus 2D occupancy connected components",
+    "door_clearance_check": false,
+    "furniture_placement_check": true,
+    "camera_collision_check": true
+  },
+  "verification": {
+    "build": "passed",
+    "runtime_visual_qa": "passed",
+    "manifest_validation": "passed",
+    "format_matrix_qa": "passed",
+    "baseline_comparison_qa": "passed",
+    "independent_viewer_qa": "passed",
+    "first_party_renderer_qa": "passed",
+    "screenshots": [
+      "artifacts/phase1-screenshot.png",
+      "artifacts/phase1-desk-screenshot.png",
+      "artifacts/phase1-real-gaussian-fit-v2.png",
+      "artifacts/phase2-generated-colliders-desk-fixed.png",
+      "artifacts/visual-qa.png",
+      "artifacts/format-matrix/scene-sog.png",
+      "artifacts/format-matrix/scene-spz.png",
+      "artifacts/format-matrix/scene-ply.png",
+      "artifacts/baseline-compare/ark-sog.png",
+      "artifacts/baseline-compare/baseline-sog.png",
+      "artifacts/baseline-compare/ark-spz.png",
+      "artifacts/baseline-compare/baseline-spz.png",
+      "artifacts/baseline-compare/ark-ply.png",
+      "artifacts/baseline-compare/baseline-ply.png",
+      "artifacts/independent-compare/ark-ply.png",
+      "artifacts/independent-compare/kellogg-ply.png",
+      "artifacts/first-party/ark-point-preview.png"
+    ]
+  }
+}

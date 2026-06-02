@@ -1,0 +1,77 @@
+[
+  {
+    "id": "scan-floor-proxy",
+    "kind": "floor",
+    "position": [
+      1.164,
+      -4.2735,
+      2.7897
+    ],
+    "size": [
+      7.7982,
+      0.47,
+      14.5584
+    ],
+    "color": "#5b6470"
+  },
+  {
+    "id": "scan-main-body",
+    "kind": "furniture",
+    "position": [
+      -0.0084,
+      -1.229,
+      2.8521
+    ],
+    "size": [
+      4.9684,
+      4.8886,
+      8.735
+    ],
+    "color": "#4d8a72"
+  },
+  {
+    "id": "scan-cluster-01",
+    "kind": "furniture",
+    "position": [
+      1.1637,
+      -1.5234,
+      3.7899
+    ],
+    "size": [
+      7.4777,
+      5.5503,
+      12.2374
+    ],
+    "color": "#2f7ca0"
+  },
+  {
+    "id": "scan-cluster-02",
+    "kind": "furniture",
+    "position": [
+      -1.6598,
+      -0.7791,
+      -3.4173
+    ],
+    "size": [
+      1.8284,
+      4.0616,
+      1.8244
+    ],
+    "color": "#2f7ca0"
+  },
+  {
+    "id": "scan-cluster-03",
+    "kind": "furniture",
+    "position": [
+      4.5391,
+      -0.5153,
+      -1.2654
+    ],
+    "size": [
+      0.728,
+      3.5272,
+      2.0278
+    ],
+    "color": "#2f7ca0"
+  }
+]

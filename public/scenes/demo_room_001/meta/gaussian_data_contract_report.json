@@ -1,0 +1,243 @@
+{
+  "generated_at": "2026-06-01T19:19:20.156Z",
+  "requested_source_ply": "public/scenes/demo_room_001/gaussian/scene.ply",
+  "source_ply": "public/scenes/demo_room_001/gaussian/scene.ply",
+  "file_size_bytes": 460107500,
+  "expected_data_end_byte": 460107500,
+  "trailing_bytes": 0,
+  "sha256": "53caa458f8012d9f18dd9cbf2a851d6141aac4c81b4b637012eddde45f24d747",
+  "parser": {
+    "name": "ARK first-party Gaussian PLY validator",
+    "stage": "phase1-data-contract"
+  },
+  "header": {
+    "format": "binary_little_endian 1.0",
+    "vertex_count": 1855266,
+    "property_count": 62,
+    "stride": 248,
+    "header_bytes": 1532,
+    "sh_degree": 3,
+    "sh_rest_count": 45,
+    "properties": [
+      "x",
+      "y",
+      "z",
+      "nx",
+      "ny",
+      "nz",
+      "f_dc_0",
+      "f_dc_1",
+      "f_dc_2",
+      "f_rest_0",
+      "f_rest_1",
+      "f_rest_2",
+      "f_rest_3",
+      "f_rest_4",
+      "f_rest_5",
+      "f_rest_6",
+      "f_rest_7",
+      "f_rest_8",
+      "f_rest_9",
+      "f_rest_10",
+      "f_rest_11",
+      "f_rest_12",
+      "f_rest_13",
+      "f_rest_14",
+      "f_rest_15",
+      "f_rest_16",
+      "f_rest_17",
+      "f_rest_18",
+      "f_rest_19",
+      "f_rest_20",
+      "f_rest_21",
+      "f_rest_22",
+      "f_rest_23",
+      "f_rest_24",
+      "f_rest_25",
+      "f_rest_26",
+      "f_rest_27",
+      "f_rest_28",
+      "f_rest_29",
+      "f_rest_30",
+      "f_rest_31",
+      "f_rest_32",
+      "f_rest_33",
+      "f_rest_34",
+      "f_rest_35",
+      "f_rest_36",
+      "f_rest_37",
+      "f_rest_38",
+      "f_rest_39",
+      "f_rest_40",
+      "f_rest_41",
+      "f_rest_42",
+      "f_rest_43",
+      "f_rest_44",
+      "opacity",
+      "scale_0",
+      "scale_1",
+      "scale_2",
+      "rot_0",
+      "rot_1",
+      "rot_2",
+      "rot_3"
+    ]
+  },
+  "summary": {
+    "format": "ply",
+    "encoding": {
+      "center": "float32_xyz",
+      "colorDc": "spherical_harmonics_dc_rgb",
+      "opacity": "logit",
+      "scale": "log_xyz",
+      "rotation": "quaternion_wxyz",
+      "shRest": "spherical_harmonics_rest_rgb"
+    },
+    "count": 1855266,
+    "validPositionCount": 1854627,
+    "invalidPositionCount": 639,
+    "positionValidityRatio": 0.99965557,
+    "shDegree": 3,
+    "propertyCount": 62,
+    "stride": 248,
+    "headerBytes": 1532,
+    "bounds": {
+      "min": [
+        -4.609628,
+        -6.477489,
+        -5.598247
+      ],
+      "max": [
+        12.420171,
+        5.007942,
+        12.98222
+      ]
+    },
+    "percentileBounds": [
+      {
+        "id": "broad_01_99",
+        "low": 0.01,
+        "high": 0.99,
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      {
+        "id": "solid_05_95",
+        "low": 0.05,
+        "high": 0.95,
+        "min": [
+          -2.412613,
+          -3.59334,
+          -1.435366
+        ],
+        "max": [
+          2.395744,
+          1.135266,
+          7.139618
+        ]
+      },
+      {
+        "id": "core_10_90",
+        "low": 0.1,
+        "high": 0.9,
+        "min": [
+          -2.333623,
+          -2.557385,
+          0.213389
+        ],
+        "max": [
+          2.233782,
+          1.094724,
+          5.753465
+        ]
+      }
+    ],
+    "rawRanges": {
+      "opacity": [
+        -6.927913,
+        18.536335
+      ],
+      "scale": {
+        "min": [
+          -16.518307,
+          -16.452597,
+          -18.29888
+        ],
+        "max": [
+          0.307611,
+          0.532019,
+          -0.165356
+        ]
+      },
+      "rotationNorm": [
+        0.049497,
+        1.936593
+      ]
+    },
+    "decodedRanges": {
+      "opacity": [
+        0.000979,
+        1
+      ],
+      "scale": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          1.360171,
+          1.702366,
+          0.847592
+        ]
+      }
+    },
+    "firstValid": {
+      "index": 639,
+      "center": [
+        4.76667,
+        4.606614,
+        4.57777
+      ],
+      "colorDc": [
+        -0.975707,
+        -1.421164,
+        -0.690483
+      ],
+      "opacityRaw": 16.9384,
+      "opacity": 1,
+      "scaleRaw": [
+        -0.930275,
+        0.078036,
+        -2.773517
+      ],
+      "scale": [
+        0.394445,
+        1.081162,
+        0.062442
+      ],
+      "rotationRawWxyz": [
+        0.431972,
+        -0.425138,
+        -0.751873,
+        0.249138
+      ],
+      "rotationNorm": 0.997359
+    }
+  },
+  "quality_signals": {
+    "has_required_gaussian_fields": true,
+    "has_sh3": true,
+    "has_invalid_positions": true,
+    "can_build_ark_gaussian_data": true
+  },
+  "duration_seconds": 1.508
+}
