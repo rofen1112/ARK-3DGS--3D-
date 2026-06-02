@@ -1,0 +1,4 @@
+*.ply -text
+*.sog -text
+*.spz -text
+src/baseline.ts -text
