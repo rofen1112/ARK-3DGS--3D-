@@ -245,10 +245,13 @@ const checks = {
   localSource: pageState?.activeInfo?.source === 'local' && pageState?.source === 'Local file',
   computedRobustFitBounds: pageState?.activeInfo?.fitBoundsId === 'ply_01_99'
     && pageState?.activeInfo?.fitBoundsSource === 'computed',
-  largeSceneLod: renderInfo?.lod?.enabled === true
-    && renderInfo?.lod?.renderedSplats === 300000
-    && renderInfo?.ellipse?.profile === 'large-scene-lod-softened',
-  softenedEllipse: renderInfo?.ellipse?.maxPixelAxis === 5.5
+  fullDensityLargeScene: renderInfo?.largeScene?.fullDensity === true
+    && renderInfo?.largeScene?.strategy === 'full-density-source-order'
+    && renderInfo?.lod?.enabled === false
+    && renderInfo?.renderedSplats === pageState?.activeInfo?.splats
+    && pageState?.pipeline?.sorting === 'source-order',
+  fullDensityEllipse: renderInfo?.ellipse?.profile === 'large-scene-full-density'
+    && renderInfo?.ellipse?.maxPixelAxis === 4.5
     && renderInfo?.ellipse?.minPixelAxis === 0.35
     && renderInfo?.ellipse?.opacityScale < renderInfo?.ellipse?.baseOpacityScale,
   visualGateResolved: ['passed', 'failed', 'unknown'].includes(pageState?.visualQualityGate?.status)

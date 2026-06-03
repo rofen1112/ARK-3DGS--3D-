@@ -389,15 +389,15 @@ Current source PLY full-scene smoke result:
 
 | Asset | Result | Renderer | Decoded Splats | Rendered Splats | Invalid Skipped | Sorting | LOD | Visual QA | Settle Frames | Duration |
 |---|---|---|---:|---:|---:|---|---|---|---:|---:|
-| `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `300,000` | `639` | `cpu-back-to-front` | `deterministic-stride-budget` | `Passed (252.4)` | `1` | `15.951s` |
+| `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `1,854,627` | `639` | `source-order` | disabled, `full-density-source-order` | `Passed (202.7)` | `1` | `83.376s` |
 
 Current source PLY timing breakdown:
 
 | Read | Decode | Pack | Upload | Renderer Load | Visual Gate | Load Peak |
 |---:|---:|---:|---:|---:|---:|---:|
-| `888.7ms` | `1,109.4ms` | `40.9ms` | `5.5ms` | `2,046ms` | `10,758ms` | `579.25MiB` |
+| `992ms` | `1,130.4ms` | `171.4ms` | `50.7ms` | `2,346ms` | `55,821ms` | `643.966MiB` |
 
-This confirms the invalid-splat policy on the real full source PLY: the first-party decoder skips the `639` invalid positions and preserves `1,854,627` valid decoded splats. The smoke renderer now draws a deterministic `300,000` splat LOD, so this remains a degraded measurement candidate rather than proof that the full default runtime is production-ready.
+This confirms the invalid-splat policy on the real full source PLY: the first-party decoder skips the `639` invalid positions and preserves `1,854,627` valid decoded splats. The smoke renderer now draws all decoded source splats for this scene, but it uses `source-order` blending because the current CPU sort path is capped at `400,000` splats. This remains a degraded measurement candidate rather than proof that the full default runtime is production-ready.
 
 Important renderer requirements:
 

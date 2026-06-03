@@ -14,6 +14,7 @@ type Gl = WebGL2RenderingContext;
 
 const SH_C0 = 0.28209479177387814;
 const SORT_SPLAT_LIMIT = 400_000;
+const FULL_DENSITY_SPLAT_LIMIT = 2_000_000;
 const LARGE_SCENE_RENDER_SPLAT_BUDGET = 300_000;
 const CAMERA_EPSILON = 0.0001;
 const ELLIPSE_EXTENT = 2.05;
@@ -32,6 +33,10 @@ const LOD_ELLIPSE_EXTENT = 2.45;
 const LOD_MIN_PIXEL_AXIS = 0.35;
 const LOD_MAX_PIXEL_AXIS = 5.5;
 const LOD_MIN_OPACITY_RATIO = 0.28;
+const FULL_DENSITY_ELLIPSE_EXTENT = 1.85;
+const FULL_DENSITY_MIN_PIXEL_AXIS = 0.35;
+const FULL_DENSITY_MAX_PIXEL_AXIS = 4.5;
+const FULL_DENSITY_OPACITY_SCALE = 0.12;
 
 type RenderProfile = {
   id: string;
@@ -231,7 +236,17 @@ function bytesToMiB(bytes: number) {
   return Number((bytes / (1024 * 1024)).toFixed(3));
 }
 
-function createRenderProfile(lodEnabled: boolean, renderedRatio: number): RenderProfile {
+function createRenderProfile(lodEnabled: boolean, renderedRatio: number, largeSceneFullDensity: boolean): RenderProfile {
+  if (largeSceneFullDensity) {
+    return {
+      id: 'large-scene-full-density',
+      ellipseExtent: FULL_DENSITY_ELLIPSE_EXTENT,
+      minPixelAxis: FULL_DENSITY_MIN_PIXEL_AXIS,
+      maxPixelAxis: FULL_DENSITY_MAX_PIXEL_AXIS,
+      opacityScale: FULL_DENSITY_OPACITY_SCALE
+    };
+  }
+
   if (!lodEnabled) {
     return {
       id: 'standard',
@@ -316,7 +331,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private axisMin = 0;
   private axisMax = 0;
   private axisMean = 0;
-  private renderProfile = createRenderProfile(false, 1);
+  private largeSceneFullDensity = false;
+  private renderProfile = createRenderProfile(false, 1, false);
 
   constructor(private readonly host: HTMLElement) {
     this.canvas = document.createElement('canvas');
@@ -502,13 +518,14 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
 
     request.onStatus?.({ phase: 'Packing', message: 'Packing ARK Gaussian buffers...' });
     const packStartedAt = performance.now();
-    const renderSplatCount = data.count > SORT_SPLAT_LIMIT
+    const renderSplatCount = data.count > SORT_SPLAT_LIMIT && data.count > FULL_DENSITY_SPLAT_LIMIT
       ? Math.min(data.count, LARGE_SCENE_RENDER_SPLAT_BUDGET)
       : data.count;
     const renderSamplingStride = renderSplatCount > 0 ? data.count / renderSplatCount : 1;
     const lodEnabled = renderSplatCount < data.count;
+    const largeSceneFullDensity = data.count > SORT_SPLAT_LIMIT && !lodEnabled;
     const renderedRatio = data.count > 0 ? renderSplatCount / data.count : 1;
-    const renderProfile = createRenderProfile(lodEnabled, renderedRatio);
+    const renderProfile = createRenderProfile(lodEnabled, renderedRatio, largeSceneFullDensity);
     const positions = new Float32Array(renderSplatCount * 3);
     const colors = new Float32Array(renderSplatCount * 4);
     const scales = new Float32Array(renderSplatCount * 3);
@@ -608,9 +625,12 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.renderSplatBudget = LARGE_SCENE_RENDER_SPLAT_BUDGET;
     this.renderSamplingStride = renderSamplingStride;
     this.lodEnabled = lodEnabled;
+    this.largeSceneFullDensity = largeSceneFullDensity;
     this.lodReason = lodEnabled
       ? `decoded-over-${SORT_SPLAT_LIMIT}-splats-render-budget-${LARGE_SCENE_RENDER_SPLAT_BUDGET}`
-      : 'not-needed';
+      : largeSceneFullDensity
+        ? `decoded-under-${FULL_DENSITY_SPLAT_LIMIT}-full-density-rendering`
+        : 'not-needed';
     this.sceneVersion += 1;
     this.lastLoadMs = performance.now() - startedAt;
     this.lastRenderMs = 0;
@@ -793,7 +813,19 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           gpuUploadMiB: bytesToMiB(this.estimatedGpuUploadBytes),
           loadPeakBytes: this.estimatedLoadPeakBytes,
           loadPeakMiB: bytesToMiB(this.estimatedLoadPeakBytes),
-          sortSplatLimit: SORT_SPLAT_LIMIT
+          sortSplatLimit: SORT_SPLAT_LIMIT,
+          fullDensitySplatLimit: FULL_DENSITY_SPLAT_LIMIT
+        },
+        largeScene: {
+          fullDensity: this.largeSceneFullDensity,
+          fullDensitySplatLimit: FULL_DENSITY_SPLAT_LIMIT,
+          cpuSortSplatLimit: SORT_SPLAT_LIMIT,
+          sortingLimited: this.largeSceneFullDensity && !this.sortEnabled,
+          strategy: this.largeSceneFullDensity
+            ? 'full-density-source-order'
+            : this.lodEnabled
+              ? 'deterministic-stride-budget'
+              : 'full-resolution-sorted'
         },
         frameTiming: {
           lastRenderMs: roundMs(this.lastRenderMs),
@@ -823,6 +855,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         },
         note: this.lodEnabled
           ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget.'
+          : this.largeSceneFullDensity
+            ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, full-density large-scene rendering, and source-order blending because CPU sorting is over budget.'
           : 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting.'
       },
       memoryInfo: null,

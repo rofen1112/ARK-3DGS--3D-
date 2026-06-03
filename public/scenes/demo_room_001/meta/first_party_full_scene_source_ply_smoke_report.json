@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T11:52:21.146Z",
+  "generated_at": "2026-06-03T12:29:25.638Z",
   "target": "ARK first-party full-scene source PLY degraded smoke QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&renderer=ark-gaussian",
   "timeout_ms": 300000,
@@ -17,34 +17,36 @@
     "expected_valid_splats": 1854627,
     "expected_manifest_splats": 1855266,
     "skipped_invalid_splats": 639,
-    "rendered_splats": 300000,
-    "lod_enabled": true,
-    "lod_mode": "deterministic-stride-budget",
+    "rendered_splats": 1854627,
+    "lod_enabled": false,
+    "lod_mode": "full-resolution",
     "lod_budget_splats": 300000,
-    "lod_sampling_stride": 6.182,
-    "lod_rendered_ratio": 0.161758,
-    "sorting": "cpu-back-to-front",
-    "sort_enabled": true,
-    "sort_reason": "camera-depth-order",
-    "visual_quality": "Passed (52.4)",
+    "lod_sampling_stride": 1,
+    "lod_rendered_ratio": 1,
+    "large_scene_strategy": "full-density-source-order",
+    "large_scene_full_density": true,
+    "sorting": "source-order",
+    "sort_enabled": false,
+    "sort_reason": "disabled-over-400000-rendered-splats",
+    "visual_quality": "Passed (202.7)",
     "visual_quality_status": "passed",
-    "visual_quality_contrast": 52.44444444444444,
+    "visual_quality_contrast": 202.66666666666669,
     "visual_gate_settle_frames": 1,
-    "visual_gate_evaluated_ms": 10894,
-    "signature_contrast": 195,
-    "cdp_wait_elapsed_ms": 11084,
-    "renderer_load_ms": 2310,
-    "renderer_read_ms": 1193,
-    "renderer_decode_ms": 1070.5,
-    "renderer_pack_ms": 39.2,
-    "renderer_upload_ms": 5.3,
-    "renderer_last_render_ms": 0.1,
-    "renderer_average_render_ms": 12.56,
-    "renderer_max_render_ms": 62.5,
+    "visual_gate_evaluated_ms": 55821,
+    "signature_contrast": 210,
+    "cdp_wait_elapsed_ms": 56012,
+    "renderer_load_ms": 2346,
+    "renderer_read_ms": 992,
+    "renderer_decode_ms": 1130.4,
+    "renderer_pack_ms": 171.4,
+    "renderer_upload_ms": 50.7,
+    "renderer_last_render_ms": 0,
+    "renderer_average_render_ms": 0.06,
+    "renderer_max_render_ms": 0.3,
     "renderer_render_count": 5,
-    "retained_cpu_buffer_mib": 34.332,
-    "gpu_upload_mib": 16.022,
-    "load_peak_mib": 579.25,
+    "retained_cpu_buffer_mib": 99.048,
+    "gpu_upload_mib": 99.048,
+    "load_peak_mib": 643.966,
     "checks": {
       "loaded": true,
       "visualGateResolved": true,
@@ -55,11 +57,11 @@
       "invalidSplatsSkipped": true,
       "gaussianProjection": true,
       "clippingState": true,
-      "budgetedLodForLargeScene": true,
+      "largeSceneRenderStrategy": true,
       "canvasReady": true,
       "visualEvidenceVisible": true
     },
-    "duration_seconds": 15.915
+    "duration_seconds": 83.376
   },
   "screenshot": "artifacts/first-party-full-scene/source-ply-smoke.png",
   "diagnostics": {
@@ -67,29 +69,36 @@
     "expectedManifestSplats": 1855266,
     "invalidPositionCount": 639,
     "actualSplats": 1854627,
-    "renderedSplats": 300000,
+    "renderedSplats": 1854627,
     "skippedInvalidCount": 639,
-    "sortReason": "camera-depth-order",
+    "sortReason": "disabled-over-400000-rendered-splats",
     "lod": {
-      "enabled": true,
-      "mode": "deterministic-stride-budget",
+      "enabled": false,
+      "mode": "full-resolution",
       "decodedSplats": 1854627,
-      "renderedSplats": 300000,
+      "renderedSplats": 1854627,
       "budgetSplats": 300000,
-      "samplingStride": 6.182,
-      "renderedRatio": 0.161758,
-      "reason": "decoded-over-400000-splats-render-budget-300000"
+      "samplingStride": 1,
+      "renderedRatio": 1,
+      "reason": "decoded-under-2000000-full-density-rendering"
+    },
+    "largeScene": {
+      "fullDensity": true,
+      "fullDensitySplatLimit": 2000000,
+      "cpuSortSplatLimit": 400000,
+      "sortingLimited": true,
+      "strategy": "full-density-source-order"
     },
     "visualQualityStatus": "passed",
-    "visualQualityContrast": 52.44444444444444,
-    "signatureContrast": 195
+    "visualQualityContrast": 202.66666666666669,
+    "signatureContrast": 210
   },
   "result": {
     "pageState": {
       "runtime": "Loaded",
-      "status": "scene.ply loaded in 2.3s.",
+      "status": "scene.ply loaded in 2.4s.",
       "fitBounds": "broad_01_99 (sidecar)",
-      "visualQuality": "Passed (52.4)",
+      "visualQuality": "Passed (202.7)",
       "canvas": {
         "width": 1424,
         "height": 805,
@@ -153,7 +162,7 @@
           },
           "contrastAboveThreshold": {
             "passed": true,
-            "value": 52.44444444444444,
+            "value": 202.66666666666669,
             "message": "Pixel contrast is at least 12."
           }
         },
@@ -164,13 +173,13 @@
         "sample": {
           "status": "visible",
           "averageRgb": [
-            17.444444444444443,
-            20,
-            19.11111111111111
+            23.555555555555557,
+            26,
+            25.77777777777778
           ],
-          "contrast": 52.44444444444444
+          "contrast": 202.66666666666669
         },
-        "evaluatedAtMs": 10894
+        "evaluatedAtMs": 55821
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -181,7 +190,7 @@
       },
       "pipeline": {
         "shader": "sh0-instanced-ellipse-gaussian",
-        "sorting": "cpu-back-to-front",
+        "sorting": "source-order",
         "scaleAware": true,
         "opacityAware": true,
         "gaussianProjection": true,
@@ -191,7 +200,7 @@
       "scene": {
         "splats": 1854627,
         "splatCounts": 1854627,
-        "renderedSplats": 300000,
+        "renderedSplats": 1854627,
         "sceneVersion": 1
       },
       "camera": {
@@ -219,51 +228,59 @@
         "pitch": -0.2
       },
       "renderInfo": {
-        "lastLoadMs": 2310,
-        "lastSortMs": 62.2,
-        "sortEnabled": true,
-        "sortReason": "camera-depth-order",
-        "sortedSplats": 300000,
-        "renderedSplats": 300000,
-        "sortVersion": 1,
+        "lastLoadMs": 2346,
+        "lastSortMs": 0,
+        "sortEnabled": false,
+        "sortReason": "disabled-over-400000-rendered-splats",
+        "sortedSplats": 1854627,
+        "renderedSplats": 1854627,
+        "sortVersion": 0,
         "lod": {
-          "enabled": true,
-          "mode": "deterministic-stride-budget",
+          "enabled": false,
+          "mode": "full-resolution",
           "decodedSplats": 1854627,
-          "renderedSplats": 300000,
+          "renderedSplats": 1854627,
           "budgetSplats": 300000,
-          "samplingStride": 6.182,
-          "renderedRatio": 0.161758,
-          "reason": "decoded-over-400000-splats-render-budget-300000"
+          "samplingStride": 1,
+          "renderedRatio": 1,
+          "reason": "decoded-under-2000000-full-density-rendering"
         },
         "performance": {
           "inputBytes": 460107500,
           "inputMiB": 438.793,
-          "readMs": 1193,
-          "decodeMs": 1070.5,
-          "packMs": 39.2,
-          "uploadMs": 5.3,
-          "totalLoadMs": 2309.8,
-          "retainedCpuBufferBytes": 36000000,
-          "retainedCpuBufferMiB": 34.332,
-          "gpuUploadBytes": 16800000,
-          "gpuUploadMiB": 16.022,
-          "loadPeakBytes": 607387676,
-          "loadPeakMiB": 579.25,
-          "sortSplatLimit": 400000
+          "readMs": 992,
+          "decodeMs": 1130.4,
+          "packMs": 171.4,
+          "uploadMs": 50.7,
+          "totalLoadMs": 2345.7,
+          "retainedCpuBufferBytes": 103859112,
+          "retainedCpuBufferMiB": 99.048,
+          "gpuUploadBytes": 103859112,
+          "gpuUploadMiB": 99.048,
+          "loadPeakBytes": 675246788,
+          "loadPeakMiB": 643.966,
+          "sortSplatLimit": 400000,
+          "fullDensitySplatLimit": 2000000
+        },
+        "largeScene": {
+          "fullDensity": true,
+          "fullDensitySplatLimit": 2000000,
+          "cpuSortSplatLimit": 400000,
+          "sortingLimited": true,
+          "strategy": "full-density-source-order"
         },
         "frameTiming": {
-          "lastRenderMs": 0.1,
-          "maxRenderMs": 62.5,
-          "averageRenderMs": 12.56,
+          "lastRenderMs": 0,
+          "maxRenderMs": 0.3,
+          "averageRenderMs": 0.06,
           "renderCount": 5
         },
         "ellipse": {
-          "profile": "large-scene-lod-softened",
-          "extent": 2.45,
+          "profile": "large-scene-full-density",
+          "extent": 1.85,
           "minPixelAxis": 0.35,
-          "maxPixelAxis": 5.5,
-          "opacityScale": 0.17696403607515138,
+          "maxPixelAxis": 4.5,
+          "opacityScale": 0.12,
           "baseOpacityScale": 0.44,
           "alphaCutoff": 0.003,
           "clipping": {
@@ -274,20 +291,20 @@
           },
           "sourceAxis": {
             "min": 0.0001,
-            "max": 0.305447,
+            "max": 0.480947,
             "mean": 0.005457
           }
         },
-        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget."
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, full-density large-scene rendering, and source-order blending because CPU sorting is over budget."
       },
       "renderSample": {
         "status": "visible",
         "averageRgb": [
-          17.444444444444443,
-          20,
-          19.11111111111111
+          23.555555555555557,
+          26,
+          25.77777777777778
         ],
-        "contrast": 52.44444444444444
+        "contrast": 202.66666666666669
       }
     },
     "signature": {
@@ -295,16 +312,16 @@
       "width": 96,
       "height": 54,
       "averageRgb": [
-        15.902199074074074,
-        18.87229938271605,
-        18.011766975308642
+        16.293016975308642,
+        19.238618827160494,
+        18.429591049382715
       ],
       "minRgb": 15,
-      "maxRgb": 210,
-      "contrast": 195
+      "maxRgb": 225,
+      "contrast": 210
     },
     "error": null,
-    "elapsedMs": 11084,
+    "elapsedMs": 56012,
     "events": [
       {
         "method": "Runtime.consoleAPICalled",
@@ -317,7 +334,7 @@
             }
           ],
           "executionContextId": 2,
-          "timestamp": 1780487525669.605,
+          "timestamp": 1780489682667.59,
           "stackTrace": {
             "callFrames": [
               {
@@ -342,7 +359,7 @@
             }
           ],
           "executionContextId": 2,
-          "timestamp": 1780487525696.899,
+          "timestamp": 1780489682687.665,
           "stackTrace": {
             "callFrames": [
               {
@@ -406,7 +423,7 @@
         }
       }
     ],
-    "chromeErrors": "[24524:46608:0603/195205.454:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16401/devtools/browser/d489310d-8502-4777-93ca-aae2b0efbfdf\r\n[24524:47888:0603/195209.960:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[24524:47888:0603/195210.153:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[24524:47888:0603/195210.201:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    "chromeErrors": "[13456:45284:0603/202802.453:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:15505/devtools/browser/9cf058bb-e250-4a14-ab02-f418f927f215\r\n[13456:50400:0603/202808.203:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[13456:50400:0603/202808.203:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[13456:50400:0603/202808.203:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\nCreated TensorFlow Lite XNNPACK delegate for CPU.\r\n[13456:50400:0603/202830.691:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[13456:50400:0603/202924.862:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
   },
   "inputs": {
     "candidate": {

@@ -205,6 +205,7 @@ function buildChecks(pageState, signature, context) {
   const splats = pageState?.activeInfo?.splats;
   const renderedSplats = pageState?.renderInfo?.renderedSplats ?? null;
   const lod = pageState?.renderInfo?.lod ?? null;
+  const largeScene = pageState?.renderInfo?.largeScene ?? null;
   const clipping = pageState?.renderInfo?.ellipse?.clipping;
   const expectedValidSplats = context.contract.summary?.validPositionCount ?? null;
   const expectedManifestSplats = context.sourceCandidate?.candidate_splats ?? null;
@@ -228,14 +229,23 @@ function buildChecks(pageState, signature, context) {
       && clipping?.nearFarClip === true
       && clipping?.minClipW > 0
       && clipping?.offscreenPadding >= 1,
-    budgetedLodForLargeScene: lod?.enabled === true
-      && lod?.decodedSplats === splats
-      && lod?.renderedSplats === renderedSplats
-      && renderedSplats > 0
-      && renderedSplats <= cpuSortSplatLimit
-      && pageState?.pipeline?.sorting === 'cpu-back-to-front'
-      && pageState?.renderInfo?.sortEnabled === true
-      && pageState?.renderInfo?.sortedSplats === renderedSplats,
+    largeSceneRenderStrategy: (
+      lod?.enabled === true
+        && lod?.decodedSplats === splats
+        && lod?.renderedSplats === renderedSplats
+        && renderedSplats > 0
+        && renderedSplats <= cpuSortSplatLimit
+        && pageState?.pipeline?.sorting === 'cpu-back-to-front'
+        && pageState?.renderInfo?.sortEnabled === true
+        && pageState?.renderInfo?.sortedSplats === renderedSplats
+    ) || (
+      largeScene?.fullDensity === true
+        && largeScene?.strategy === 'full-density-source-order'
+        && lod?.enabled === false
+        && renderedSplats === splats
+        && pageState?.pipeline?.sorting === 'source-order'
+        && pageState?.renderInfo?.sortEnabled === false
+    ),
     canvasReady: pageState?.canvas?.width > 0
       && pageState?.canvas?.height > 0
       && pageState?.canvas?.clientWidth > 0
@@ -254,6 +264,7 @@ function buildChecks(pageState, signature, context) {
       skippedInvalidCount,
       sortReason,
       lod,
+      largeScene,
       visualQualityStatus: pageState?.visualQualityGate?.status ?? null,
       visualQualityContrast: pageState?.visualQualityGate?.sample?.contrast ?? null,
       signatureContrast: signature?.contrast ?? null
@@ -376,6 +387,8 @@ const report = {
     lod_budget_splats: renderInfo?.lod?.budgetSplats ?? null,
     lod_sampling_stride: renderInfo?.lod?.samplingStride ?? null,
     lod_rendered_ratio: renderInfo?.lod?.renderedRatio ?? null,
+    large_scene_strategy: renderInfo?.largeScene?.strategy ?? null,
+    large_scene_full_density: renderInfo?.largeScene?.fullDensity ?? null,
     sorting: result.pageState?.pipeline?.sorting ?? null,
     sort_enabled: result.pageState?.renderInfo?.sortEnabled ?? null,
     sort_reason: result.pageState?.renderInfo?.sortReason ?? null,

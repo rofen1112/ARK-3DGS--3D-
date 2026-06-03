@@ -120,3 +120,52 @@ Remaining risk:
 - If close-view artifacts remain after this round, the next repair round should
   isolate projection/math issues and LOD sampling quality. If round 3 still does
   not produce acceptable output, switch to rollback comparison.
+
+## Repair Round 2
+
+Status: density issue confirmed and fixed; visual correctness still blocked.
+
+Reason for the sparse result:
+
+- The previous large-scene path decoded all `1,854,627` valid source splats but
+  rendered only a deterministic `300,000` splat budget.
+- That means the first-party renderer was drawing about `16.2%` of the available
+  splats. The source data does not need synthetic point densification for this
+  scene; the renderer was under-drawing it.
+
+Changes:
+
+- Full source scenes up to `2,000,000` splats now render at full density.
+- The current local/source PLY path now reports:
+  - rendered splats: `1,854,627`
+  - LOD: disabled
+  - large-scene strategy: `full-density-source-order`
+  - ellipse profile: `large-scene-full-density`
+- For scenes larger than `2,000,000` splats, the previous 300,000 budget remains
+  available as a fallback.
+
+Validation:
+
+- `npm.cmd run test:gaussian`: passed
+- `npm.cmd run build`: passed
+- `npm.cmd run qa:first-party-gaussian`: passed
+- `npm.cmd run qa:first-party-local-source-smoke`: passed
+- `npm.cmd run qa:first-party-full-scene-smoke`: passed
+- `npm.cmd run qa:first-party-full-scene-visual`: assessment passed, gate remains blocked
+- `npm.cmd run qa:first-party-full-scene-performance`: assessment passed, gate remains blocked
+- `npm.cmd run qa:first-party-readiness`: assessment passed, `default_backend_ready=false`
+
+Observed result:
+
+- The visible density is improved because all source splats are now drawn.
+- Headless source smoke duration increased from about `15.9s` to about `83.4s`.
+- GPU upload increased from about `16MiB` to about `99MiB`.
+
+Remaining blocker:
+
+- Full-density rendering still uses source-order blending because CPU sorting is
+  capped at `400,000` splats.
+- The image is still not visually correct enough. The next repair round should
+  isolate sorting, projection, and SH/color handling. If that round does not
+  produce a meaningful visual improvement, begin rollback comparison instead of
+  continuing parameter tuning.

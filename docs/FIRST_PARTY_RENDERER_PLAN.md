@@ -268,8 +268,8 @@ Current progress:
 - Added `src/sdk/gaussian/fullSceneCandidate.ts` and `scripts/validate-first-party-full-scene-candidate.mjs` for full-scene first-party measurement candidate resolution.
 - Current full-scene candidate QA: default `runtime-sog` resolves to `source-ply` in `source-ply-substitute` mode; candidate is first-party loadable and splat-equivalent, but `measuredDefaultRuntime=false`.
 - Added `scripts/qa-first-party-full-scene-source-ply-smoke.mjs` for degraded full-scene source PLY measurement.
-- Current source PLY smoke QA: `smoke_passed=true`, renderer `ark-gaussian-webgl2`, decoded `1,854,627` valid splats, rendered `300,000` budget splats, skipped `639` invalid splats, sorting `cpu-back-to-front`, `sortEnabled=true`, LOD `deterministic-stride-budget`, visual QA `Passed (252.4)`, settle frames `1`, duration `15.951s`.
-- Current source PLY timing breakdown: read `888.7ms`, decode `1,109.4ms`, pack `40.9ms`, upload `5.5ms`, renderer load `2,046ms`, visual gate wall-clock `10,758ms`, load peak `579.25MiB`.
+- Current source PLY smoke QA: `smoke_passed=true`, renderer `ark-gaussian-webgl2`, decoded `1,854,627` valid splats, rendered `1,854,627` full-density splats, skipped `639` invalid splats, sorting `source-order`, `sortEnabled=false`, LOD disabled, large-scene strategy `full-density-source-order`, visual QA `Passed (202.7)`, settle frames `1`, duration `83.376s`.
+- Current source PLY timing breakdown: read `992ms`, decode `1,130.4ms`, pack `171.4ms`, upload `50.7ms`, renderer load `2,346ms`, visual gate wall-clock `55,821ms`, load peak `643.966MiB`.
 
 Known limitation:
 
@@ -280,7 +280,7 @@ Known limitation:
 - Runtime format probing is now complete enough to identify the default SOG as a ZIP/WEBP-style container and summarize its `meta.json` channel layout, but no SOG/SPZ-to-ARK Gaussian buffer transcode path exists yet.
 - The source PLY full-scene candidate can support degraded measurement work, but it is not the manifest default runtime and must not clear default backend readiness.
 - The full default runtime has `1,855,266` splats, above the current `400,000` CPU sort limit. A worker/GPU sorting or streaming path is required before default replacement.
-- The measured full-scene source PLY smoke is visible through a degraded deterministic stride LOD: it decodes all `1,854,627` valid splats but renders `300,000` budget splats. Adaptive QA and budgeted LOD reduced the previous `223.251s` smoke to `15.951s`, but this is not a default-runtime replacement path.
+- The measured full-scene source PLY smoke now renders all `1,854,627` valid source splats for scenes under the `2,000,000` full-density limit. This fixes the previous sparse 300,000-splat LOD path, but it uses `source-order` blending because the current CPU sort path is capped at `400,000` splats. This is still not a default-runtime replacement path.
 - The full-scene visual assessment is intentionally non-passing. It records Aholo-backed visibility baselines and keeps readiness red until the first-party renderer can measure the manifest default directly.
 - The full-scene performance budget assessment is intentionally non-passing. It records the blockers and keeps readiness red until a measured full-scene performance gate can run.
 
@@ -292,7 +292,8 @@ Completed renderer tuning:
 - Tuned first-party Gaussian ellipse extent to `2.05` and max pixel axis to `10`, reducing preview Visual QA contrast further to `216`.
 - Reduced `ark-gaussian` vs Aholo mean absolute RGB signature delta further to `0.9884`, with similarity `0.996124`.
 - Added adaptive large-scene visual QA settle and initial render burst policy. Preview PLY keeps the normal `8` settle frames; full-source PLY smoke now uses `1` settle frame and reduced smoke duration from `223.251s` to `80.971s`.
-- Added deterministic stride LOD for degraded full-source PLY smoke. The renderer keeps decoded splats at `1,854,627`, renders `300,000` budget splats, enables CPU sorting on the budget, and reduced smoke duration from `80.971s` to `15.951s`.
+- Added deterministic stride LOD for degraded full-source PLY smoke. The renderer kept decoded splats at `1,854,627`, rendered `300,000` budget splats, enabled CPU sorting on the budget, and reduced smoke duration from `80.971s` to `15.951s`.
+- Added full-density large-scene rendering for source scenes up to `2,000,000` splats. The current source PLY now renders all `1,854,627` splats with `source-order` blending and a `large-scene-full-density` profile. This improves density but keeps readiness blocked until sorting/projection quality is solved.
 - Added explicit near/far and offscreen center clipping. The current baseline metrics are unchanged after clipping: `ark-gaussian` vs Aholo mean absolute RGB delta `0.9884`, similarity `0.996124`, signature contrast `196` vs Aholo's `193`.
 - Promoted clipping debug state to a hard QA gate in the single renderer, comparison, and stress harnesses.
 - Added camera-edge and near-plane stress cases. Edge stress uses canvas signature contrast instead of only the sparse 3x3 pixel sample, because edge-visible content can miss fixed sample points.
