@@ -24,6 +24,14 @@ type ArkDebugCameraSetDetail = {
   frames?: number;
 };
 
+type ArkDebugLoadUrlDetail = {
+  url?: string;
+  name?: string;
+  filename?: string;
+  source?: ArkLoadedSceneInfo['source'];
+  fitBounds?: ArkFitBounds;
+};
+
 declare global {
   interface Window {
     __ARK_3DGS__?: ArkGaussianBrowser;
@@ -268,6 +276,9 @@ class ArkGaussianBrowser {
     document.addEventListener('ark-3dgs-camera-set', (event) => {
       this.setDebugCamera((event as CustomEvent<ArkDebugCameraSetDetail>).detail);
     });
+    document.addEventListener('ark-3dgs-debug-load-url', (event) => {
+      void this.loadDebugUrl((event as CustomEvent<ArkDebugLoadUrlDetail>).detail);
+    });
     this.configureInput();
     this.configureUi();
     this.applyCamera();
@@ -305,6 +316,20 @@ class ArkGaussianBrowser {
 
   forceRenderFrames(frames = 90) {
     this.renderBurst(frames);
+  }
+
+  async loadDebugUrl(detail?: ArkDebugLoadUrlDetail) {
+    if (!detail?.url) return;
+    const source = detail.source === 'bundled' ? 'bundled' : 'local';
+    const filename = detail.filename ?? detail.url;
+    const name = detail.name ?? filename.split('/').pop() ?? 'Debug Gaussian';
+    await this.runLoad(() => this.loadSplatSource({
+      input: detail.url as string,
+      name,
+      filename,
+      source,
+      fitBounds: detail.fitBounds
+    }));
   }
 
   setDebugCamera(detail?: ArkDebugCameraSetDetail) {

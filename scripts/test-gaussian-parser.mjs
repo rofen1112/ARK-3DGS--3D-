@@ -116,6 +116,15 @@ assertArrayClose(Array.from(filtered.centers.slice(0, 3)), [1, 2, 3], 'filtered 
 assertArrayClose(Array.from(filtered.centers.slice(3, 6)), [-1, -2, -3], 'filtered second center');
 assertClose(filtered.opacities[0], 0, 'filtered keeps raw opacity logit');
 
+const decodedWithPercentiles = parser.decodeGaussianPly(fixture, {
+  percentileBounds: [
+    { id: 'decode_median_point', low: 0.5, high: 0.5 }
+  ]
+});
+assert(decodedWithPercentiles.summary.percentileBounds.length === 1, 'decode percentile bounds count');
+assertArrayClose(decodedWithPercentiles.summary.percentileBounds[0].min, [1, 0, -1], 'decode percentile min bounds');
+assertArrayClose(decodedWithPercentiles.summary.percentileBounds[0].max, [1, 0, -1], 'decode percentile max bounds');
+
 const kept = parser.decodeGaussianPly(fixture, { invalidPolicy: 'keep' });
 assert(kept.count === 4, 'keep decoded count');
 assert(Number.isNaN(kept.centers[3]), 'keep preserves invalid center x');

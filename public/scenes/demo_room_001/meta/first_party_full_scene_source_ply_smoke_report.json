@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T12:57:27.473Z",
+  "generated_at": "2026-06-03T11:52:21.146Z",
   "target": "ARK first-party full-scene source PLY degraded smoke QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&renderer=ark-gaussian",
   "timeout_ms": 300000,
@@ -26,21 +26,21 @@
     "sorting": "cpu-back-to-front",
     "sort_enabled": true,
     "sort_reason": "camera-depth-order",
-    "visual_quality": "Passed (252.4)",
+    "visual_quality": "Passed (52.4)",
     "visual_quality_status": "passed",
-    "visual_quality_contrast": 252.44444444444446,
+    "visual_quality_contrast": 52.44444444444444,
     "visual_gate_settle_frames": 1,
-    "visual_gate_evaluated_ms": 10758,
-    "signature_contrast": 211,
-    "cdp_wait_elapsed_ms": 10955,
-    "renderer_load_ms": 2046,
-    "renderer_read_ms": 888.7,
-    "renderer_decode_ms": 1109.4,
-    "renderer_pack_ms": 40.9,
-    "renderer_upload_ms": 5.5,
+    "visual_gate_evaluated_ms": 10894,
+    "signature_contrast": 195,
+    "cdp_wait_elapsed_ms": 11084,
+    "renderer_load_ms": 2310,
+    "renderer_read_ms": 1193,
+    "renderer_decode_ms": 1070.5,
+    "renderer_pack_ms": 39.2,
+    "renderer_upload_ms": 5.3,
     "renderer_last_render_ms": 0.1,
-    "renderer_average_render_ms": 13.46,
-    "renderer_max_render_ms": 67.1,
+    "renderer_average_render_ms": 12.56,
+    "renderer_max_render_ms": 62.5,
     "renderer_render_count": 5,
     "retained_cpu_buffer_mib": 34.332,
     "gpu_upload_mib": 16.022,
@@ -59,7 +59,7 @@
       "canvasReady": true,
       "visualEvidenceVisible": true
     },
-    "duration_seconds": 15.951
+    "duration_seconds": 15.915
   },
   "screenshot": "artifacts/first-party-full-scene/source-ply-smoke.png",
   "diagnostics": {
@@ -81,15 +81,15 @@
       "reason": "decoded-over-400000-splats-render-budget-300000"
     },
     "visualQualityStatus": "passed",
-    "visualQualityContrast": 252.44444444444446,
-    "signatureContrast": 211
+    "visualQualityContrast": 52.44444444444444,
+    "signatureContrast": 195
   },
   "result": {
     "pageState": {
       "runtime": "Loaded",
-      "status": "scene.ply loaded in 2.1s.",
+      "status": "scene.ply loaded in 2.3s.",
       "fitBounds": "broad_01_99 (sidecar)",
-      "visualQuality": "Passed (252.4)",
+      "visualQuality": "Passed (52.4)",
       "canvas": {
         "width": 1424,
         "height": 805,
@@ -153,7 +153,7 @@
           },
           "contrastAboveThreshold": {
             "passed": true,
-            "value": 252.44444444444446,
+            "value": 52.44444444444444,
             "message": "Pixel contrast is at least 12."
           }
         },
@@ -164,13 +164,13 @@
         "sample": {
           "status": "visible",
           "averageRgb": [
-            26.77777777777778,
-            27.11111111111111,
-            27.666666666666668
+            17.444444444444443,
+            20,
+            19.11111111111111
           ],
-          "contrast": 252.44444444444446
+          "contrast": 52.44444444444444
         },
-        "evaluatedAtMs": 10758
+        "evaluatedAtMs": 10894
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -219,8 +219,8 @@
         "pitch": -0.2
       },
       "renderInfo": {
-        "lastLoadMs": 2046,
-        "lastSortMs": 66.8,
+        "lastLoadMs": 2310,
+        "lastSortMs": 62.2,
         "sortEnabled": true,
         "sortReason": "camera-depth-order",
         "sortedSplats": 300000,
@@ -239,11 +239,11 @@
         "performance": {
           "inputBytes": 460107500,
           "inputMiB": 438.793,
-          "readMs": 888.7,
-          "decodeMs": 1109.4,
-          "packMs": 40.9,
-          "uploadMs": 5.5,
-          "totalLoadMs": 2045.6,
+          "readMs": 1193,
+          "decodeMs": 1070.5,
+          "packMs": 39.2,
+          "uploadMs": 5.3,
+          "totalLoadMs": 2309.8,
           "retainedCpuBufferBytes": 36000000,
           "retainedCpuBufferMiB": 34.332,
           "gpuUploadBytes": 16800000,
@@ -254,15 +254,17 @@
         },
         "frameTiming": {
           "lastRenderMs": 0.1,
-          "maxRenderMs": 67.1,
-          "averageRenderMs": 13.46,
+          "maxRenderMs": 62.5,
+          "averageRenderMs": 12.56,
           "renderCount": 5
         },
         "ellipse": {
-          "extent": 2.05,
-          "minPixelAxis": 0.75,
-          "maxPixelAxis": 10,
-          "opacityScale": 0.44,
+          "profile": "large-scene-lod-softened",
+          "extent": 2.45,
+          "minPixelAxis": 0.35,
+          "maxPixelAxis": 5.5,
+          "opacityScale": 0.17696403607515138,
+          "baseOpacityScale": 0.44,
           "alphaCutoff": 0.003,
           "clipping": {
             "minClipW": 0.02,
@@ -276,16 +278,16 @@
             "mean": 0.005457
           }
         },
-        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, deterministic stride LOD, and CPU depth sorting on the render budget."
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget."
       },
       "renderSample": {
         "status": "visible",
         "averageRgb": [
-          26.77777777777778,
-          27.11111111111111,
-          27.666666666666668
+          17.444444444444443,
+          20,
+          19.11111111111111
         ],
-        "contrast": 252.44444444444446
+        "contrast": 52.44444444444444
       }
     },
     "signature": {
@@ -293,16 +295,16 @@
       "width": 96,
       "height": 54,
       "averageRgb": [
-        16.353202160493826,
-        19.28009259259259,
-        18.52662037037037
+        15.902199074074074,
+        18.87229938271605,
+        18.011766975308642
       ],
       "minRgb": 15,
-      "maxRgb": 226,
-      "contrast": 211
+      "maxRgb": 210,
+      "contrast": 195
     },
     "error": null,
-    "elapsedMs": 10955,
+    "elapsedMs": 11084,
     "events": [
       {
         "method": "Runtime.consoleAPICalled",
@@ -315,7 +317,7 @@
             }
           ],
           "executionContextId": 2,
-          "timestamp": 1780405032134.319,
+          "timestamp": 1780487525669.605,
           "stackTrace": {
             "callFrames": [
               {
@@ -340,7 +342,7 @@
             }
           ],
           "executionContextId": 2,
-          "timestamp": 1780405032146.548,
+          "timestamp": 1780487525696.899,
           "stackTrace": {
             "callFrames": [
               {
@@ -404,7 +406,7 @@
         }
       }
     ],
-    "chromeErrors": "[23496:66128:0602/205711.846:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18918/devtools/browser/92d486be-f610-4bf4-8783-38b210886328\r\n[23496:89740:0602/205717.847:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[23496:89740:0602/205717.863:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    "chromeErrors": "[24524:46608:0603/195205.454:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16401/devtools/browser/d489310d-8502-4777-93ca-aae2b0efbfdf\r\n[24524:47888:0603/195209.960:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[24524:47888:0603/195210.153:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[24524:47888:0603/195210.201:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
   },
   "inputs": {
     "candidate": {

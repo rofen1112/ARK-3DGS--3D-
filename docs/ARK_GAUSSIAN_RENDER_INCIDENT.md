@@ -77,3 +77,46 @@ experimental and not as an Aholo replacement candidate.
 5. Add a visual correctness blocker so contrast-only QA can no longer mark this
    artifacted full-scene render as ready.
 
+## Repair Round 1
+
+Status: partially mitigated, not production-ready.
+
+Changes:
+
+- Local/no-sidecar PLY loads now compute `ply_01_99` percentile fit bounds
+  instead of using full exact bounds with outliers.
+- Large-scene first-party LOD now uses a separate
+  `large-scene-lod-softened` render profile:
+  - ellipse extent: `2.45`
+  - min pixel axis: `0.35`
+  - max pixel axis: `5.5`
+  - opacity scale derived from rendered ratio, `0.176964` for the current
+    300,000 / 1,854,627 source PLY smoke path
+- Added local-source smoke QA for the no-sidecar path:
+  `npm.cmd run qa:first-party-local-source-smoke`
+
+Validation:
+
+- `npm.cmd run test:gaussian`: passed
+- `npm.cmd run build`: passed
+- `npm.cmd run qa:first-party-gaussian`: passed
+- `npm.cmd run qa:first-party-full-scene-smoke`: passed
+- `npm.cmd run qa:first-party-local-source-smoke`: passed
+
+Observed result:
+
+- The previous local-file `ply_exact (computed)` fit path now resolves to
+  `ply_01_99 (computed)`.
+- The previous local-file display scale equivalent changed from `0.2153x` to
+  `0.2825x` in the source PLY smoke path.
+- Full-scene smoke contrast dropped from `252.4` to `52.4`, indicating that the
+  previous over-bright blob artifacts were reduced.
+
+Remaining risk:
+
+- This is a mitigation, not proof of correct 3DGS rendering.
+- The renderer still uses SH0-only color, deterministic stride LOD, and an
+  approximate screen-space ellipse projection.
+- If close-view artifacts remain after this round, the next repair round should
+  isolate projection/math issues and LOD sampling quality. If round 3 still does
+  not produce acceptable output, switch to rollback comparison.

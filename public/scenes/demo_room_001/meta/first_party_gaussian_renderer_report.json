@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T12:57:02.577Z",
+  "generated_at": "2026-06-03T11:51:52.630Z",
   "target": "ARK first-party Gaussian ellipse renderer preview QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
   "summary": {
@@ -24,8 +24,8 @@
       "instancing": true
     },
     "renderInfo": {
-      "lastLoadMs": 157,
-      "lastSortMs": 19.4,
+      "lastLoadMs": 162,
+      "lastSortMs": 21.3,
       "sortEnabled": true,
       "sortReason": "camera-depth-order",
       "sortedSplats": 99966,
@@ -44,11 +44,11 @@
       "performance": {
         "inputBytes": 24793098,
         "inputMiB": 23.645,
-        "readMs": 73.2,
-        "decodeMs": 66.9,
-        "packMs": 13.9,
-        "uploadMs": 2.2,
-        "totalLoadMs": 157.3,
+        "readMs": 66.4,
+        "decodeMs": 77.9,
+        "packMs": 14.4,
+        "uploadMs": 2.1,
+        "totalLoadMs": 161.9,
         "retainedCpuBufferBytes": 11995920,
         "retainedCpuBufferMiB": 11.44,
         "gpuUploadBytes": 5598096,
@@ -59,15 +59,17 @@
       },
       "frameTiming": {
         "lastRenderMs": 0,
-        "maxRenderMs": 19.7,
-        "averageRenderMs": 1.882,
+        "maxRenderMs": 21.8,
+        "averageRenderMs": 2.055,
         "renderCount": 11
       },
       "ellipse": {
+        "profile": "standard",
         "extent": 2.05,
         "minPixelAxis": 0.75,
         "maxPixelAxis": 10,
         "opacityScale": 0.44,
+        "baseOpacityScale": 0.44,
         "alphaCutoff": 0.003,
         "clipping": {
           "minClipW": 0.02,
@@ -86,7 +88,7 @@
     "splats": 99966,
     "visual_quality": "Passed (216)",
     "contrast": 216,
-    "duration_seconds": 11.983
+    "duration_seconds": 11.637
   },
   "result": {
     "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
@@ -186,7 +188,7 @@
           ],
           "contrast": 216
         },
-        "evaluatedAtMs": 8125
+        "evaluatedAtMs": 8143
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -211,8 +213,8 @@
         "sceneVersion": 1
       },
       "renderInfo": {
-        "lastLoadMs": 157,
-        "lastSortMs": 19.4,
+        "lastLoadMs": 162,
+        "lastSortMs": 21.3,
         "sortEnabled": true,
         "sortReason": "camera-depth-order",
         "sortedSplats": 99966,
@@ -231,11 +233,11 @@
         "performance": {
           "inputBytes": 24793098,
           "inputMiB": 23.645,
-          "readMs": 73.2,
-          "decodeMs": 66.9,
-          "packMs": 13.9,
-          "uploadMs": 2.2,
-          "totalLoadMs": 157.3,
+          "readMs": 66.4,
+          "decodeMs": 77.9,
+          "packMs": 14.4,
+          "uploadMs": 2.1,
+          "totalLoadMs": 161.9,
           "retainedCpuBufferBytes": 11995920,
           "retainedCpuBufferMiB": 11.44,
           "gpuUploadBytes": 5598096,
@@ -246,15 +248,17 @@
         },
         "frameTiming": {
           "lastRenderMs": 0,
-          "maxRenderMs": 19.7,
-          "averageRenderMs": 1.882,
+          "maxRenderMs": 21.8,
+          "averageRenderMs": 2.055,
           "renderCount": 11
         },
         "ellipse": {
+          "profile": "standard",
           "extent": 2.05,
           "minPixelAxis": 0.75,
           "maxPixelAxis": 10,
           "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
           "alphaCutoff": 0.003,
           "clipping": {
             "minClipW": 0.02,

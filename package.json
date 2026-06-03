@@ -24,6 +24,7 @@
     "qa:first-party-compare": "node scripts/qa-first-party-gaussian-compare.mjs",
     "qa:first-party-stress": "node scripts/qa-first-party-gaussian-stress.mjs",
     "qa:first-party-full-scene-smoke": "node scripts/qa-first-party-full-scene-source-ply-smoke.mjs",
+    "qa:first-party-local-source-smoke": "node scripts/qa-first-party-local-source-ply-smoke.mjs",
     "qa:first-party-full-scene-visual": "node scripts/qa-first-party-full-scene-visual-budget.mjs",
     "qa:first-party-full-scene-performance": "node scripts/qa-first-party-full-scene-performance-budget.mjs",
     "qa:first-party-readiness": "node scripts/qa-first-party-default-readiness.mjs"

@@ -98,4 +98,5 @@ export type ArkGaussianDecodeOptions = {
   limit?: number;
   includeShRest?: boolean;
   invalidPolicy?: ArkGaussianInvalidPolicy;
+  percentileBounds?: ArkGaussianPercentileSpec[];
 };

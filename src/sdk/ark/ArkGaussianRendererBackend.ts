@@ -1,4 +1,5 @@
 import { decodeGaussianPly } from '../gaussian/ply';
+import type { ArkGaussianPercentileBounds, ArkGaussianPercentileSpec } from '../gaussian/types';
 import type {
   ArkFitBounds,
   ArkGaussianLoadRequest,
@@ -20,9 +21,25 @@ const MIN_PIXEL_AXIS = 0.75;
 const MAX_PIXEL_AXIS = 10;
 const OPACITY_SCALE = 0.44;
 const ALPHA_CUTOFF = 0.003;
-const ELLIPSE_RADIUS_SQ = ELLIPSE_EXTENT * ELLIPSE_EXTENT;
 const MIN_CLIP_W = 0.02;
 const OFFSCREEN_CLIP_PADDING = 1.4;
+const COMPUTED_FIT_BOUNDS_SPEC: ArkGaussianPercentileSpec = {
+  id: 'ply_01_99',
+  low: 0.01,
+  high: 0.99
+};
+const LOD_ELLIPSE_EXTENT = 2.45;
+const LOD_MIN_PIXEL_AXIS = 0.35;
+const LOD_MAX_PIXEL_AXIS = 5.5;
+const LOD_MIN_OPACITY_RATIO = 0.28;
+
+type RenderProfile = {
+  id: string;
+  ellipseExtent: number;
+  minPixelAxis: number;
+  maxPixelAxis: number;
+  opacityScale: number;
+};
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
@@ -158,8 +175,23 @@ async function readInput(input: string | File) {
   return await response.arrayBuffer();
 }
 
-function inferPlyFitBounds(request: ArkGaussianLoadRequest, min: ArkVec3, max: ArkVec3): ArkFitBounds {
-  return request.fitBounds ?? {
+function inferPlyFitBounds(
+  request: ArkGaussianLoadRequest,
+  min: ArkVec3,
+  max: ArkVec3,
+  percentileBounds?: ArkGaussianPercentileBounds[]
+): ArkFitBounds {
+  if (request.fitBounds) return request.fitBounds;
+  const robustBounds = percentileBounds?.find((bounds) => bounds.id === COMPUTED_FIT_BOUNDS_SPEC.id);
+  if (robustBounds) {
+    return {
+      id: robustBounds.id,
+      source: 'computed',
+      min: robustBounds.min,
+      max: robustBounds.max
+    };
+  }
+  return {
     id: 'ply_exact',
     source: 'computed',
     min,
@@ -197,6 +229,27 @@ function roundMs(value: number) {
 
 function bytesToMiB(bytes: number) {
   return Number((bytes / (1024 * 1024)).toFixed(3));
+}
+
+function createRenderProfile(lodEnabled: boolean, renderedRatio: number): RenderProfile {
+  if (!lodEnabled) {
+    return {
+      id: 'standard',
+      ellipseExtent: ELLIPSE_EXTENT,
+      minPixelAxis: MIN_PIXEL_AXIS,
+      maxPixelAxis: MAX_PIXEL_AXIS,
+      opacityScale: OPACITY_SCALE
+    };
+  }
+
+  const opacityRatio = Math.max(LOD_MIN_OPACITY_RATIO, Math.min(1, Math.sqrt(Math.max(0, renderedRatio))));
+  return {
+    id: 'large-scene-lod-softened',
+    ellipseExtent: LOD_ELLIPSE_EXTENT,
+    minPixelAxis: LOD_MIN_PIXEL_AXIS,
+    maxPixelAxis: LOD_MAX_PIXEL_AXIS,
+    opacityScale: OPACITY_SCALE * opacityRatio
+  };
 }
 
 export class ArkGaussianRendererBackend implements ArkRendererBackend {
@@ -263,6 +316,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private axisMin = 0;
   private axisMax = 0;
   private axisMean = 0;
+  private renderProfile = createRenderProfile(false, 1);
 
   constructor(private readonly host: HTMLElement) {
     this.canvas = document.createElement('canvas');
@@ -366,14 +420,15 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         }
       `,
       `
-        precision mediump float;
+        precision highp float;
+        uniform float uEllipseExtent;
         varying vec4 vColor;
         varying vec2 vLocal;
         varying float vClipDiscard;
         void main() {
           if (vClipDiscard > 0.5) discard;
           float r2 = dot(vLocal, vLocal);
-          if (r2 > ${ELLIPSE_RADIUS_SQ.toFixed(6)}) discard;
+          if (r2 > uEllipseExtent * uEllipseExtent) discard;
           float alpha = vColor.a * exp(-0.5 * r2);
           if (alpha < ${ALPHA_CUTOFF.toFixed(6)}) discard;
           gl_FragColor = vec4(vColor.rgb, alpha);
@@ -430,10 +485,16 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     const decodeStartedAt = performance.now();
     const data = decodeGaussianPly(inputBuffer, {
       includeShRest: false,
-      invalidPolicy: 'skip'
+      invalidPolicy: 'skip',
+      percentileBounds: request.fitBounds ? undefined : [COMPUTED_FIT_BOUNDS_SPEC]
     });
     this.lastDecodeMs = performance.now() - decodeStartedAt;
-    const fitBounds = inferPlyFitBounds(request, data.summary.bounds.min, data.summary.bounds.max);
+    const fitBounds = inferPlyFitBounds(
+      request,
+      data.summary.bounds.min,
+      data.summary.bounds.max,
+      data.summary.percentileBounds
+    );
     const center = boundsCenter(fitBounds);
     const maxDim = boundsMaxDim(fitBounds);
     const displayScale = maxDim > 0 ? 4 / maxDim : 1;
@@ -446,6 +507,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       : data.count;
     const renderSamplingStride = renderSplatCount > 0 ? data.count / renderSplatCount : 1;
     const lodEnabled = renderSplatCount < data.count;
+    const renderedRatio = data.count > 0 ? renderSplatCount / data.count : 1;
+    const renderProfile = createRenderProfile(lodEnabled, renderedRatio);
     const positions = new Float32Array(renderSplatCount * 3);
     const colors = new Float32Array(renderSplatCount * 4);
     const scales = new Float32Array(renderSplatCount * 3);
@@ -463,7 +526,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       colors[renderIndex * 4] = clamp01(0.5 + data.colorsDc[sourceIndex * 3] * SH_C0);
       colors[renderIndex * 4 + 1] = clamp01(0.5 + data.colorsDc[sourceIndex * 3 + 1] * SH_C0);
       colors[renderIndex * 4 + 2] = clamp01(0.5 + data.colorsDc[sourceIndex * 3 + 2] * SH_C0);
-      colors[renderIndex * 4 + 3] = clamp01(sigmoid(data.opacities[sourceIndex]) * OPACITY_SCALE);
+      colors[renderIndex * 4 + 3] = clamp01(sigmoid(data.opacities[sourceIndex]) * renderProfile.opacityScale);
 
       const sx = decodeScale(data.scales[sourceIndex * 3], displayScale);
       const sy = decodeScale(data.scales[sourceIndex * 3 + 1], displayScale);
@@ -510,6 +573,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.axisMin = Number.isFinite(axisMin) ? axisMin : 0;
     this.axisMax = Number.isFinite(axisMax) ? axisMax : 0;
     this.axisMean = renderSplatCount > 0 ? axisSum / renderSplatCount : 0;
+    this.renderProfile = renderProfile;
     this.estimatedGpuUploadBytes = positions.byteLength + colors.byteLength + scales.byteLength + rotations.byteLength;
     const decodedSourceBytes = data.centers.byteLength
       + data.colorsDc.byteLength
@@ -607,9 +671,9 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       const view = lookAt(this.cameraPosition, this.cameraTarget, [0, -1, 0]);
       this.gl.uniformMatrix4fv(this.viewProjectionLocation, false, multiplyMat4(projection, view));
       this.gl.uniform2f(this.viewportLocation, this.canvas.width, this.canvas.height);
-      this.gl.uniform1f(this.ellipseExtentLocation, ELLIPSE_EXTENT);
-      this.gl.uniform1f(this.minPixelAxisLocation, MIN_PIXEL_AXIS);
-      this.gl.uniform1f(this.maxPixelAxisLocation, MAX_PIXEL_AXIS);
+      this.gl.uniform1f(this.ellipseExtentLocation, this.renderProfile.ellipseExtent);
+      this.gl.uniform1f(this.minPixelAxisLocation, this.renderProfile.minPixelAxis);
+      this.gl.uniform1f(this.maxPixelAxisLocation, this.renderProfile.maxPixelAxis);
       this.gl.uniform1f(this.minClipWLocation, MIN_CLIP_W);
       this.gl.uniform1f(this.clipPaddingLocation, OFFSCREEN_CLIP_PADDING);
 
@@ -738,10 +802,12 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           renderCount: this.renderCount
         },
         ellipse: {
-          extent: ELLIPSE_EXTENT,
-          minPixelAxis: MIN_PIXEL_AXIS,
-          maxPixelAxis: MAX_PIXEL_AXIS,
-          opacityScale: OPACITY_SCALE,
+          profile: this.renderProfile.id,
+          extent: this.renderProfile.ellipseExtent,
+          minPixelAxis: this.renderProfile.minPixelAxis,
+          maxPixelAxis: this.renderProfile.maxPixelAxis,
+          opacityScale: this.renderProfile.opacityScale,
+          baseOpacityScale: OPACITY_SCALE,
           alphaCutoff: ALPHA_CUTOFF,
           clipping: {
             minClipW: MIN_CLIP_W,
@@ -756,7 +822,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           }
         },
         note: this.lodEnabled
-          ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, deterministic stride LOD, and CPU depth sorting on the render budget.'
+          ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget.'
           : 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting.'
       },
       memoryInfo: null,

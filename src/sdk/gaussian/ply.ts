@@ -389,7 +389,9 @@ export function summarizeGaussianPly(input: ArrayBuffer | ArrayBufferView, optio
 export function decodeGaussianPly(input: ArrayBuffer | ArrayBufferView, options: ArkGaussianDecodeOptions = {}): ArkGaussianData {
   const bytes = toBytes(input);
   const header = parseGaussianPlyHeader(bytes);
-  const summary = summarizeGaussianPly(bytes);
+  const summary = summarizeGaussianPly(bytes, {
+    percentileBounds: options.percentileBounds
+  });
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const invalidPolicy = options.invalidPolicy ?? 'skip';
   const invalidSourceIndices = collectInvalidPositionIndices(header, view);
