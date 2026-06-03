@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T19:24:09.271Z",
+  "generated_at": "2026-06-02T08:23:42.369Z",
   "target": "ARK-3DGS bundled format visual QA matrix",
   "base_url": "http://127.0.0.1:5173/?autoload=1",
   "timeout_ms": 240000,
@@ -8,7 +8,7 @@
     "passed": 3,
     "failed": 0,
     "all_passed": true,
-    "duration_seconds": 11.455
+    "duration_seconds": 11.757
   },
   "rows": [
     {
@@ -21,7 +21,7 @@
       "fit_bounds": "broad_01_99 (sidecar)",
       "visual_quality": "Passed (114.3)",
       "contrast": 114.33333333333333,
-      "evaluated_at_ms": 1679,
+      "evaluated_at_ms": 1716,
       "screenshot": "artifacts/format-matrix/scene-sog.png",
       "failure_reason": null
     },
@@ -35,7 +35,7 @@
       "fit_bounds": "broad_01_99 (sidecar)",
       "visual_quality": "Passed (116.1)",
       "contrast": 116.11111111111111,
-      "evaluated_at_ms": 1923,
+      "evaluated_at_ms": 1706,
       "screenshot": "artifacts/format-matrix/scene-spz.png",
       "failure_reason": null
     },
@@ -49,7 +49,7 @@
       "fit_bounds": "broad_01_99 (sidecar)",
       "visual_quality": "Passed (101.9)",
       "contrast": 101.88888888888889,
-      "evaluated_at_ms": 2670,
+      "evaluated_at_ms": 2834,
       "screenshot": "artifacts/format-matrix/scene-ply.png",
       "failure_reason": null
     }
@@ -63,7 +63,7 @@
       "exitCode": 0,
       "pageState": {
         "runtime": "Loaded",
-        "status": "scene.sog loaded in 0.5s.",
+        "status": "scene.sog loaded in 0.6s.",
         "fitBounds": "broad_01_99 (sidecar)",
         "visualQuality": "Passed (114.3)",
         "canvas": {
@@ -146,7 +146,130 @@
             ],
             "contrast": 114.33333333333333
           },
-          "evaluatedAtMs": 1679
+          "evaluatedAtMs": 1716
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 1855266,
+          "sceneVersion": 1
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 1,
+            "calls": 0,
+            "vertices": 0,
+            "faces": 0,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 0,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
         }
       },
       "parseError": null,
@@ -160,7 +283,7 @@
       "exitCode": 0,
       "pageState": {
         "runtime": "Loaded",
-        "status": "scene.spz loaded in 0.6s.",
+        "status": "scene.spz loaded in 0.5s.",
         "fitBounds": "broad_01_99 (sidecar)",
         "visualQuality": "Passed (116.1)",
         "canvas": {
@@ -243,7 +366,130 @@
             ],
             "contrast": 116.11111111111111
           },
-          "evaluatedAtMs": 1923
+          "evaluatedAtMs": 1706
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 1855266,
+          "sceneVersion": 1
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 1,
+            "calls": 0,
+            "vertices": 0,
+            "faces": 0,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 0,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
         }
       },
       "parseError": null,
@@ -340,7 +586,130 @@
             ],
             "contrast": 101.88888888888889
           },
-          "evaluatedAtMs": 2670
+          "evaluatedAtMs": 2834
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 1855266,
+          "sceneVersion": 1
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 1,
+            "calls": 0,
+            "vertices": 0,
+            "faces": 0,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 0,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
         }
       },
       "parseError": null,

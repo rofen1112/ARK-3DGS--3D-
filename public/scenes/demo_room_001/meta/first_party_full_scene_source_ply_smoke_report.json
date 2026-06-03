@@ -1,0 +1,595 @@
+{
+  "generated_at": "2026-06-02T12:57:27.473Z",
+  "target": "ARK first-party full-scene source PLY degraded smoke QA",
+  "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&renderer=ark-gaussian",
+  "timeout_ms": 300000,
+  "summary": {
+    "passed": true,
+    "smoke_passed": true,
+    "attempted": true,
+    "timed_out": false,
+    "runtime": "Loaded",
+    "renderer": "ark-gaussian-webgl2",
+    "asset": "source-ply",
+    "candidate_mode": "source-ply-substitute",
+    "measured_default_runtime_directly": false,
+    "splats": 1854627,
+    "expected_valid_splats": 1854627,
+    "expected_manifest_splats": 1855266,
+    "skipped_invalid_splats": 639,
+    "rendered_splats": 300000,
+    "lod_enabled": true,
+    "lod_mode": "deterministic-stride-budget",
+    "lod_budget_splats": 300000,
+    "lod_sampling_stride": 6.182,
+    "lod_rendered_ratio": 0.161758,
+    "sorting": "cpu-back-to-front",
+    "sort_enabled": true,
+    "sort_reason": "camera-depth-order",
+    "visual_quality": "Passed (252.4)",
+    "visual_quality_status": "passed",
+    "visual_quality_contrast": 252.44444444444446,
+    "visual_gate_settle_frames": 1,
+    "visual_gate_evaluated_ms": 10758,
+    "signature_contrast": 211,
+    "cdp_wait_elapsed_ms": 10955,
+    "renderer_load_ms": 2046,
+    "renderer_read_ms": 888.7,
+    "renderer_decode_ms": 1109.4,
+    "renderer_pack_ms": 40.9,
+    "renderer_upload_ms": 5.5,
+    "renderer_last_render_ms": 0.1,
+    "renderer_average_render_ms": 13.46,
+    "renderer_max_render_ms": 67.1,
+    "renderer_render_count": 5,
+    "retained_cpu_buffer_mib": 34.332,
+    "gpu_upload_mib": 16.022,
+    "load_peak_mib": 579.25,
+    "checks": {
+      "loaded": true,
+      "visualGateResolved": true,
+      "expectedRenderer": true,
+      "expectedFormat": true,
+      "expectedCandidate": true,
+      "splatCountMatchesDecodedSource": true,
+      "invalidSplatsSkipped": true,
+      "gaussianProjection": true,
+      "clippingState": true,
+      "budgetedLodForLargeScene": true,
+      "canvasReady": true,
+      "visualEvidenceVisible": true
+    },
+    "duration_seconds": 15.951
+  },
+  "screenshot": "artifacts/first-party-full-scene/source-ply-smoke.png",
+  "diagnostics": {
+    "expectedValidSplats": 1854627,
+    "expectedManifestSplats": 1855266,
+    "invalidPositionCount": 639,
+    "actualSplats": 1854627,
+    "renderedSplats": 300000,
+    "skippedInvalidCount": 639,
+    "sortReason": "camera-depth-order",
+    "lod": {
+      "enabled": true,
+      "mode": "deterministic-stride-budget",
+      "decodedSplats": 1854627,
+      "renderedSplats": 300000,
+      "budgetSplats": 300000,
+      "samplingStride": 6.182,
+      "renderedRatio": 0.161758,
+      "reason": "decoded-over-400000-splats-render-budget-300000"
+    },
+    "visualQualityStatus": "passed",
+    "visualQualityContrast": 252.44444444444446,
+    "signatureContrast": 211
+  },
+  "result": {
+    "pageState": {
+      "runtime": "Loaded",
+      "status": "scene.ply loaded in 2.1s.",
+      "fitBounds": "broad_01_99 (sidecar)",
+      "visualQuality": "Passed (252.4)",
+      "canvas": {
+        "width": 1424,
+        "height": 805,
+        "clientWidth": 1424,
+        "clientHeight": 805
+      },
+      "activeInfo": {
+        "name": "Dongguan Heritage Gaussian (Source PLY)",
+        "format": "PLY",
+        "splats": 1854627,
+        "shDegree": 0,
+        "denseMin": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "denseMax": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "displayScale": 0.2825170004605027,
+        "fitRadius": 2.9999999999999996,
+        "fitBoundsId": "broad_01_99",
+        "fitBoundsSource": "sidecar",
+        "source": "bundled"
+      },
+      "visualQualityGate": {
+        "status": "passed",
+        "reason": "Visual sample passed all runtime checks.",
+        "checks": {
+          "sceneLoaded": {
+            "passed": true,
+            "value": 1854627,
+            "message": "Scene has renderable splats."
+          },
+          "canvasReady": {
+            "passed": true,
+            "value": {
+              "width": 1424,
+              "height": 805,
+              "clientWidth": 1424,
+              "clientHeight": 805
+            },
+            "message": "Renderer canvas has non-zero drawing and display size."
+          },
+          "fitBoundsResolved": {
+            "passed": true,
+            "value": "broad_01_99",
+            "message": "Camera fit bounds are resolved."
+          },
+          "bundledSidecarApplied": {
+            "passed": true,
+            "value": "broad_01_99 (sidecar)",
+            "message": "Bundled scenes should use sidecar fit bounds."
+          },
+          "renderVisible": {
+            "passed": true,
+            "value": "visible",
+            "message": "Pixel sample detects visible rendered content."
+          },
+          "contrastAboveThreshold": {
+            "passed": true,
+            "value": 252.44444444444446,
+            "message": "Pixel contrast is at least 12."
+          }
+        },
+        "thresholds": {
+          "minContrast": 12,
+          "settleFrames": 1
+        },
+        "sample": {
+          "status": "visible",
+          "averageRgb": [
+            26.77777777777778,
+            27.11111111111111,
+            27.666666666666668
+          ],
+          "contrast": 252.44444444444446
+        },
+        "evaluatedAtMs": 10758
+      },
+      "renderer": {
+        "id": "ark-gaussian-webgl2",
+        "backend": {
+          "family": "ark-first-party",
+          "mode": "instanced-ellipse-gaussian-renderer"
+        }
+      },
+      "pipeline": {
+        "shader": "sh0-instanced-ellipse-gaussian",
+        "sorting": "cpu-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true
+      },
+      "scene": {
+        "splats": 1854627,
+        "splatCounts": 1854627,
+        "renderedSplats": 300000,
+        "sceneVersion": 1
+      },
+      "camera": {
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "aspect": 1.768944099378882,
+        "up": [
+          0,
+          -1,
+          0
+        ],
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "yaw": 3.141592653589793,
+        "pitch": -0.2
+      },
+      "renderInfo": {
+        "lastLoadMs": 2046,
+        "lastSortMs": 66.8,
+        "sortEnabled": true,
+        "sortReason": "camera-depth-order",
+        "sortedSplats": 300000,
+        "renderedSplats": 300000,
+        "sortVersion": 1,
+        "lod": {
+          "enabled": true,
+          "mode": "deterministic-stride-budget",
+          "decodedSplats": 1854627,
+          "renderedSplats": 300000,
+          "budgetSplats": 300000,
+          "samplingStride": 6.182,
+          "renderedRatio": 0.161758,
+          "reason": "decoded-over-400000-splats-render-budget-300000"
+        },
+        "performance": {
+          "inputBytes": 460107500,
+          "inputMiB": 438.793,
+          "readMs": 888.7,
+          "decodeMs": 1109.4,
+          "packMs": 40.9,
+          "uploadMs": 5.5,
+          "totalLoadMs": 2045.6,
+          "retainedCpuBufferBytes": 36000000,
+          "retainedCpuBufferMiB": 34.332,
+          "gpuUploadBytes": 16800000,
+          "gpuUploadMiB": 16.022,
+          "loadPeakBytes": 607387676,
+          "loadPeakMiB": 579.25,
+          "sortSplatLimit": 400000
+        },
+        "frameTiming": {
+          "lastRenderMs": 0.1,
+          "maxRenderMs": 67.1,
+          "averageRenderMs": 13.46,
+          "renderCount": 5
+        },
+        "ellipse": {
+          "extent": 2.05,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 10,
+          "opacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.305447,
+            "mean": 0.005457
+          }
+        },
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, deterministic stride LOD, and CPU depth sorting on the render budget."
+      },
+      "renderSample": {
+        "status": "visible",
+        "averageRgb": [
+          26.77777777777778,
+          27.11111111111111,
+          27.666666666666668
+        ],
+        "contrast": 252.44444444444446
+      }
+    },
+    "signature": {
+      "available": true,
+      "width": 96,
+      "height": 54,
+      "averageRgb": [
+        16.353202160493826,
+        19.28009259259259,
+        18.52662037037037
+      ],
+      "minRgb": 15,
+      "maxRgb": 226,
+      "contrast": 211
+    },
+    "error": null,
+    "elapsedMs": 10955,
+    "events": [
+      {
+        "method": "Runtime.consoleAPICalled",
+        "params": {
+          "type": "debug",
+          "args": [
+            {
+              "type": "string",
+              "value": "[vite] connecting..."
+            }
+          ],
+          "executionContextId": 2,
+          "timestamp": 1780405032134.319,
+          "stackTrace": {
+            "callFrames": [
+              {
+                "functionName": "",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 788,
+                "columnNumber": 8
+              }
+            ]
+          }
+        }
+      },
+      {
+        "method": "Runtime.consoleAPICalled",
+        "params": {
+          "type": "debug",
+          "args": [
+            {
+              "type": "string",
+              "value": "[vite] connected."
+            }
+          ],
+          "executionContextId": 2,
+          "timestamp": 1780405032146.548,
+          "stackTrace": {
+            "callFrames": [
+              {
+                "functionName": "handleMessage",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 911,
+                "columnNumber": 14
+              },
+              {
+                "functionName": "",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 489,
+                "columnNumber": 42
+              },
+              {
+                "functionName": "dequeue",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 515,
+                "columnNumber": 9
+              },
+              {
+                "functionName": "",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 503,
+                "columnNumber": 11
+              },
+              {
+                "functionName": "enqueue",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 497,
+                "columnNumber": 11
+              },
+              {
+                "functionName": "",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 489,
+                "columnNumber": 28
+              },
+              {
+                "functionName": "onMessage",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 308,
+                "columnNumber": 10
+              },
+              {
+                "functionName": "",
+                "scriptId": "6",
+                "url": "http://127.0.0.1:5173/@vite/client",
+                "lineNumber": 438,
+                "columnNumber": 8
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "chromeErrors": "[23496:66128:0602/205711.846:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18918/devtools/browser/92d486be-f610-4bf4-8783-38b210886328\r\n[23496:89740:0602/205717.847:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[23496:89740:0602/205717.863:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+  },
+  "inputs": {
+    "candidate": {
+      "label": "default",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "source-ply-substitute",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": false,
+      "degraded": true,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    "candidate_summary": {
+      "passed": true,
+      "resolution_count": 4,
+      "candidate_count": 4,
+      "source_substitute_count": 3,
+      "direct_default_count": 1,
+      "unsupported_count": 0,
+      "default_candidate_ready": true,
+      "default_measured_runtime_directly": false,
+      "failed_checks": 0
+    },
+    "contract_summary": {
+      "format": "ply",
+      "encoding": {
+        "center": "float32_xyz",
+        "colorDc": "spherical_harmonics_dc_rgb",
+        "opacity": "logit",
+        "scale": "log_xyz",
+        "rotation": "quaternion_wxyz",
+        "shRest": "spherical_harmonics_rest_rgb"
+      },
+      "count": 1855266,
+      "validPositionCount": 1854627,
+      "invalidPositionCount": 639,
+      "positionValidityRatio": 0.99965557,
+      "shDegree": 3,
+      "propertyCount": 62,
+      "stride": 248,
+      "headerBytes": 1532,
+      "bounds": {
+        "min": [
+          -4.609628,
+          -6.477489,
+          -5.598247
+        ],
+        "max": [
+          12.420171,
+          5.007942,
+          12.98222
+        ]
+      },
+      "percentileBounds": [
+        {
+          "id": "broad_01_99",
+          "low": 0.01,
+          "high": 0.99,
+          "min": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "max": [
+            4.863048,
+            1.211781,
+            9.86895
+          ]
+        },
+        {
+          "id": "solid_05_95",
+          "low": 0.05,
+          "high": 0.95,
+          "min": [
+            -2.412613,
+            -3.59334,
+            -1.435366
+          ],
+          "max": [
+            2.395744,
+            1.135266,
+            7.139618
+          ]
+        },
+        {
+          "id": "core_10_90",
+          "low": 0.1,
+          "high": 0.9,
+          "min": [
+            -2.333623,
+            -2.557385,
+            0.213389
+          ],
+          "max": [
+            2.233782,
+            1.094724,
+            5.753465
+          ]
+        }
+      ],
+      "rawRanges": {
+        "opacity": [
+          -6.927913,
+          18.536335
+        ],
+        "scale": {
+          "min": [
+            -16.518307,
+            -16.452597,
+            -18.29888
+          ],
+          "max": [
+            0.307611,
+            0.532019,
+            -0.165356
+          ]
+        },
+        "rotationNorm": [
+          0.049497,
+          1.936593
+        ]
+      },
+      "decodedRanges": {
+        "opacity": [
+          0.000979,
+          1
+        ],
+        "scale": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            1.360171,
+            1.702366,
+            0.847592
+          ]
+        }
+      },
+      "firstValid": {
+        "index": 639,
+        "center": [
+          4.76667,
+          4.606614,
+          4.57777
+        ],
+        "colorDc": [
+          -0.975707,
+          -1.421164,
+          -0.690483
+        ],
+        "opacityRaw": 16.9384,
+        "opacity": 1,
+        "scaleRaw": [
+          -0.930275,
+          0.078036,
+          -2.773517
+        ],
+        "scale": [
+          0.394445,
+          1.081162,
+          0.062442
+        ],
+        "rotationRawWxyz": [
+          0.431972,
+          -0.425138,
+          -0.751873,
+          0.249138
+        ],
+        "rotationNorm": 0.997359
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T20:02:18.931Z",
+  "generated_at": "2026-06-02T02:27:50.365Z",
   "target": "ARK first-party diagnostic point renderer preview QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-point",
   "summary": {
@@ -21,7 +21,7 @@
     },
     "renderInfo": {
       "lastLoadMs": 139,
-      "lastSortMs": 17.5,
+      "lastSortMs": 17.6,
       "sortEnabled": true,
       "sortReason": "camera-depth-order",
       "sortedSplats": 99966,
@@ -41,7 +41,7 @@
     "splats": 99966,
     "visual_quality": "Passed (216)",
     "contrast": 216,
-    "duration_seconds": 1.39
+    "duration_seconds": 1.378
   },
   "result": {
     "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-point",
@@ -139,7 +139,7 @@
           ],
           "contrast": 216
         },
-        "evaluatedAtMs": 294
+        "evaluatedAtMs": 310
       },
       "renderer": {
         "id": "ark-point-webgl2",
@@ -162,7 +162,7 @@
       },
       "renderInfo": {
         "lastLoadMs": 139,
-        "lastSortMs": 17.5,
+        "lastSortMs": 17.6,
         "sortEnabled": true,
         "sortReason": "camera-depth-order",
         "sortedSplats": 99966,

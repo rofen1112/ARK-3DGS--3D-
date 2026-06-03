@@ -1,0 +1,270 @@
+{
+  "generated_at": "2026-06-02T11:30:47.526Z",
+  "target": "ARK first-party full-scene measurement candidate resolver",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "summary": {
+    "passed": true,
+    "resolution_count": 4,
+    "candidate_count": 4,
+    "source_substitute_count": 3,
+    "direct_default_count": 1,
+    "unsupported_count": 0,
+    "default_candidate_ready": true,
+    "default_measured_runtime_directly": false,
+    "failed_checks": 0
+  },
+  "resolver": {
+    "direct_first_party_formats": [
+      "ply"
+    ],
+    "note": "Source PLY substitutes are full-scene measurement candidates only. They do not make the manifest default backend-ready."
+  },
+  "checks": [
+    {
+      "id": "default_has_full_scene_candidate",
+      "passed": true,
+      "value": {
+        "label": "default",
+        "requested_asset_id": "runtime-sog",
+        "requested_type": "sog",
+        "requested_splats": 1855266,
+        "candidate_asset_id": "source-ply",
+        "candidate_type": "ply",
+        "candidate_role": "source",
+        "candidate_splats": 1855266,
+        "candidate_url": "gaussian/scene.ply",
+        "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+        "candidate_exists": true,
+        "mode": "source-ply-substitute",
+        "firstPartyLoadable": true,
+        "measuredDefaultRuntime": false,
+        "degraded": true,
+        "splatEquivalent": true,
+        "requiresLocalSourceAsset": true,
+        "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+        "blockers": [
+          "direct-sog-rendering-not-implemented"
+        ]
+      },
+      "message": "Default runtime asset resolves to a full-scene source PLY measurement candidate."
+    },
+    {
+      "id": "runtime_assets_have_full_scene_candidates",
+      "passed": true,
+      "value": [
+        {
+          "label": "runtime-sog",
+          "requested_asset_id": "runtime-sog",
+          "requested_type": "sog",
+          "requested_splats": 1855266,
+          "candidate_asset_id": "source-ply",
+          "candidate_type": "ply",
+          "candidate_role": "source",
+          "candidate_splats": 1855266,
+          "candidate_url": "gaussian/scene.ply",
+          "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+          "candidate_exists": true,
+          "mode": "source-ply-substitute",
+          "firstPartyLoadable": true,
+          "measuredDefaultRuntime": false,
+          "degraded": true,
+          "splatEquivalent": true,
+          "requiresLocalSourceAsset": true,
+          "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+          "blockers": [
+            "direct-sog-rendering-not-implemented"
+          ]
+        },
+        {
+          "label": "runtime-spz",
+          "requested_asset_id": "runtime-spz",
+          "requested_type": "spz",
+          "requested_splats": 1855266,
+          "candidate_asset_id": "source-ply",
+          "candidate_type": "ply",
+          "candidate_role": "source",
+          "candidate_splats": 1855266,
+          "candidate_url": "gaussian/scene.ply",
+          "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+          "candidate_exists": true,
+          "mode": "source-ply-substitute",
+          "firstPartyLoadable": true,
+          "measuredDefaultRuntime": false,
+          "degraded": true,
+          "splatEquivalent": true,
+          "requiresLocalSourceAsset": true,
+          "reason": "SPZ is not directly supported; using full source PLY as a degraded measurement candidate.",
+          "blockers": [
+            "direct-spz-rendering-not-implemented"
+          ]
+        }
+      ],
+      "message": "Runtime SOG/SPZ assets resolve to full-scene source PLY measurement candidates."
+    },
+    {
+      "id": "candidate_splats_match_runtime",
+      "passed": true,
+      "value": [
+        {
+          "label": "runtime-sog",
+          "runtimeSplats": 1855266,
+          "candidateSplats": 1855266,
+          "splatEquivalent": true
+        },
+        {
+          "label": "runtime-spz",
+          "runtimeSplats": 1855266,
+          "candidateSplats": 1855266,
+          "splatEquivalent": true
+        }
+      ],
+      "message": "Runtime assets and source PLY candidate have matching splat counts."
+    },
+    {
+      "id": "source_ply_is_direct_candidate",
+      "passed": true,
+      "value": {
+        "label": "source-ply",
+        "requested_asset_id": "source-ply",
+        "requested_type": "ply",
+        "requested_splats": 1855266,
+        "candidate_asset_id": "source-ply",
+        "candidate_type": "ply",
+        "candidate_role": "source",
+        "candidate_splats": 1855266,
+        "candidate_url": "gaussian/scene.ply",
+        "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+        "candidate_exists": true,
+        "mode": "direct-default",
+        "firstPartyLoadable": true,
+        "measuredDefaultRuntime": true,
+        "degraded": false,
+        "splatEquivalent": true,
+        "requiresLocalSourceAsset": true,
+        "reason": "PLY is directly loadable by the first-party renderer.",
+        "blockers": []
+      },
+      "message": "Source PLY is directly loadable by the first-party renderer for full-scene measurement."
+    },
+    {
+      "id": "default_direct_support_not_claimed",
+      "passed": true,
+      "value": {
+        "label": "default",
+        "requested_asset_id": "runtime-sog",
+        "requested_type": "sog",
+        "requested_splats": 1855266,
+        "candidate_asset_id": "source-ply",
+        "candidate_type": "ply",
+        "candidate_role": "source",
+        "candidate_splats": 1855266,
+        "candidate_url": "gaussian/scene.ply",
+        "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+        "candidate_exists": true,
+        "mode": "source-ply-substitute",
+        "firstPartyLoadable": true,
+        "measuredDefaultRuntime": false,
+        "degraded": true,
+        "splatEquivalent": true,
+        "requiresLocalSourceAsset": true,
+        "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+        "blockers": [
+          "direct-sog-rendering-not-implemented"
+        ]
+      },
+      "message": "Source PLY candidate is not falsely treated as a direct default runtime measurement."
+    }
+  ],
+  "resolutions": [
+    {
+      "label": "default",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "source-ply-substitute",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": false,
+      "degraded": true,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "runtime-sog",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "source-ply-substitute",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": false,
+      "degraded": true,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "runtime-spz",
+      "requested_asset_id": "runtime-spz",
+      "requested_type": "spz",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "source-ply-substitute",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": false,
+      "degraded": true,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "SPZ is not directly supported; using full source PLY as a degraded measurement candidate.",
+      "blockers": [
+        "direct-spz-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "source-ply",
+      "requested_asset_id": "source-ply",
+      "requested_type": "ply",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "direct-default",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": true,
+      "degraded": false,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "PLY is directly loadable by the first-party renderer.",
+      "blockers": []
+    }
+  ]
+}

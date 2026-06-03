@@ -1,0 +1,202 @@
+{
+  "generated_at": "2026-06-02T11:30:47.526Z",
+  "target": "ARK first-party renderable Gaussian asset resolver",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "summary": {
+    "passed": true,
+    "resolution_count": 5,
+    "direct_count": 2,
+    "preview_substitute_count": 3,
+    "unsupported_count": 0,
+    "failed_checks": 0
+  },
+  "resolver": {
+    "direct_first_party_formats": [
+      "ply"
+    ],
+    "note": "Preview substitutes are degraded QA/renderability candidates and do not make the manifest default backend-ready."
+  },
+  "checks": [
+    {
+      "id": "default_has_first_party_substitute",
+      "passed": true,
+      "value": {
+        "label": "default",
+        "requested_asset_id": "runtime-sog",
+        "requested_type": "sog",
+        "renderable_asset_id": "preview-ply",
+        "renderable_type": "ply",
+        "mode": "preview-substitute",
+        "directFirstPartyRenderSupported": false,
+        "degraded": true,
+        "renderable_exists": true,
+        "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+        "blockers": [
+          "direct-sog-rendering-not-implemented"
+        ]
+      },
+      "message": "Default runtime asset resolves to a first-party preview substitute."
+    },
+    {
+      "id": "runtime_assets_have_preview_substitutes",
+      "passed": true,
+      "value": [
+        {
+          "label": "runtime-sog",
+          "requested_asset_id": "runtime-sog",
+          "requested_type": "sog",
+          "renderable_asset_id": "preview-ply",
+          "renderable_type": "ply",
+          "mode": "preview-substitute",
+          "directFirstPartyRenderSupported": false,
+          "degraded": true,
+          "renderable_exists": true,
+          "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+          "blockers": [
+            "direct-sog-rendering-not-implemented"
+          ]
+        },
+        {
+          "label": "runtime-spz",
+          "requested_asset_id": "runtime-spz",
+          "requested_type": "spz",
+          "renderable_asset_id": "preview-ply",
+          "renderable_type": "ply",
+          "mode": "preview-substitute",
+          "directFirstPartyRenderSupported": false,
+          "degraded": true,
+          "renderable_exists": true,
+          "reason": "SPZ is not directly supported; using preview PLY as a degraded first-party substitute.",
+          "blockers": [
+            "direct-spz-rendering-not-implemented"
+          ]
+        }
+      ],
+      "message": "Runtime SOG/SPZ assets resolve to first-party preview substitutes."
+    },
+    {
+      "id": "preview_ply_is_direct_renderable",
+      "passed": true,
+      "value": {
+        "label": "preview-ply",
+        "requested_asset_id": "preview-ply",
+        "requested_type": "ply",
+        "renderable_asset_id": "preview-ply",
+        "renderable_type": "ply",
+        "mode": "direct",
+        "directFirstPartyRenderSupported": true,
+        "degraded": false,
+        "renderable_exists": true,
+        "reason": "PLY is directly supported by the first-party renderer.",
+        "blockers": []
+      },
+      "message": "Preview PLY is directly renderable by the first-party renderer."
+    },
+    {
+      "id": "source_ply_is_direct_renderable",
+      "passed": true,
+      "value": {
+        "label": "source-ply",
+        "requested_asset_id": "source-ply",
+        "requested_type": "ply",
+        "renderable_asset_id": "source-ply",
+        "renderable_type": "ply",
+        "mode": "direct",
+        "directFirstPartyRenderSupported": true,
+        "degraded": false,
+        "renderable_exists": true,
+        "reason": "PLY is directly supported by the first-party renderer.",
+        "blockers": []
+      },
+      "message": "Source PLY is directly renderable in principle by the first-party renderer."
+    },
+    {
+      "id": "runtime_direct_support_not_claimed",
+      "passed": true,
+      "value": [
+        {
+          "label": "runtime-sog",
+          "direct": false
+        },
+        {
+          "label": "runtime-spz",
+          "direct": false
+        }
+      ],
+      "message": "Runtime SOG/SPZ direct rendering is not falsely claimed."
+    }
+  ],
+  "resolutions": [
+    {
+      "label": "default",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "renderable_asset_id": "preview-ply",
+      "renderable_type": "ply",
+      "mode": "preview-substitute",
+      "directFirstPartyRenderSupported": false,
+      "degraded": true,
+      "renderable_exists": true,
+      "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "runtime-sog",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "renderable_asset_id": "preview-ply",
+      "renderable_type": "ply",
+      "mode": "preview-substitute",
+      "directFirstPartyRenderSupported": false,
+      "degraded": true,
+      "renderable_exists": true,
+      "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "runtime-spz",
+      "requested_asset_id": "runtime-spz",
+      "requested_type": "spz",
+      "renderable_asset_id": "preview-ply",
+      "renderable_type": "ply",
+      "mode": "preview-substitute",
+      "directFirstPartyRenderSupported": false,
+      "degraded": true,
+      "renderable_exists": true,
+      "reason": "SPZ is not directly supported; using preview PLY as a degraded first-party substitute.",
+      "blockers": [
+        "direct-spz-rendering-not-implemented"
+      ]
+    },
+    {
+      "label": "preview-ply",
+      "requested_asset_id": "preview-ply",
+      "requested_type": "ply",
+      "renderable_asset_id": "preview-ply",
+      "renderable_type": "ply",
+      "mode": "direct",
+      "directFirstPartyRenderSupported": true,
+      "degraded": false,
+      "renderable_exists": true,
+      "reason": "PLY is directly supported by the first-party renderer.",
+      "blockers": []
+    },
+    {
+      "label": "source-ply",
+      "requested_asset_id": "source-ply",
+      "requested_type": "ply",
+      "renderable_asset_id": "source-ply",
+      "renderable_type": "ply",
+      "mode": "direct",
+      "directFirstPartyRenderSupported": true,
+      "degraded": false,
+      "renderable_exists": true,
+      "reason": "PLY is directly supported by the first-party renderer.",
+      "blockers": []
+    }
+  ]
+}

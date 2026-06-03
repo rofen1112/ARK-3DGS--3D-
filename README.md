@@ -72,6 +72,12 @@ First-party diagnostic backend:
 src/sdk/ark/ArkPointRendererBackend.ts
 ```
 
+First-party Gaussian backend:
+
+```text
+src/sdk/ark/ArkGaussianRendererBackend.ts
+```
+
 Stable SDK contract:
 
 ```text
@@ -120,6 +126,24 @@ Run the Gaussian parser regression test:
 npm.cmd run test:gaussian
 ```
 
+Validate first-party runtime Gaussian metadata adapters:
+
+```bash
+npm.cmd run validate:runtime-metadata
+```
+
+Validate first-party renderable asset resolution:
+
+```bash
+npm.cmd run validate:renderable-assets
+```
+
+Validate first-party full-scene measurement candidate resolution:
+
+```bash
+npm.cmd run validate:full-scene-candidate
+```
+
 Run the browser visual QA gate against a running dev server:
 
 ```bash
@@ -148,6 +172,48 @@ Run the first-party diagnostic renderer preview QA:
 
 ```bash
 npm.cmd run qa:first-party
+```
+
+Run the first-party Gaussian ellipse renderer preview QA:
+
+```bash
+npm.cmd run qa:first-party-gaussian
+```
+
+Run the first-party Gaussian renderer comparison QA:
+
+```bash
+npm.cmd run qa:first-party-compare
+```
+
+Run the first-party Gaussian camera-edge and near-plane stress QA:
+
+```bash
+npm.cmd run qa:first-party-stress
+```
+
+Run the degraded first-party full-scene source PLY smoke QA:
+
+```bash
+npm.cmd run qa:first-party-full-scene-smoke
+```
+
+Assess first-party full-scene visual readiness:
+
+```bash
+npm.cmd run qa:first-party-full-scene-visual
+```
+
+Assess first-party full-scene performance readiness:
+
+```bash
+npm.cmd run qa:first-party-full-scene-performance
+```
+
+Assess whether the first-party renderer is ready to become the default backend:
+
+```bash
+npm.cmd run qa:first-party-readiness
 ```
 
 ## Supported Formats
@@ -235,6 +301,99 @@ Open the first-party preview renderer:
 http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-point
 ```
 
+Current first-party Gaussian renderer entry:
+
+```text
+http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian
+```
+
+Current first-party Gaussian renderer result:
+
+| Renderer | Asset | Result | Visual QA | Shader | Sorting | Projection | Clipping | Splats |
+|---|---|---|---|---|---|---|---|---:|
+| `ark-gaussian-webgl2` | PLY preview | Passed | `Passed (216)` | `sh0-instanced-ellipse-gaussian` | `cpu-back-to-front` | `gaussianProjection=true` | `near/far + offscreen center` | `99,966` |
+
+Current first-party Gaussian comparison result:
+
+| Pair | Data | Signature | Mean Abs RGB | Similarity |
+|---|---|---|---:|---:|
+| `ark-gaussian` vs `aholo-adapter` | Passed | Available | `0.9884` | `0.996124` |
+| `ark-gaussian` vs `kellogg-independent` | Passed | Not available from Kellogg canvas | - | - |
+
+The Kellogg baseline still visibly renders and matches splat count. Its WebGL canvas signature is not used as a hard metric because direct canvas downsampling returned near-zero contrast under headless capture.
+
+Current first-party Gaussian stress result:
+
+| Case | Result | Sample Contrast | Signature Contrast | Splats |
+|---|---|---:|---:|---:|
+| `default-fit` | Passed | `216` | `196` | `99,966` |
+| `edge-right` | Passed | `1.78` | `198` | `99,966` |
+| `near-plane-close` | Passed | `484.11` | `203` | `99,966` |
+| `near-plane-offset` | Passed | `459.67` | `235` | `99,966` |
+
+Current first-party full-scene visual gate result:
+
+| Assessment | Visual Gate | Status | Default Asset | Measurement Candidate | Default Runtime? | Preview First-Party Visual QA |
+|---|---|---|---|---|---|---|
+| Passed | No | `blocked-before-measurement` | `runtime-sog` | `source-ply` | No | `Passed (216)` |
+
+Current first-party full-scene performance budget result:
+
+| Assessment | Performance Gate | Status | Default Asset | Measurement Candidate | Splats | CPU Sort Limit | Ratio |
+|---|---|---|---|---|---:|---:|---:|
+| Passed | No | `blocked-before-measurement` | `runtime-sog` | `source-ply` | `1,855,266` | `400,000` | `4.638x` |
+
+Current first-party default readiness result:
+
+| Preview Path | Default Backend Ready | Keep Aholo Default | Blockers |
+|---|---|---|---:|
+| Passed | No | Yes | `4` |
+
+Current blockers before switching the default backend:
+
+- default runtime asset is `runtime-sog`, while first-party `ark-gaussian` currently supports direct PLY loading only
+- default runtime asset has `1,855,266` splats, above the current first-party CPU sorting limit of `400,000`
+- first-party full-scene visual assessment exists, but the gate is still blocked before measurement because the default SOG path is not directly first-party renderable
+- first-party full-scene performance budget assessment exists, but the gate is still blocked before measurement because the default SOG path is not directly first-party renderable and no worker/GPU/streaming strategy is implemented yet
+
+Current runtime Gaussian metadata adapter result:
+
+| Runtime Asset | Format | Metadata | Direct First-Party Render | Splats | Size |
+|---|---|---|---|---:|---:|
+| `runtime-sog` | SOG | Ready | No | `1,855,266` | `22,887,509` |
+| `runtime-spz` | SPZ | Ready | No | `1,855,266` | `35,364,142` |
+
+Current first-party renderable asset resolver result:
+
+| Requested | Renderable | Mode | Direct | Degraded |
+|---|---|---|---|---|
+| `runtime-sog` | `preview-ply` | `preview-substitute` | No | Yes |
+| `runtime-spz` | `preview-ply` | `preview-substitute` | No | Yes |
+| `preview-ply` | `preview-ply` | `direct` | Yes | No |
+| `source-ply` | `source-ply` | `direct` | Yes | No |
+
+Current first-party full-scene measurement candidate result:
+
+| Requested | Candidate | Mode | First-Party Loadable | Default Runtime Direct? | Splat Equivalent |
+|---|---|---|---|---|---|
+| `runtime-sog` | `source-ply` | `source-ply-substitute` | Yes | No | Yes |
+| `runtime-spz` | `source-ply` | `source-ply-substitute` | Yes | No | Yes |
+| `source-ply` | `source-ply` | `direct-default` | Yes | Yes | Yes |
+
+Current first-party source PLY full-scene smoke result:
+
+| Asset | Result | Renderer | Decoded Splats | Rendered Splats | Invalid Skipped | Sorting | LOD | Visual QA | Settle Frames | Duration |
+|---|---|---|---:|---:|---:|---|---|---|---:|---:|
+| `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `300,000` | `639` | `cpu-back-to-front` | `deterministic-stride-budget` | `Passed (252.4)` | `1` | `15.951s` |
+
+Current first-party source PLY timing breakdown:
+
+| Read | Decode | Pack | Upload | Renderer Load | Visual Gate | Load Peak |
+|---:|---:|---:|---:|---:|---:|---:|
+| `888.7ms` | `1,109.4ms` | `40.9ms` | `5.5ms` | `2,046ms` | `10,758ms` | `579.25MiB` |
+
+This smoke test proves the first-party renderer can decode the full source PLY and draw a deterministic `300,000` splat LOD as a degraded measurement candidate. It does not prove that the default `runtime-sog` path is first-party renderable, and it is not production-performant yet. The large-scene path reduced smoke duration from `223.251s` to `80.971s` with adaptive QA, then to `15.951s` with budgeted LOD.
+
 ## Current Stage
 
 Done:
@@ -252,10 +411,27 @@ Done:
 - deterministic PLY preview generation for independent renderer QA
 - ARK vs independent GaussianSplats3D preview comparison harness
 - manifest-level Gaussian asset set and manifest validator
+- first-party runtime Gaussian metadata adapters for SOG/SPZ
+- first-party renderable asset resolver with preview PLY substitute mode
+- first-party full-scene measurement candidate resolver with source PLY substitute mode
 - first-party WebGL point renderer diagnostic backend
 - first-party CPU depth sorting for preview PLY
 - first-party scale-aware point shader using decoded Gaussian scale and opacity
 - first-party renderer preview QA harness
+- first-party WebGL2 instanced ellipse Gaussian backend
+- first-party Gaussian renderer QA gate requiring `gaussianProjection=true`
+- first-party Gaussian comparison QA against Aholo and Kellogg preview baselines
+- first-party Gaussian clipping hard gate in renderer and comparison QA
+- first-party Gaussian camera-edge and near-plane stress QA
+- first-party default backend readiness assessment with explicit blockers
+- first-party Gaussian opacity tuning with `opacityScale=0.44` to reduce peak contrast against Aholo
+- first-party Gaussian ellipse tuning with `ellipseExtent=2.05` and `maxPixelAxis=10`
+- first-party Gaussian near/far and offscreen center clipping with `minClipW=0.02` and `offscreenPadding=1.4`
+- first-party full-scene visual assessment with explicit non-passing gate state
+- first-party full-scene performance budget assessment with explicit non-passing gate state
+- first-party degraded full-scene source PLY smoke QA
+- adaptive large-scene visual QA settle policy for full-source PLY smoke runs
+- deterministic stride LOD for degraded full-source PLY smoke runs
 - PLY validator report for the bundled source asset
 - tiny Gaussian PLY regression fixture
 - invalid splat filtering policy in `ArkGaussianData`
@@ -266,7 +442,9 @@ Done:
 
 Next:
 
-- replace point rendering with real Gaussian projection shader
-- add screen-space ellipse projection from Gaussian covariance
-- add SPZ/SOG metadata adapters for the first-party data layer
+- harden the covariance projection math, alpha compositing, and performance
+- add SOG/SPZ direct first-party loading or a first-party runtime conversion path
+- replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison
+- turn the full-scene visual assessment into a measured first-party default-runtime visual gate
+- turn the full-scene performance budget assessment into a measured gate after direct runtime loading and large-scene sorting/streaming exist
 - only after visual quality passes, restart mesh/physics/semantic work

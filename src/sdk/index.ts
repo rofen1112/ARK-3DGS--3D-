@@ -1,5 +1,8 @@
 export { AholoRendererBackend } from './aholo/AholoRendererBackend';
 export { ArkPointRendererBackend } from './ark/ArkPointRendererBackend';
+export { resolveFirstPartyFullSceneCandidate } from './gaussian/fullSceneCandidate';
+export { resolveFirstPartyRenderableAsset } from './gaussian/renderableAsset';
+export { buildGaussianRuntimeMetadata, isDirectFirstPartyGaussianFormat } from './gaussian/runtimeMetadata';
 export { decodeGaussianPly, parseGaussianPlyHeader, summarizeGaussianPly } from './gaussian/ply';
 export { MutableVec3 } from './math';
 export type {
@@ -15,6 +18,21 @@ export type {
   ArkGaussianSummary,
   ArkGaussianSummaryOptions
 } from './gaussian/types';
+export type {
+  ArkFirstPartyFullSceneCandidateMode,
+  ArkFirstPartyFullSceneCandidateOptions,
+  ArkFirstPartyFullSceneCandidateResolution
+} from './gaussian/fullSceneCandidate';
+export type {
+  ArkFirstPartyRenderableAssetOptions,
+  ArkFirstPartyRenderableAssetResolution,
+  ArkFirstPartyRenderableMode
+} from './gaussian/renderableAsset';
+export type {
+  ArkGaussianRuntimeMetadata,
+  ArkGaussianRuntimeMetadataInput,
+  ArkGaussianRuntimeMetadataStatus
+} from './gaussian/runtimeMetadata';
 export type {
   ArkCameraDebugState,
   ArkBoundsSource,

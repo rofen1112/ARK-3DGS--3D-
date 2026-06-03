@@ -1,4 +1,5 @@
 import { AholoRendererBackend } from './sdk/aholo/AholoRendererBackend';
+import { ArkGaussianRendererBackend } from './sdk/ark/ArkGaussianRendererBackend';
 import { ArkPointRendererBackend } from './sdk/ark/ArkPointRendererBackend';
 import { MutableVec3 } from './sdk/math';
 import type {
@@ -16,6 +17,13 @@ import './styles.css';
 
 type Vec3Tuple = [number, number, number];
 
+type ArkDebugCameraSetDetail = {
+  position?: ArkVec3;
+  target?: ArkVec3;
+  distance?: number;
+  frames?: number;
+};
+
 declare global {
   interface Window {
     __ARK_3DGS__?: ArkGaussianBrowser;
@@ -27,6 +35,10 @@ const GAUSSIAN_CONTRACT_REPORT_URL = '/scenes/demo_room_001/meta/gaussian_data_c
 const DEFAULT_ACCEPT = '.ply,.spz,.splat,.ksplat,.sog,.lcc,.esz,.zip,.json';
 const VISUAL_QA_MIN_CONTRAST = 12;
 const VISUAL_QA_SETTLE_FRAMES = 8;
+const VISUAL_QA_LARGE_SCENE_SPLAT_THRESHOLD = 400_000;
+const VISUAL_QA_LARGE_SCENE_SETTLE_FRAMES = 1;
+const INITIAL_RENDER_BURST_FRAMES = 120;
+const LARGE_SCENE_INITIAL_RENDER_BURST_FRAMES = 2;
 
 type GaussianDataContractReport = {
   summary?: {
@@ -69,14 +81,36 @@ function formatVec3(value: Vec3Tuple) {
   return value.map((item) => formatNumber(item, 2)).join(', ');
 }
 
-function createPendingVisualQuality(reason: string): ArkVisualQualityGate {
+function isVec3(value: unknown): value is ArkVec3 {
+  return Array.isArray(value)
+    && value.length === 3
+    && value.every((item) => typeof item === 'number' && Number.isFinite(item));
+}
+
+function vec3Distance(a: ArkVec3, b: ArkVec3) {
+  return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+}
+
+function deriveYawPitch(position: ArkVec3, target: ArkVec3) {
+  const dx = target[0] - position[0];
+  const dy = target[1] - position[1];
+  const dz = target[2] - position[2];
+  const length = Math.max(Math.hypot(dx, dy, dz), 0.0001);
+  const fy = dy / length;
+  return {
+    yaw: Math.atan2(-dx / length, -dz / length),
+    pitch: Math.asin(Math.max(-1, Math.min(1, -fy)))
+  };
+}
+
+function createPendingVisualQuality(reason: string, settleFrames = VISUAL_QA_SETTLE_FRAMES): ArkVisualQualityGate {
   return {
     status: 'pending',
     reason,
     checks: {},
     thresholds: {
       minContrast: VISUAL_QA_MIN_CONTRAST,
-      settleFrames: VISUAL_QA_SETTLE_FRAMES
+      settleFrames
     },
     sample: null,
     evaluatedAtMs: null
@@ -221,12 +255,18 @@ class ArkGaussianBrowser {
   private readonly keys = new Set<string>();
 
   constructor() {
-    this.renderer = new URLSearchParams(window.location.search).get('renderer') === 'ark-point'
-      ? new ArkPointRendererBackend(this.host)
-      : new AholoRendererBackend(this.host);
+    const rendererId = new URLSearchParams(window.location.search).get('renderer');
+    this.renderer = rendererId === 'ark-gaussian'
+      ? new ArkGaussianRendererBackend(this.host)
+      : rendererId === 'ark-point'
+        ? new ArkPointRendererBackend(this.host)
+        : new AholoRendererBackend(this.host);
     this.renderer.setRenderRequestHandler(() => this.scheduleRender());
     document.addEventListener('ark-3dgs-debug-request', () => {
       this.publishDebugState(true);
+    });
+    document.addEventListener('ark-3dgs-camera-set', (event) => {
+      this.setDebugCamera((event as CustomEvent<ArkDebugCameraSetDetail>).detail);
     });
     this.configureInput();
     this.configureUi();
@@ -265,6 +305,34 @@ class ArkGaussianBrowser {
 
   forceRenderFrames(frames = 90) {
     this.renderBurst(frames);
+  }
+
+  setDebugCamera(detail?: ArkDebugCameraSetDetail) {
+    if (!detail) return;
+    const position = isVec3(detail.position) ? detail.position : this.cameraPosition.toTuple();
+    const target = isVec3(detail.target) ? detail.target : this.cameraTarget.toTuple();
+    const derivedDistance = vec3Distance(position, target);
+    const requestedDistance = detail.distance;
+    const distance = typeof requestedDistance === 'number' && Number.isFinite(requestedDistance) && requestedDistance > 0
+      ? requestedDistance
+      : Math.max(derivedDistance, 0.0001);
+    const frames = typeof detail.frames === 'number' && Number.isFinite(detail.frames)
+      ? Math.max(1, Math.round(detail.frames))
+      : 45;
+    const orientation = deriveYawPitch(position, target);
+
+    this.cameraPosition.set(position[0], position[1], position[2]);
+    this.cameraTarget.set(target[0], target[1], target[2]);
+    this.target.set(target[0], target[1], target[2]);
+    this.distance = distance;
+    this.yaw = orientation.yaw;
+    this.pitch = orientation.pitch;
+    this.renderer.setCameraLookAt(position, target, distance);
+    this.renderer.invalidate();
+    this.renderer.resize();
+    this.renderer.render();
+    this.renderBurst(frames);
+    this.publishDebugState(true);
   }
 
   getCompactDebugState(includeSample = false) {
@@ -450,7 +518,8 @@ class ArkGaussianBrowser {
 
     this.activeInfo = info;
     this.fitRadius = info.fitRadius;
-    this.visualQualityGate = createPendingVisualQuality('Waiting for first stable render sample.');
+    const visualSettleFrames = this.getVisualQualitySettleFrames(info);
+    this.visualQualityGate = createPendingVisualQuality('Waiting for first stable render sample.', visualSettleFrames);
     this.updateVisualQualityInfo();
     this.distance = this.fitRadius * 3.6;
     this.resetView();
@@ -460,9 +529,25 @@ class ArkGaussianBrowser {
     this.statusEl.textContent = `${filename.split('/').pop()} loaded in ${duration}s.`;
     this.renderer.invalidate();
     this.renderer.resize();
-    this.renderBurst(120);
-    await this.runVisualQualityGate(startedAt);
+    this.renderBurst(this.getInitialRenderBurstFrames(info));
+    await this.runVisualQualityGate(startedAt, visualSettleFrames);
     this.publishDebugState();
+  }
+
+  private isLargeSceneForVisualQa(info: ArkLoadedSceneInfo | null) {
+    return Boolean(info && info.splats > VISUAL_QA_LARGE_SCENE_SPLAT_THRESHOLD);
+  }
+
+  private getVisualQualitySettleFrames(info: ArkLoadedSceneInfo | null) {
+    return this.isLargeSceneForVisualQa(info)
+      ? VISUAL_QA_LARGE_SCENE_SETTLE_FRAMES
+      : VISUAL_QA_SETTLE_FRAMES;
+  }
+
+  private getInitialRenderBurstFrames(info: ArkLoadedSceneInfo | null) {
+    return this.isLargeSceneForVisualQa(info)
+      ? LARGE_SCENE_INITIAL_RENDER_BURST_FRAMES
+      : INITIAL_RENDER_BURST_FRAMES;
   }
 
   private resetView() {
@@ -592,9 +677,9 @@ class ArkGaussianBrowser {
     this.visualQualityStateEl.textContent = formatVisualQualityGate(this.visualQualityGate);
   }
 
-  private async runVisualQualityGate(startedAt: number) {
+  private async runVisualQualityGate(startedAt: number, settleFrames = VISUAL_QA_SETTLE_FRAMES) {
     try {
-      await this.waitForFrames(VISUAL_QA_SETTLE_FRAMES);
+      await this.waitForFrames(settleFrames);
       this.renderer.render();
       const sample = this.renderer.sampleRender();
       const rendererState = this.renderer.getDebugState(false);
@@ -629,7 +714,7 @@ class ArkGaussianBrowser {
         checks,
         thresholds: {
           minContrast: VISUAL_QA_MIN_CONTRAST,
-          settleFrames: VISUAL_QA_SETTLE_FRAMES
+          settleFrames
         },
         sample,
         evaluatedAtMs: Math.round(performance.now() - startedAt)
@@ -641,7 +726,7 @@ class ArkGaussianBrowser {
         checks: {},
         thresholds: {
           minContrast: VISUAL_QA_MIN_CONTRAST,
-          settleFrames: VISUAL_QA_SETTLE_FRAMES
+          settleFrames
         },
         sample: null,
         evaluatedAtMs: Math.round(performance.now() - startedAt)

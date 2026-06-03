@@ -1,0 +1,626 @@
+{
+  "generated_at": "2026-06-02T12:57:50.490Z",
+  "target": "ARK first-party default backend readiness assessment",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "require_ready": false,
+  "first_party_renderer": {
+    "id": "ark-gaussian-webgl2",
+    "supported_formats": [
+      "ply"
+    ],
+    "cpu_sort_splat_limit": 400000
+  },
+  "summary": {
+    "passed": true,
+    "preview_path_ready": true,
+    "default_backend_ready": false,
+    "should_keep_aholo_default": true,
+    "blocking_count": 4,
+    "failed_checks": 0
+  },
+  "default_asset": {
+    "id": "runtime-sog",
+    "role": "runtime",
+    "label": "SOG runtime",
+    "type": "sog",
+    "url": "gaussian/scene.sog",
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "splats": 1855266,
+    "sizeBytes": 22887509
+  },
+  "assets": [
+    {
+      "id": "runtime-sog",
+      "role": "runtime",
+      "type": "sog",
+      "url": "gaussian/scene.sog",
+      "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+      "splats": 1855266,
+      "sizeBytes": 22887509,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 22887509
+    },
+    {
+      "id": "runtime-spz",
+      "role": "runtime",
+      "type": "spz",
+      "url": "gaussian/scene.spz",
+      "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+      "splats": 1855266,
+      "sizeBytes": 35364142,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 35364142
+    },
+    {
+      "id": "source-ply",
+      "role": "source",
+      "type": "ply",
+      "url": "gaussian/scene.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "splats": 1855266,
+      "sizeBytes": 460111596,
+      "dataBytes": 460107500,
+      "exists": true,
+      "sizeOnDisk": 460107500
+    },
+    {
+      "id": "preview-ply",
+      "role": "preview",
+      "type": "ply",
+      "url": "gaussian/scene-preview-100k.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+      "splats": 99966,
+      "sizeBytes": 24793098,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 24793098
+    }
+  ],
+  "checks": [
+    {
+      "id": "manifest_loaded",
+      "passed": true,
+      "value": "public/scenes/demo_room_001/manifest.json",
+      "message": "Scene manifest is readable."
+    },
+    {
+      "id": "runtime_assets_declared",
+      "passed": true,
+      "value": [
+        "runtime-sog:sog",
+        "runtime-spz:spz"
+      ],
+      "message": "Manifest declares runtime SOG/SPZ assets."
+    },
+    {
+      "id": "default_asset_declared",
+      "passed": true,
+      "value": "runtime-sog",
+      "message": "Manifest declares the current default Gaussian asset."
+    },
+    {
+      "id": "preview_ply_declared",
+      "passed": true,
+      "value": "preview-ply",
+      "message": "Manifest declares a first-party preview PLY asset."
+    },
+    {
+      "id": "source_ply_declared",
+      "passed": true,
+      "value": "source-ply",
+      "message": "Manifest declares a full source PLY asset for audits."
+    },
+    {
+      "id": "asset_files_present",
+      "passed": true,
+      "value": [],
+      "message": "All declared Gaussian asset files are present in the local workspace."
+    },
+    {
+      "id": "manifest_validation_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "total_checks": 8,
+        "failed_checks": 0,
+        "asset_count": 4
+      },
+      "message": "Manifest validator report passes."
+    },
+    {
+      "id": "runtime_metadata_adapters_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "metadata_ready": true,
+        "runtime_asset_count": 2,
+        "direct_renderable_runtime_asset_count": 0,
+        "failed_checks": 0
+      },
+      "message": "Runtime SOG/SPZ metadata adapter report passes."
+    },
+    {
+      "id": "renderable_asset_resolver_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "resolution_count": 5,
+        "direct_count": 2,
+        "preview_substitute_count": 3,
+        "unsupported_count": 0,
+        "failed_checks": 0
+      },
+      "message": "First-party renderable asset resolver report passes."
+    },
+    {
+      "id": "preview_renderer_qa_passed",
+      "passed": true,
+      "value": {
+        "visualQualityPassed": true,
+        "isArkRenderer": true,
+        "hasDepthSorting": true,
+        "hasScaleAwarePipeline": true,
+        "hasGaussianProjection": true,
+        "hasClippingState": true
+      },
+      "message": "First-party preview renderer QA passes."
+    },
+    {
+      "id": "comparison_qa_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "all_targets_passed": true,
+        "data_equivalence_passed": true,
+        "gaussian_projection_passed": true,
+        "clipping_passed": true,
+        "primary_signature_comparison_passed": true,
+        "visual_difference_gated": false,
+        "duration_seconds": 25.104
+      },
+      "message": "First-party comparison QA passes."
+    },
+    {
+      "id": "stress_qa_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "case_count": 4,
+        "passed_cases": 4,
+        "clipping_hard_gate_passed": true,
+        "duration_seconds": 39.288
+      },
+      "message": "First-party stress QA passes."
+    }
+  ],
+  "readiness_requirements": [
+    {
+      "id": "preview_path_ready",
+      "passed": true,
+      "value": {
+        "renderer": "ark-gaussian-webgl2",
+        "comparison": true,
+        "stress": true
+      },
+      "message": "Preview PLY first-party path passes renderer, comparison, and stress QA."
+    },
+    {
+      "id": "default_runtime_format_supported",
+      "passed": false,
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "defaultType": "sog",
+        "supportedFormats": [
+          "ply"
+        ]
+      },
+      "message": "Current manifest default format is directly loadable by the first-party renderer."
+    },
+    {
+      "id": "full_scene_sorting_strategy_ready",
+      "passed": false,
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "splats": 1855266,
+        "cpuSortSplatLimit": 400000
+      },
+      "message": "Current full-scene default can use the existing first-party sorting path without disabling sorting."
+    },
+    {
+      "id": "full_scene_visual_gate_exists",
+      "passed": false,
+      "value": {
+        "passed": false,
+        "assessment_passed": true,
+        "visual_gate_passed": false,
+        "status": "blocked-before-measurement",
+        "default_backend_ready": false,
+        "should_keep_aholo_default": true,
+        "blocking_count": 5,
+        "failed_checks": 0,
+        "default_asset": "runtime-sog",
+        "default_type": "sog",
+        "default_splats": 1855266,
+        "default_aholo_visual_quality": "Passed (114.3)",
+        "default_aholo_contrast": 114.33333333333333,
+        "measurement_candidate_asset": "source-ply",
+        "measurement_candidate_mode": "source-ply-substitute",
+        "measurement_candidate_splats": 1855266,
+        "measurement_candidate_ready": true,
+        "measurement_candidate_is_default_runtime": false,
+        "source_ply_smoke_passed": true,
+        "source_ply_smoke_splats": 1854627,
+        "source_ply_smoke_rendered_splats": 300000,
+        "source_ply_smoke_lod_enabled": true,
+        "source_ply_smoke_visual_quality": "Passed (252.4)",
+        "source_ply_smoke_settle_frames": 1,
+        "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+        "source_ply_smoke_max_render_ms": 67.1,
+        "preview_renderer": "ark-gaussian-webgl2",
+        "preview_splats": 99966,
+        "preview_visual_quality": "Passed (216)"
+      },
+      "message": "A first-party full-scene visual QA report exists and passes."
+    },
+    {
+      "id": "full_scene_performance_gate_exists",
+      "passed": false,
+      "value": {
+        "passed": false,
+        "assessment_passed": true,
+        "performance_gate_passed": false,
+        "status": "blocked-before-measurement",
+        "default_backend_ready": false,
+        "should_keep_aholo_default": true,
+        "blocking_count": 5,
+        "failed_checks": 0,
+        "default_asset": "runtime-sog",
+        "default_type": "sog",
+        "default_splats": 1855266,
+        "valid_source_splats": 1854627,
+        "preview_splats": 99966,
+        "cpu_sort_splat_limit": 400000,
+        "default_to_sort_limit_ratio": 4.638165,
+        "preview_to_default_splat_ratio": 0.053882,
+        "default_to_preview_splat_ratio": 18.55897,
+        "measurement_candidate_asset": "source-ply",
+        "measurement_candidate_mode": "source-ply-substitute",
+        "measurement_candidate_splats": 1855266,
+        "measurement_candidate_ready": true,
+        "measurement_candidate_is_default_runtime": false,
+        "source_ply_smoke_passed": true,
+        "source_ply_smoke_splats": 1854627,
+        "source_ply_smoke_rendered_splats": 300000,
+        "source_ply_smoke_lod_enabled": true,
+        "source_ply_smoke_lod_budget_splats": 300000,
+        "source_ply_smoke_lod_rendered_ratio": 0.161758,
+        "source_ply_smoke_sorting": "cpu-back-to-front",
+        "source_ply_smoke_sort_enabled": true,
+        "source_ply_smoke_duration_seconds": 15.951,
+        "source_ply_smoke_settle_frames": 1,
+        "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+        "source_ply_smoke_renderer_load_ms": 2046,
+        "source_ply_smoke_renderer_decode_ms": 1109.4,
+        "source_ply_smoke_renderer_pack_ms": 40.9,
+        "source_ply_smoke_renderer_upload_ms": 5.5,
+        "source_ply_smoke_max_render_ms": 67.1,
+        "source_ply_smoke_average_render_ms": 13.46,
+        "source_ply_smoke_load_peak_mib": 579.25
+      },
+      "message": "A first-party full-scene performance QA report exists and passes."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "default_runtime_format_supported",
+      "message": "Current manifest default format is directly loadable by the first-party renderer.",
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "defaultType": "sog",
+        "supportedFormats": [
+          "ply"
+        ]
+      }
+    },
+    {
+      "id": "full_scene_sorting_strategy_ready",
+      "message": "Current full-scene default can use the existing first-party sorting path without disabling sorting.",
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "splats": 1855266,
+        "cpuSortSplatLimit": 400000
+      }
+    },
+    {
+      "id": "full_scene_visual_gate_exists",
+      "message": "A first-party full-scene visual QA report exists and passes.",
+      "value": {
+        "passed": false,
+        "assessment_passed": true,
+        "visual_gate_passed": false,
+        "status": "blocked-before-measurement",
+        "default_backend_ready": false,
+        "should_keep_aholo_default": true,
+        "blocking_count": 5,
+        "failed_checks": 0,
+        "default_asset": "runtime-sog",
+        "default_type": "sog",
+        "default_splats": 1855266,
+        "default_aholo_visual_quality": "Passed (114.3)",
+        "default_aholo_contrast": 114.33333333333333,
+        "measurement_candidate_asset": "source-ply",
+        "measurement_candidate_mode": "source-ply-substitute",
+        "measurement_candidate_splats": 1855266,
+        "measurement_candidate_ready": true,
+        "measurement_candidate_is_default_runtime": false,
+        "source_ply_smoke_passed": true,
+        "source_ply_smoke_splats": 1854627,
+        "source_ply_smoke_rendered_splats": 300000,
+        "source_ply_smoke_lod_enabled": true,
+        "source_ply_smoke_visual_quality": "Passed (252.4)",
+        "source_ply_smoke_settle_frames": 1,
+        "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+        "source_ply_smoke_max_render_ms": 67.1,
+        "preview_renderer": "ark-gaussian-webgl2",
+        "preview_splats": 99966,
+        "preview_visual_quality": "Passed (216)"
+      }
+    },
+    {
+      "id": "full_scene_performance_gate_exists",
+      "message": "A first-party full-scene performance QA report exists and passes.",
+      "value": {
+        "passed": false,
+        "assessment_passed": true,
+        "performance_gate_passed": false,
+        "status": "blocked-before-measurement",
+        "default_backend_ready": false,
+        "should_keep_aholo_default": true,
+        "blocking_count": 5,
+        "failed_checks": 0,
+        "default_asset": "runtime-sog",
+        "default_type": "sog",
+        "default_splats": 1855266,
+        "valid_source_splats": 1854627,
+        "preview_splats": 99966,
+        "cpu_sort_splat_limit": 400000,
+        "default_to_sort_limit_ratio": 4.638165,
+        "preview_to_default_splat_ratio": 0.053882,
+        "default_to_preview_splat_ratio": 18.55897,
+        "measurement_candidate_asset": "source-ply",
+        "measurement_candidate_mode": "source-ply-substitute",
+        "measurement_candidate_splats": 1855266,
+        "measurement_candidate_ready": true,
+        "measurement_candidate_is_default_runtime": false,
+        "source_ply_smoke_passed": true,
+        "source_ply_smoke_splats": 1854627,
+        "source_ply_smoke_rendered_splats": 300000,
+        "source_ply_smoke_lod_enabled": true,
+        "source_ply_smoke_lod_budget_splats": 300000,
+        "source_ply_smoke_lod_rendered_ratio": 0.161758,
+        "source_ply_smoke_sorting": "cpu-back-to-front",
+        "source_ply_smoke_sort_enabled": true,
+        "source_ply_smoke_duration_seconds": 15.951,
+        "source_ply_smoke_settle_frames": 1,
+        "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+        "source_ply_smoke_renderer_load_ms": 2046,
+        "source_ply_smoke_renderer_decode_ms": 1109.4,
+        "source_ply_smoke_renderer_pack_ms": 40.9,
+        "source_ply_smoke_renderer_upload_ms": 5.5,
+        "source_ply_smoke_max_render_ms": 67.1,
+        "source_ply_smoke_average_render_ms": 13.46,
+        "source_ply_smoke_load_peak_mib": 579.25
+      }
+    }
+  ],
+  "reports": {
+    "manifest": {
+      "passed": true,
+      "total_checks": 8,
+      "failed_checks": 0,
+      "asset_count": 4
+    },
+    "first_party_gaussian": {
+      "passed": true,
+      "checks": {
+        "visualQualityPassed": true,
+        "isArkRenderer": true,
+        "hasDepthSorting": true,
+        "hasScaleAwarePipeline": true,
+        "hasGaussianProjection": true,
+        "hasClippingState": true
+      },
+      "runtime": "Loaded",
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-instanced-ellipse-gaussian",
+        "sorting": "cpu-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true
+      },
+      "renderInfo": {
+        "lastLoadMs": 157,
+        "lastSortMs": 19.4,
+        "sortEnabled": true,
+        "sortReason": "camera-depth-order",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "sortVersion": 1,
+        "lod": {
+          "enabled": false,
+          "mode": "full-resolution",
+          "decodedSplats": 99966,
+          "renderedSplats": 99966,
+          "budgetSplats": 300000,
+          "samplingStride": 1,
+          "renderedRatio": 1,
+          "reason": "not-needed"
+        },
+        "performance": {
+          "inputBytes": 24793098,
+          "inputMiB": 23.645,
+          "readMs": 73.2,
+          "decodeMs": 66.9,
+          "packMs": 13.9,
+          "uploadMs": 2.2,
+          "totalLoadMs": 157.3,
+          "retainedCpuBufferBytes": 11995920,
+          "retainedCpuBufferMiB": 11.44,
+          "gpuUploadBytes": 5598096,
+          "gpuUploadMiB": 5.339,
+          "loadPeakBytes": 42786978,
+          "loadPeakMiB": 40.805,
+          "sortSplatLimit": 400000
+        },
+        "frameTiming": {
+          "lastRenderMs": 0,
+          "maxRenderMs": 19.7,
+          "averageRenderMs": 1.882,
+          "renderCount": 11
+        },
+        "ellipse": {
+          "extent": 2.05,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 10,
+          "opacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        },
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+      },
+      "splats": 99966,
+      "visual_quality": "Passed (216)",
+      "contrast": 216,
+      "duration_seconds": 11.983
+    },
+    "first_party_comparison": {
+      "passed": true,
+      "all_targets_passed": true,
+      "data_equivalence_passed": true,
+      "gaussian_projection_passed": true,
+      "clipping_passed": true,
+      "primary_signature_comparison_passed": true,
+      "visual_difference_gated": false,
+      "duration_seconds": 25.104
+    },
+    "first_party_stress": {
+      "passed": true,
+      "case_count": 4,
+      "passed_cases": 4,
+      "clipping_hard_gate_passed": true,
+      "duration_seconds": 39.288
+    },
+    "runtime_metadata": {
+      "passed": true,
+      "metadata_ready": true,
+      "runtime_asset_count": 2,
+      "direct_renderable_runtime_asset_count": 0,
+      "failed_checks": 0
+    },
+    "renderable_assets": {
+      "passed": true,
+      "resolution_count": 5,
+      "direct_count": 2,
+      "preview_substitute_count": 3,
+      "unsupported_count": 0,
+      "failed_checks": 0
+    },
+    "full_scene_visual": {
+      "passed": false,
+      "assessment_passed": true,
+      "visual_gate_passed": false,
+      "status": "blocked-before-measurement",
+      "default_backend_ready": false,
+      "should_keep_aholo_default": true,
+      "blocking_count": 5,
+      "failed_checks": 0,
+      "default_asset": "runtime-sog",
+      "default_type": "sog",
+      "default_splats": 1855266,
+      "default_aholo_visual_quality": "Passed (114.3)",
+      "default_aholo_contrast": 114.33333333333333,
+      "measurement_candidate_asset": "source-ply",
+      "measurement_candidate_mode": "source-ply-substitute",
+      "measurement_candidate_splats": 1855266,
+      "measurement_candidate_ready": true,
+      "measurement_candidate_is_default_runtime": false,
+      "source_ply_smoke_passed": true,
+      "source_ply_smoke_splats": 1854627,
+      "source_ply_smoke_rendered_splats": 300000,
+      "source_ply_smoke_lod_enabled": true,
+      "source_ply_smoke_visual_quality": "Passed (252.4)",
+      "source_ply_smoke_settle_frames": 1,
+      "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+      "source_ply_smoke_max_render_ms": 67.1,
+      "preview_renderer": "ark-gaussian-webgl2",
+      "preview_splats": 99966,
+      "preview_visual_quality": "Passed (216)"
+    },
+    "full_scene_performance": {
+      "passed": false,
+      "assessment_passed": true,
+      "performance_gate_passed": false,
+      "status": "blocked-before-measurement",
+      "default_backend_ready": false,
+      "should_keep_aholo_default": true,
+      "blocking_count": 5,
+      "failed_checks": 0,
+      "default_asset": "runtime-sog",
+      "default_type": "sog",
+      "default_splats": 1855266,
+      "valid_source_splats": 1854627,
+      "preview_splats": 99966,
+      "cpu_sort_splat_limit": 400000,
+      "default_to_sort_limit_ratio": 4.638165,
+      "preview_to_default_splat_ratio": 0.053882,
+      "default_to_preview_splat_ratio": 18.55897,
+      "measurement_candidate_asset": "source-ply",
+      "measurement_candidate_mode": "source-ply-substitute",
+      "measurement_candidate_splats": 1855266,
+      "measurement_candidate_ready": true,
+      "measurement_candidate_is_default_runtime": false,
+      "source_ply_smoke_passed": true,
+      "source_ply_smoke_splats": 1854627,
+      "source_ply_smoke_rendered_splats": 300000,
+      "source_ply_smoke_lod_enabled": true,
+      "source_ply_smoke_lod_budget_splats": 300000,
+      "source_ply_smoke_lod_rendered_ratio": 0.161758,
+      "source_ply_smoke_sorting": "cpu-back-to-front",
+      "source_ply_smoke_sort_enabled": true,
+      "source_ply_smoke_duration_seconds": 15.951,
+      "source_ply_smoke_settle_frames": 1,
+      "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+      "source_ply_smoke_renderer_load_ms": 2046,
+      "source_ply_smoke_renderer_decode_ms": 1109.4,
+      "source_ply_smoke_renderer_pack_ms": 40.9,
+      "source_ply_smoke_renderer_upload_ms": 5.5,
+      "source_ply_smoke_max_render_ms": 67.1,
+      "source_ply_smoke_average_render_ms": 13.46,
+      "source_ply_smoke_load_peak_mib": 579.25
+    }
+  }
+}

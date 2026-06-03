@@ -9,13 +9,23 @@
     "preview": "vite preview --host 0.0.0.0",
     "test:gaussian": "node scripts/test-gaussian-parser.mjs",
     "validate:manifest": "node scripts/validate-scene-manifest.mjs",
+    "validate:runtime-metadata": "node scripts/validate-runtime-gaussian-metadata.mjs",
+    "validate:renderable-assets": "node scripts/validate-first-party-renderable-assets.mjs",
+    "validate:full-scene-candidate": "node scripts/validate-first-party-full-scene-candidate.mjs",
     "validate:ply": "node scripts/validate-gaussian-ply.mjs",
     "prepare:ply-preview": "node scripts/create-gaussian-ply-preview.mjs",
     "qa:visual": "node scripts/cdp-screenshot.mjs http://127.0.0.1:5173/?autoload=1 artifacts/visual-qa.png 60000",
     "qa:formats": "node scripts/qa-format-matrix.mjs",
     "qa:baseline": "node scripts/qa-baseline-compare.mjs",
     "qa:independent": "node scripts/qa-independent-compare.mjs",
-    "qa:first-party": "node scripts/qa-first-party-preview.mjs"
+    "qa:first-party": "node scripts/qa-first-party-preview.mjs",
+    "qa:first-party-gaussian": "node scripts/qa-first-party-gaussian.mjs",
+    "qa:first-party-compare": "node scripts/qa-first-party-gaussian-compare.mjs",
+    "qa:first-party-stress": "node scripts/qa-first-party-gaussian-stress.mjs",
+    "qa:first-party-full-scene-smoke": "node scripts/qa-first-party-full-scene-source-ply-smoke.mjs",
+    "qa:first-party-full-scene-visual": "node scripts/qa-first-party-full-scene-visual-budget.mjs",
+    "qa:first-party-full-scene-performance": "node scripts/qa-first-party-full-scene-performance-budget.mjs",
+    "qa:first-party-readiness": "node scripts/qa-first-party-default-readiness.mjs"
   },
   "dependencies": {
     "@manycore/aholo-viewer": "^1.2.9"

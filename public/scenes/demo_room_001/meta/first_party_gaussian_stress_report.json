@@ -1,0 +1,317 @@
+{
+  "generated_at": "2026-06-02T08:18:16.515Z",
+  "target": "ARK first-party Gaussian camera-edge and near-plane stress QA",
+  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+  "timeout_ms": 90000,
+  "summary": {
+    "passed": true,
+    "case_count": 4,
+    "passed_cases": 4,
+    "clipping_hard_gate_passed": true,
+    "duration_seconds": 39.288
+  },
+  "cases": [
+    {
+      "label": "default-fit",
+      "purpose": "Baseline fit camera after load.",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "canvasSignatureVisible": true,
+        "splatCountStable": true,
+        "depthSortStable": true
+      },
+      "diagnostics": {
+        "visualSampleVisible": true,
+        "sampleContrastPassed": true
+      },
+      "min_contrast": 12,
+      "sample": {
+        "status": "visible",
+        "averageRgb": [
+          24.444444444444443,
+          26.22222222222222,
+          26.333333333333332
+        ],
+        "contrast": 216
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "averageRgb": [
+          16.065779320987655,
+          19.058256172839506,
+          18.243827160493826
+        ],
+        "minRgb": 15,
+        "maxRgb": 211,
+        "contrast": 196
+      },
+      "clipping": {
+        "minClipW": 0.02,
+        "offscreenPadding": 1.4,
+        "centerClip": true,
+        "nearFarClip": true
+      },
+      "camera": {
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "aspect": 1.768944099378882,
+        "up": [
+          0,
+          -1,
+          0
+        ],
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "yaw": 3.141592653589793,
+        "pitch": -0.20000000000000004
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sortedSplats": 99966,
+      "screenshot": "artifacts/first-party-gaussian-stress/default-fit.png"
+    },
+    {
+      "label": "edge-right",
+      "purpose": "Keep visible content off center to exercise offscreen center clipping without losing sampled coverage.",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "canvasSignatureVisible": true,
+        "splatCountStable": true,
+        "depthSortStable": true
+      },
+      "diagnostics": {
+        "visualSampleVisible": false,
+        "sampleContrastPassed": false
+      },
+      "min_contrast": 8,
+      "sample": {
+        "status": "empty",
+        "averageRgb": [
+          15.11111111111111,
+          18.11111111111111,
+          17
+        ],
+        "contrast": 1.7777777777777786
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "averageRgb": [
+          16.09182098765432,
+          19.092978395061728,
+          18.293016975308642
+        ],
+        "minRgb": 15,
+        "maxRgb": 213,
+        "contrast": 198
+      },
+      "clipping": {
+        "minClipW": 0.02,
+        "offscreenPadding": 1.4,
+        "centerClip": true,
+        "nearFarClip": true
+      },
+      "camera": {
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "aspect": 1.768944099378882,
+        "up": [
+          0,
+          -1,
+          0
+        ],
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0.8999999999999998,
+          0,
+          1.1021821192326177e-16
+        ],
+        "distance": 10.799999999999999,
+        "yaw": -3.056768444604441,
+        "pitch": -0.19929984016059815
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sortedSplats": 99966,
+      "screenshot": "artifacts/first-party-gaussian-stress/edge-right.png"
+    },
+    {
+      "label": "near-plane-close",
+      "purpose": "Move close to the scene center to exercise near/far clipping without blanking the canvas.",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "canvasSignatureVisible": true,
+        "splatCountStable": true,
+        "depthSortStable": true
+      },
+      "diagnostics": {
+        "visualSampleVisible": true,
+        "sampleContrastPassed": true
+      },
+      "min_contrast": 8,
+      "sample": {
+        "status": "visible",
+        "averageRgb": [
+          49.111111111111114,
+          51.55555555555556,
+          52.22222222222222
+        ],
+        "contrast": 484.11111111111114
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "averageRgb": [
+          25.739390432098766,
+          28.472993827160494,
+          30.238233024691358
+        ],
+        "minRgb": 8,
+        "maxRgb": 211,
+        "contrast": 203
+      },
+      "clipping": {
+        "minClipW": 0.02,
+        "offscreenPadding": 1.4,
+        "centerClip": true,
+        "nearFarClip": true
+      },
+      "camera": {
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "aspect": 1.768944099378882,
+        "up": [
+          0,
+          -1,
+          0
+        ],
+        "position": [
+          6.481271146524716e-17,
+          -0.10728143862933304,
+          -0.5292359520342704
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 0.5399999999999999,
+        "yaw": 3.141592653589793,
+        "pitch": -0.20000000000000004
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sortedSplats": 99966,
+      "screenshot": "artifacts/first-party-gaussian-stress/near-plane-close.png"
+    },
+    {
+      "label": "near-plane-offset",
+      "purpose": "Combine close camera distance with a slight lateral offset.",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "canvasSignatureVisible": true,
+        "splatCountStable": true,
+        "depthSortStable": true
+      },
+      "diagnostics": {
+        "visualSampleVisible": true,
+        "sampleContrastPassed": true
+      },
+      "min_contrast": 8,
+      "sample": {
+        "status": "visible",
+        "averageRgb": [
+          52.55555555555556,
+          57,
+          61.77777777777778
+        ],
+        "contrast": 459.6666666666667
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "averageRgb": [
+          31.06597222222222,
+          34.45621141975309,
+          37.21778549382716
+        ],
+        "minRgb": 9,
+        "maxRgb": 244,
+        "contrast": 235
+      },
+      "clipping": {
+        "minClipW": 0.02,
+        "offscreenPadding": 1.4,
+        "centerClip": true,
+        "nearFarClip": true
+      },
+      "camera": {
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "aspect": 1.768944099378882,
+        "up": [
+          0,
+          -1,
+          0
+        ],
+        "position": [
+          0.75,
+          -0.10728143862933304,
+          -0.5292359520342703
+        ],
+        "target": [
+          0.15,
+          0,
+          1.8369701987210297e-17
+        ],
+        "distance": 0.8072174428244225,
+        "yaw": 2.2936109031245335,
+        "pitch": -0.1332971653376001
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sortedSplats": 99966,
+      "screenshot": "artifacts/first-party-gaussian-stress/near-plane-offset.png"
+    }
+  ],
+  "error": null,
+  "chromeErrors": "[16336:66484:0602/161737.588:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:13543/devtools/browser/e88acda9-fb7c-4ca0-b651-a28d78f2944b\r\n[16336:18216:0602/161744.387:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[16336:18216:0602/161744.392:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[16336:18216:0602/161744.403:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[16336:18216:0602/161746.590:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:702]   Error code: 401  Error message: Authentication Failed: wrong_secret\r\n[16336:18216:0602/161746.590:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:704] Failed to log in to GCM, resetting connection.\r\nCreated TensorFlow Lite XNNPACK delegate for CPU.\r\n[16336:18216:0602/161809.880:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+}

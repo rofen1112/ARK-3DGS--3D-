@@ -131,6 +131,7 @@ export type ArkRendererDebugState = {
   scene: {
     splats: number | null;
     splatCounts: number | null;
+    renderedSplats?: number | null;
     sceneVersion: number | null;
   };
   splattingPlugin: unknown;

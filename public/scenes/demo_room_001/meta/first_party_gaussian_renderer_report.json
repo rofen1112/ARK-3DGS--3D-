@@ -1,0 +1,277 @@
+{
+  "generated_at": "2026-06-02T12:57:02.577Z",
+  "target": "ARK first-party Gaussian ellipse renderer preview QA",
+  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+  "summary": {
+    "passed": true,
+    "checks": {
+      "visualQualityPassed": true,
+      "isArkRenderer": true,
+      "hasDepthSorting": true,
+      "hasScaleAwarePipeline": true,
+      "hasGaussianProjection": true,
+      "hasClippingState": true
+    },
+    "runtime": "Loaded",
+    "renderer": "ark-gaussian-webgl2",
+    "pipeline": {
+      "shader": "sh0-instanced-ellipse-gaussian",
+      "sorting": "cpu-back-to-front",
+      "scaleAware": true,
+      "opacityAware": true,
+      "gaussianProjection": true,
+      "covarianceProjection": true,
+      "instancing": true
+    },
+    "renderInfo": {
+      "lastLoadMs": 157,
+      "lastSortMs": 19.4,
+      "sortEnabled": true,
+      "sortReason": "camera-depth-order",
+      "sortedSplats": 99966,
+      "renderedSplats": 99966,
+      "sortVersion": 1,
+      "lod": {
+        "enabled": false,
+        "mode": "full-resolution",
+        "decodedSplats": 99966,
+        "renderedSplats": 99966,
+        "budgetSplats": 300000,
+        "samplingStride": 1,
+        "renderedRatio": 1,
+        "reason": "not-needed"
+      },
+      "performance": {
+        "inputBytes": 24793098,
+        "inputMiB": 23.645,
+        "readMs": 73.2,
+        "decodeMs": 66.9,
+        "packMs": 13.9,
+        "uploadMs": 2.2,
+        "totalLoadMs": 157.3,
+        "retainedCpuBufferBytes": 11995920,
+        "retainedCpuBufferMiB": 11.44,
+        "gpuUploadBytes": 5598096,
+        "gpuUploadMiB": 5.339,
+        "loadPeakBytes": 42786978,
+        "loadPeakMiB": 40.805,
+        "sortSplatLimit": 400000
+      },
+      "frameTiming": {
+        "lastRenderMs": 0,
+        "maxRenderMs": 19.7,
+        "averageRenderMs": 1.882,
+        "renderCount": 11
+      },
+      "ellipse": {
+        "extent": 2.05,
+        "minPixelAxis": 0.75,
+        "maxPixelAxis": 10,
+        "opacityScale": 0.44,
+        "alphaCutoff": 0.003,
+        "clipping": {
+          "minClipW": 0.02,
+          "offscreenPadding": 1.4,
+          "centerClip": true,
+          "nearFarClip": true
+        },
+        "sourceAxis": {
+          "min": 0.0001,
+          "max": 0.337948,
+          "mean": 0.005467
+        }
+      },
+      "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+    },
+    "splats": 99966,
+    "visual_quality": "Passed (216)",
+    "contrast": 216,
+    "duration_seconds": 11.983
+  },
+  "result": {
+    "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+    "screenshot": "artifacts/first-party/ark-gaussian-preview.png",
+    "passed": true,
+    "checks": {
+      "visualQualityPassed": true,
+      "isArkRenderer": true,
+      "hasDepthSorting": true,
+      "hasScaleAwarePipeline": true,
+      "hasGaussianProjection": true,
+      "hasClippingState": true
+    },
+    "exitCode": 0,
+    "pageState": {
+      "runtime": "Loaded",
+      "status": "scene-preview-100k.ply loaded in 0.2s.",
+      "fitBounds": "broad_01_99 (sidecar)",
+      "visualQuality": "Passed (216)",
+      "canvas": {
+        "width": 1424,
+        "height": 805,
+        "clientWidth": 1424,
+        "clientHeight": 805
+      },
+      "activeInfo": {
+        "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+        "format": "PLY",
+        "splats": 99966,
+        "shDegree": 0,
+        "denseMin": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "denseMax": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "displayScale": 0.2825170004605027,
+        "fitRadius": 2.9999999999999996,
+        "fitBoundsId": "broad_01_99",
+        "fitBoundsSource": "sidecar",
+        "source": "bundled"
+      },
+      "visualQualityGate": {
+        "status": "passed",
+        "reason": "Visual sample passed all runtime checks.",
+        "checks": {
+          "sceneLoaded": {
+            "passed": true,
+            "value": 99966,
+            "message": "Scene has renderable splats."
+          },
+          "canvasReady": {
+            "passed": true,
+            "value": {
+              "width": 1424,
+              "height": 805,
+              "clientWidth": 1424,
+              "clientHeight": 805
+            },
+            "message": "Renderer canvas has non-zero drawing and display size."
+          },
+          "fitBoundsResolved": {
+            "passed": true,
+            "value": "broad_01_99",
+            "message": "Camera fit bounds are resolved."
+          },
+          "bundledSidecarApplied": {
+            "passed": true,
+            "value": "broad_01_99 (sidecar)",
+            "message": "Bundled scenes should use sidecar fit bounds."
+          },
+          "renderVisible": {
+            "passed": true,
+            "value": "visible",
+            "message": "Pixel sample detects visible rendered content."
+          },
+          "contrastAboveThreshold": {
+            "passed": true,
+            "value": 216,
+            "message": "Pixel contrast is at least 12."
+          }
+        },
+        "thresholds": {
+          "minContrast": 12,
+          "settleFrames": 8
+        },
+        "sample": {
+          "status": "visible",
+          "averageRgb": [
+            24.444444444444443,
+            26.22222222222222,
+            26.333333333333332
+          ],
+          "contrast": 216
+        },
+        "evaluatedAtMs": 8125
+      },
+      "renderer": {
+        "id": "ark-gaussian-webgl2",
+        "backend": {
+          "family": "ark-first-party",
+          "mode": "instanced-ellipse-gaussian-renderer"
+        }
+      },
+      "pipeline": {
+        "shader": "sh0-instanced-ellipse-gaussian",
+        "sorting": "cpu-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true
+      },
+      "scene": {
+        "splats": 99966,
+        "splatCounts": 99966,
+        "renderedSplats": 99966,
+        "sceneVersion": 1
+      },
+      "renderInfo": {
+        "lastLoadMs": 157,
+        "lastSortMs": 19.4,
+        "sortEnabled": true,
+        "sortReason": "camera-depth-order",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "sortVersion": 1,
+        "lod": {
+          "enabled": false,
+          "mode": "full-resolution",
+          "decodedSplats": 99966,
+          "renderedSplats": 99966,
+          "budgetSplats": 300000,
+          "samplingStride": 1,
+          "renderedRatio": 1,
+          "reason": "not-needed"
+        },
+        "performance": {
+          "inputBytes": 24793098,
+          "inputMiB": 23.645,
+          "readMs": 73.2,
+          "decodeMs": 66.9,
+          "packMs": 13.9,
+          "uploadMs": 2.2,
+          "totalLoadMs": 157.3,
+          "retainedCpuBufferBytes": 11995920,
+          "retainedCpuBufferMiB": 11.44,
+          "gpuUploadBytes": 5598096,
+          "gpuUploadMiB": 5.339,
+          "loadPeakBytes": 42786978,
+          "loadPeakMiB": 40.805,
+          "sortSplatLimit": 400000
+        },
+        "frameTiming": {
+          "lastRenderMs": 0,
+          "maxRenderMs": 19.7,
+          "averageRenderMs": 1.882,
+          "renderCount": 11
+        },
+        "ellipse": {
+          "extent": 2.05,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 10,
+          "opacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        },
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+      }
+    },
+    "parseError": null,
+    "stderr": ""
+  }
+}

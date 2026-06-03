@@ -1,0 +1,432 @@
+{
+  "generated_at": "2026-06-02T11:30:58.818Z",
+  "target": "ARK first-party runtime Gaussian metadata adapters",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "contract": "public/scenes/demo_room_001/meta/gaussian_data_contract_report.json",
+  "summary": {
+    "passed": true,
+    "metadata_ready": true,
+    "runtime_asset_count": 2,
+    "direct_renderable_runtime_asset_count": 0,
+    "failed_checks": 0
+  },
+  "adapter": {
+    "metadata_formats": [
+      "ply",
+      "sog",
+      "spz"
+    ],
+    "direct_first_party_formats": [
+      "ply"
+    ],
+    "note": "SOG/SPZ metadata readiness does not imply direct first-party renderer support."
+  },
+  "checks": [
+    {
+      "id": "manifest_loaded",
+      "passed": true,
+      "value": "demo_room_001",
+      "message": "Scene manifest is readable."
+    },
+    {
+      "id": "contract_loaded",
+      "passed": true,
+      "value": "ply",
+      "message": "PLY data contract report is readable."
+    },
+    {
+      "id": "fit_bounds_available",
+      "passed": true,
+      "value": {
+        "id": "broad_01_99",
+        "source": "sidecar",
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      "message": "Runtime metadata can reuse sidecar fit bounds."
+    },
+    {
+      "id": "source_summary_available",
+      "passed": true,
+      "value": {
+        "count": 1855266,
+        "validPositionCount": 1854627,
+        "invalidPositionCount": 639,
+        "shDegree": 3
+      },
+      "message": "Runtime metadata can reference source PLY summary."
+    },
+    {
+      "id": "runtime_sog_metadata_ready",
+      "passed": true,
+      "value": [
+        {
+          "id": "runtime-sog",
+          "role": "runtime",
+          "label": "SOG runtime",
+          "format": "sog",
+          "url": "gaussian/scene.sog",
+          "sourceAssetId": null,
+          "splats": 1855266,
+          "sizeBytes": 22887509,
+          "dataBytes": null,
+          "fitBounds": {
+            "id": "broad_01_99",
+            "source": "sidecar",
+            "min": [
+              -2.535121,
+              -4.258497,
+              -4.28949
+            ],
+            "max": [
+              4.863048,
+              1.211781,
+              9.86895
+            ]
+          },
+          "sourceBounds": {
+            "min": [
+              -4.609628,
+              -6.477489,
+              -5.598247
+            ],
+            "max": [
+              12.420171,
+              5.007942,
+              12.98222
+            ]
+          },
+          "sourceSummary": {
+            "count": 1855266,
+            "validPositionCount": 1854627,
+            "invalidPositionCount": 639,
+            "shDegree": 3
+          },
+          "metadataStatus": "ready",
+          "metadataReady": true,
+          "directFirstPartyRenderSupported": false,
+          "warnings": [
+            "SOG metadata is available, but direct first-party rendering is not implemented yet."
+          ],
+          "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+          "exists": true,
+          "sizeOnDisk": 22887509,
+          "sizeMatches": true
+        }
+      ],
+      "message": "SOG runtime metadata is ready."
+    },
+    {
+      "id": "runtime_spz_metadata_ready",
+      "passed": true,
+      "value": [
+        {
+          "id": "runtime-spz",
+          "role": "runtime",
+          "label": "SPZ runtime",
+          "format": "spz",
+          "url": "gaussian/scene.spz",
+          "sourceAssetId": null,
+          "splats": 1855266,
+          "sizeBytes": 35364142,
+          "dataBytes": null,
+          "fitBounds": {
+            "id": "broad_01_99",
+            "source": "sidecar",
+            "min": [
+              -2.535121,
+              -4.258497,
+              -4.28949
+            ],
+            "max": [
+              4.863048,
+              1.211781,
+              9.86895
+            ]
+          },
+          "sourceBounds": {
+            "min": [
+              -4.609628,
+              -6.477489,
+              -5.598247
+            ],
+            "max": [
+              12.420171,
+              5.007942,
+              12.98222
+            ]
+          },
+          "sourceSummary": {
+            "count": 1855266,
+            "validPositionCount": 1854627,
+            "invalidPositionCount": 639,
+            "shDegree": 3
+          },
+          "metadataStatus": "ready",
+          "metadataReady": true,
+          "directFirstPartyRenderSupported": false,
+          "warnings": [
+            "SPZ metadata is available, but direct first-party rendering is not implemented yet."
+          ],
+          "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+          "exists": true,
+          "sizeOnDisk": 35364142,
+          "sizeMatches": true
+        }
+      ],
+      "message": "SPZ runtime metadata is ready."
+    },
+    {
+      "id": "runtime_asset_sizes_match",
+      "passed": true,
+      "value": [
+        {
+          "id": "runtime-sog",
+          "exists": true,
+          "sizeMatches": true
+        },
+        {
+          "id": "runtime-spz",
+          "exists": true,
+          "sizeMatches": true
+        }
+      ],
+      "message": "Runtime asset files exist and declared sizes match."
+    },
+    {
+      "id": "runtime_splat_counts_match_source",
+      "passed": true,
+      "value": [
+        {
+          "id": "runtime-sog",
+          "splats": 1855266,
+          "sourceCount": 1855266
+        },
+        {
+          "id": "runtime-spz",
+          "splats": 1855266,
+          "sourceCount": 1855266
+        }
+      ],
+      "message": "Runtime manifest splat counts match the source PLY count."
+    }
+  ],
+  "assets": [
+    {
+      "id": "runtime-sog",
+      "role": "runtime",
+      "label": "SOG runtime",
+      "format": "sog",
+      "url": "gaussian/scene.sog",
+      "sourceAssetId": null,
+      "splats": 1855266,
+      "sizeBytes": 22887509,
+      "dataBytes": null,
+      "fitBounds": {
+        "id": "broad_01_99",
+        "source": "sidecar",
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      "sourceBounds": {
+        "min": [
+          -4.609628,
+          -6.477489,
+          -5.598247
+        ],
+        "max": [
+          12.420171,
+          5.007942,
+          12.98222
+        ]
+      },
+      "sourceSummary": {
+        "count": 1855266,
+        "validPositionCount": 1854627,
+        "invalidPositionCount": 639,
+        "shDegree": 3
+      },
+      "metadataStatus": "ready",
+      "metadataReady": true,
+      "directFirstPartyRenderSupported": false,
+      "warnings": [
+        "SOG metadata is available, but direct first-party rendering is not implemented yet."
+      ],
+      "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+      "exists": true,
+      "sizeOnDisk": 22887509,
+      "sizeMatches": true
+    },
+    {
+      "id": "runtime-spz",
+      "role": "runtime",
+      "label": "SPZ runtime",
+      "format": "spz",
+      "url": "gaussian/scene.spz",
+      "sourceAssetId": null,
+      "splats": 1855266,
+      "sizeBytes": 35364142,
+      "dataBytes": null,
+      "fitBounds": {
+        "id": "broad_01_99",
+        "source": "sidecar",
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      "sourceBounds": {
+        "min": [
+          -4.609628,
+          -6.477489,
+          -5.598247
+        ],
+        "max": [
+          12.420171,
+          5.007942,
+          12.98222
+        ]
+      },
+      "sourceSummary": {
+        "count": 1855266,
+        "validPositionCount": 1854627,
+        "invalidPositionCount": 639,
+        "shDegree": 3
+      },
+      "metadataStatus": "ready",
+      "metadataReady": true,
+      "directFirstPartyRenderSupported": false,
+      "warnings": [
+        "SPZ metadata is available, but direct first-party rendering is not implemented yet."
+      ],
+      "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+      "exists": true,
+      "sizeOnDisk": 35364142,
+      "sizeMatches": true
+    },
+    {
+      "id": "source-ply",
+      "role": "source",
+      "label": "Source PLY",
+      "format": "ply",
+      "url": "gaussian/scene.ply",
+      "sourceAssetId": null,
+      "splats": 1855266,
+      "sizeBytes": 460111596,
+      "dataBytes": 460107500,
+      "fitBounds": {
+        "id": "broad_01_99",
+        "source": "sidecar",
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      "sourceBounds": {
+        "min": [
+          -4.609628,
+          -6.477489,
+          -5.598247
+        ],
+        "max": [
+          12.420171,
+          5.007942,
+          12.98222
+        ]
+      },
+      "sourceSummary": {
+        "count": 1855266,
+        "validPositionCount": 1854627,
+        "invalidPositionCount": 639,
+        "shDegree": 3
+      },
+      "metadataStatus": "ready",
+      "metadataReady": true,
+      "directFirstPartyRenderSupported": true,
+      "warnings": [],
+      "path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "exists": true,
+      "sizeOnDisk": 460107500,
+      "sizeMatches": true
+    },
+    {
+      "id": "preview-ply",
+      "role": "preview",
+      "label": "Preview PLY 100k",
+      "format": "ply",
+      "url": "gaussian/scene-preview-100k.ply",
+      "sourceAssetId": "source-ply",
+      "splats": 99966,
+      "sizeBytes": 24793098,
+      "dataBytes": null,
+      "fitBounds": {
+        "id": "broad_01_99",
+        "source": "sidecar",
+        "min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ]
+      },
+      "sourceBounds": {
+        "min": [
+          -4.609628,
+          -6.477489,
+          -5.598247
+        ],
+        "max": [
+          12.420171,
+          5.007942,
+          12.98222
+        ]
+      },
+      "sourceSummary": {
+        "count": 1855266,
+        "validPositionCount": 1854627,
+        "invalidPositionCount": 639,
+        "shDegree": 3
+      },
+      "metadataStatus": "ready",
+      "metadataReady": true,
+      "directFirstPartyRenderSupported": true,
+      "warnings": [],
+      "path": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+      "exists": true,
+      "sizeOnDisk": 24793098,
+      "sizeMatches": true
+    }
+  ]
+}

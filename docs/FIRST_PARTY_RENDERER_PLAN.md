@@ -12,8 +12,16 @@ The current runtime is intentionally split into two layers:
 - `src/sdk`: ARK SDK boundary.
 - `src/sdk/aholo/AholoRendererBackend.ts`: current renderer backend implemented on top of `@manycore/aholo-viewer`.
 - `src/sdk/ark/ArkPointRendererBackend.ts`: first-party diagnostic WebGL point backend for proving ARK-owned PLY parsing, GPU upload, rendering, and QA.
+- `src/sdk/ark/ArkGaussianRendererBackend.ts`: first-party WebGL2 Gaussian backend for proving ARK-owned instanced quad rendering and screen-space ellipse projection.
 
 This means the application now depends on the ARK renderer interface first, and the Aholo SDK second. The next renderer can replace the backend without rewriting the browser shell.
+
+Renderer boundary:
+
+- Aholo remains the default runtime backend until ARK's own renderer reaches visual parity on the full scene.
+- `renderer=ark-point` is a diagnostic point-splat baseline only.
+- `renderer=ark-gaussian` is the active first-party Gaussian renderer path.
+- The first-party renderer is not considered complete until QA reports `gaussianProjection=true` on a recognizable scene.
 
 ## Renderer Backend Contract
 
@@ -219,7 +227,7 @@ Exit criteria:
 
 ### Phase 2: Minimal WebGL2 Renderer
 
-Status: started with a diagnostic point renderer. This is not yet full Gaussian splatting.
+Status: active. The diagnostic point renderer is complete, and the first instanced ellipse Gaussian renderer is now the active first-party path.
 
 Deliverables:
 
@@ -236,10 +244,70 @@ Current progress:
 - Added scale-aware point projection using decoded Gaussian `scale_0/1/2` and opacity.
 - Added `scripts/qa-first-party-preview.mjs`.
 - Current QA: `scene-preview-100k.ply`, `99,966` splats, `Passed (216.0)`, shader `sh0-scale-aware-point-cloud`, sorting `cpu-back-to-front`, last sort `17.5ms`.
+- Added `src/sdk/ark/ArkGaussianRendererBackend.ts`.
+- Added `?renderer=ark-gaussian` backend selection in the browser shell.
+- Added first WebGL2 instanced quad path for screen-space ellipse projection from decoded scale and rotation quaternion.
+- Added `scripts/qa-first-party-gaussian.mjs` with a hard `gaussianProjection=true` gate.
+- Current Gaussian QA: `scene-preview-100k.ply`, `99,966` splats, `Passed (216)`, shader `sh0-instanced-ellipse-gaussian`, sorting `cpu-back-to-front`, opacity scale `0.44`, ellipse extent `2.05`, max pixel axis `10`, clipping `minClipW=0.02` and `offscreenPadding=1.4`.
+- Added `scripts/qa-first-party-gaussian-compare.mjs` for first-party Gaussian comparison against Aholo and Kellogg preview baselines.
+- Current comparison QA: all three preview paths render `99,966` splats; `clipping_passed=true`; `ark-gaussian` vs `aholo-adapter` signature similarity is `0.996124` with mean absolute RGB delta `0.9884`; signature contrast is `196` vs Aholo's `193`.
+- Added `scripts/qa-first-party-gaussian-stress.mjs` for camera-edge and near-plane clipping stress QA.
+- Current stress QA: `default-fit`, `edge-right`, `near-plane-close`, and `near-plane-offset` all pass; all cases retain `99,966` splats and `clipping_hard_gate_passed=true`.
+- Added `scripts/qa-first-party-default-readiness.mjs` to assess whether `ark-gaussian` can become the default backend.
+- Current readiness QA: `preview_path_ready=true`, `default_backend_ready=false`, `should_keep_aholo_default=true`, `blocking_count=4`.
+- Added `scripts/qa-first-party-full-scene-visual-budget.mjs` for static full-scene visual gate assessment before attempting a full default replacement render.
+- Current full-scene visual QA: `assessment_passed=true`, `visual_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, Aholo-backed default visual QA `Passed (114.3)`, first-party preview visual QA `Passed (216)`.
+- Added `scripts/qa-first-party-full-scene-performance-budget.mjs` for static full-scene performance budget assessment before attempting a full default replacement run.
+- Current full-scene performance budget QA: `assessment_passed=true`, `performance_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, `1,855,266` splats, current CPU sort limit `400,000`, ratio `4.638x`.
+- Added `src/sdk/gaussian/runtimeMetadata.ts` and `scripts/validate-runtime-gaussian-metadata.mjs` for SOG/SPZ runtime metadata adapters.
+- Current runtime metadata QA: `metadata_ready=true`, `runtime_asset_count=2`, `direct_renderable_runtime_asset_count=0`.
+- Added `src/sdk/gaussian/renderableAsset.ts` and `scripts/validate-first-party-renderable-assets.mjs` for first-party renderable asset resolution.
+- Current renderable asset QA: default/runtime SOG/SPZ resolve to `preview-ply` in `preview-substitute` mode; `preview-ply` and `source-ply` resolve in `direct` mode.
+- Added `src/sdk/gaussian/fullSceneCandidate.ts` and `scripts/validate-first-party-full-scene-candidate.mjs` for full-scene first-party measurement candidate resolution.
+- Current full-scene candidate QA: default `runtime-sog` resolves to `source-ply` in `source-ply-substitute` mode; candidate is first-party loadable and splat-equivalent, but `measuredDefaultRuntime=false`.
+- Added `scripts/qa-first-party-full-scene-source-ply-smoke.mjs` for degraded full-scene source PLY measurement.
+- Current source PLY smoke QA: `smoke_passed=true`, renderer `ark-gaussian-webgl2`, decoded `1,854,627` valid splats, rendered `300,000` budget splats, skipped `639` invalid splats, sorting `cpu-back-to-front`, `sortEnabled=true`, LOD `deterministic-stride-budget`, visual QA `Passed (252.4)`, settle frames `1`, duration `15.951s`.
+- Current source PLY timing breakdown: read `888.7ms`, decode `1,109.4ms`, pack `40.9ms`, upload `5.5ms`, renderer load `2,046ms`, visual gate wall-clock `10,758ms`, load peak `579.25MiB`.
 
 Known limitation:
 
-- The current first-party backend renders SH0 color as circular scale-aware points with alpha. It does not yet project anisotropic Gaussian covariance or support SH1-SH3 view-dependent color.
+- The diagnostic point backend renders SH0 color as circular scale-aware points with alpha. It is retained only as a baseline.
+- The first Gaussian backend still uses SH0 color and CPU sorting. It is a renderer milestone, not the final production WebGPU renderer.
+- The Kellogg independent baseline visibly renders and matches splat count, but direct headless canvas signature downsampling returns near-zero contrast, so it is used for visual/data compatibility rather than signature-difference gating.
+- The manifest default remains `runtime-sog`; first-party `ark-gaussian` currently loads direct PLY data only. The readiness gate must stay red until SOG/SPZ direct loading or a first-party runtime conversion path exists.
+- The source PLY full-scene candidate can support degraded measurement work, but it is not the manifest default runtime and must not clear default backend readiness.
+- The full default runtime has `1,855,266` splats, above the current `400,000` CPU sort limit. A worker/GPU sorting or streaming path is required before default replacement.
+- The measured full-scene source PLY smoke is visible through a degraded deterministic stride LOD: it decodes all `1,854,627` valid splats but renders `300,000` budget splats. Adaptive QA and budgeted LOD reduced the previous `223.251s` smoke to `15.951s`, but this is not a default-runtime replacement path.
+- The full-scene visual assessment is intentionally non-passing. It records Aholo-backed visibility baselines and keeps readiness red until the first-party renderer can measure the manifest default directly.
+- The full-scene performance budget assessment is intentionally non-passing. It records the blockers and keeps readiness red until a measured full-scene performance gate can run.
+
+Completed renderer tuning:
+
+- Tuned first-party Gaussian opacity scale to `0.44`, reducing preview Visual QA contrast from `272.9` to `222.2`.
+- Reduced `ark-gaussian` vs Aholo mean absolute RGB signature delta from `1.0648` to `0.9968`.
+- Reduced `ark-gaussian` signature contrast from `222` to `197`, closer to Aholo's `193`.
+- Tuned first-party Gaussian ellipse extent to `2.05` and max pixel axis to `10`, reducing preview Visual QA contrast further to `216`.
+- Reduced `ark-gaussian` vs Aholo mean absolute RGB signature delta further to `0.9884`, with similarity `0.996124`.
+- Added adaptive large-scene visual QA settle and initial render burst policy. Preview PLY keeps the normal `8` settle frames; full-source PLY smoke now uses `1` settle frame and reduced smoke duration from `223.251s` to `80.971s`.
+- Added deterministic stride LOD for degraded full-source PLY smoke. The renderer keeps decoded splats at `1,854,627`, renders `300,000` budget splats, enables CPU sorting on the budget, and reduced smoke duration from `80.971s` to `15.951s`.
+- Added explicit near/far and offscreen center clipping. The current baseline metrics are unchanged after clipping: `ark-gaussian` vs Aholo mean absolute RGB delta `0.9884`, similarity `0.996124`, signature contrast `196` vs Aholo's `193`.
+- Promoted clipping debug state to a hard QA gate in the single renderer, comparison, and stress harnesses.
+- Added camera-edge and near-plane stress cases. Edge stress uses canvas signature contrast instead of only the sparse 3x3 pixel sample, because edge-visible content can miss fixed sample points.
+- Added default backend readiness reporting with explicit blockers and an optional `--require-ready` hard failure mode.
+- Added SOG/SPZ runtime metadata adapters. These adapters make runtime assets auditable in the first-party data layer, but they do not claim direct first-party rendering support.
+- Added renderable asset resolver. Preview substitutes are degraded first-party candidates for QA and diagnostics; they do not remove the default backend blockers.
+- Added full-scene measurement candidate resolver. Source PLY substitutes are allowed for measurement scaffolding only; they do not make SOG/SPZ directly supported.
+- Added degraded full-scene source PLY smoke QA. This is the first real full-scene first-party renderer measurement, but it is not a default-runtime readiness gate.
+- Added full-scene visual gate reporting. This is an audit gate scaffold, not proof that the first-party renderer can display the full runtime scene.
+- Added full-scene performance budget reporting. This is an audit gate scaffold, not proof that the full runtime scene is performant.
+
+Next renderer tuning target:
+
+- Harden covariance projection math and alpha compositing while keeping `ark-gaussian` vs Aholo preview splat delta at `0`.
+- Replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison.
+- Convert the full-scene visual and performance assessments into measured gates before changing the default backend.
+- Add SOG/SPZ direct loading or a first-party runtime conversion path so the manifest default can be evaluated without Aholo.
+- Keep `gaussianProjection=true`, `covarianceProjection=true`, `instancing=true`, and clipping debug state as hard QA requirements.
 
 Exit criteria:
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T01:40:07.457Z",
+  "generated_at": "2026-06-02T09:50:22.509Z",
   "manifest": "public/scenes/demo_room_001/manifest.json",
   "summary": {
     "passed": true,
@@ -99,7 +99,7 @@
       "url": "gaussian/scene.ply",
       "path": "public/scenes/demo_room_001/gaussian/scene.ply",
       "exists": true,
-      "size_bytes": 460111596,
+      "size_bytes": 460107500,
       "declared_size_bytes": 460111596,
       "declared_data_bytes": 460107500,
       "size_matches": true

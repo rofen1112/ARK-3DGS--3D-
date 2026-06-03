@@ -1,0 +1,713 @@
+{
+  "generated_at": "2026-06-02T12:57:40.720Z",
+  "target": "ARK first-party full-scene visual gate assessment",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "require_pass": false,
+  "summary": {
+    "passed": false,
+    "assessment_passed": true,
+    "visual_gate_passed": false,
+    "status": "blocked-before-measurement",
+    "default_backend_ready": false,
+    "should_keep_aholo_default": true,
+    "blocking_count": 5,
+    "failed_checks": 0,
+    "default_asset": "runtime-sog",
+    "default_type": "sog",
+    "default_splats": 1855266,
+    "default_aholo_visual_quality": "Passed (114.3)",
+    "default_aholo_contrast": 114.33333333333333,
+    "measurement_candidate_asset": "source-ply",
+    "measurement_candidate_mode": "source-ply-substitute",
+    "measurement_candidate_splats": 1855266,
+    "measurement_candidate_ready": true,
+    "measurement_candidate_is_default_runtime": false,
+    "source_ply_smoke_passed": true,
+    "source_ply_smoke_splats": 1854627,
+    "source_ply_smoke_rendered_splats": 300000,
+    "source_ply_smoke_lod_enabled": true,
+    "source_ply_smoke_visual_quality": "Passed (252.4)",
+    "source_ply_smoke_settle_frames": 1,
+    "source_ply_smoke_visual_gate_evaluated_ms": 10758,
+    "source_ply_smoke_max_render_ms": 67.1,
+    "preview_renderer": "ark-gaussian-webgl2",
+    "preview_splats": 99966,
+    "preview_visual_quality": "Passed (216)"
+  },
+  "gate_policy": {
+    "direct_first_party_formats": [
+      "ply"
+    ],
+    "degraded_preview_substitutes_can_pass_full_scene_gate": false,
+    "aholo_baselines_can_pass_first_party_gate": false,
+    "measured_first_party_default_runtime_required": true
+  },
+  "default_asset": {
+    "id": "runtime-sog",
+    "role": "runtime",
+    "label": "SOG runtime",
+    "type": "sog",
+    "url": "gaussian/scene.sog",
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "splats": 1855266,
+    "sizeBytes": 22887509
+  },
+  "assets": [
+    {
+      "id": "runtime-sog",
+      "role": "runtime",
+      "type": "sog",
+      "url": "gaussian/scene.sog",
+      "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+      "splats": 1855266,
+      "sizeBytes": 22887509,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 22887509
+    },
+    {
+      "id": "runtime-spz",
+      "role": "runtime",
+      "type": "spz",
+      "url": "gaussian/scene.spz",
+      "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+      "splats": 1855266,
+      "sizeBytes": 35364142,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 35364142
+    },
+    {
+      "id": "source-ply",
+      "role": "source",
+      "type": "ply",
+      "url": "gaussian/scene.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "splats": 1855266,
+      "sizeBytes": 460111596,
+      "dataBytes": 460107500,
+      "exists": true,
+      "sizeOnDisk": 460107500
+    },
+    {
+      "id": "preview-ply",
+      "role": "preview",
+      "type": "ply",
+      "url": "gaussian/scene-preview-100k.ply",
+      "path": "public/scenes/demo_room_001/gaussian/scene-preview-100k.ply",
+      "splats": 99966,
+      "sizeBytes": 24793098,
+      "dataBytes": null,
+      "exists": true,
+      "sizeOnDisk": 24793098
+    }
+  ],
+  "assessment_checks": [
+    {
+      "id": "manifest_loaded",
+      "passed": true,
+      "value": "public/scenes/demo_room_001/manifest.json",
+      "message": "Scene manifest is readable."
+    },
+    {
+      "id": "manifest_validation_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "total_checks": 8,
+        "failed_checks": 0,
+        "asset_count": 4
+      },
+      "message": "Manifest validator report passes."
+    },
+    {
+      "id": "default_asset_declared",
+      "passed": true,
+      "value": "runtime-sog",
+      "message": "Manifest declares the default Gaussian asset."
+    },
+    {
+      "id": "runtime_assets_declared",
+      "passed": true,
+      "value": [
+        "runtime-sog:sog",
+        "runtime-spz:spz"
+      ],
+      "message": "Manifest declares runtime SOG/SPZ assets."
+    },
+    {
+      "id": "preview_ply_declared",
+      "passed": true,
+      "value": "preview-ply",
+      "message": "Manifest declares a first-party preview PLY asset."
+    },
+    {
+      "id": "source_ply_declared",
+      "passed": true,
+      "value": "source-ply",
+      "message": "Manifest declares a source PLY audit asset."
+    },
+    {
+      "id": "asset_files_present",
+      "passed": true,
+      "value": [],
+      "message": "All declared Gaussian files are present locally."
+    },
+    {
+      "id": "runtime_metadata_report_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "metadata_ready": true,
+        "runtime_asset_count": 2,
+        "direct_renderable_runtime_asset_count": 0,
+        "failed_checks": 0
+      },
+      "message": "Runtime Gaussian metadata adapter report passes."
+    },
+    {
+      "id": "renderable_asset_report_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "resolution_count": 5,
+        "direct_count": 2,
+        "preview_substitute_count": 3,
+        "unsupported_count": 0,
+        "failed_checks": 0
+      },
+      "message": "Renderable asset resolver report passes."
+    },
+    {
+      "id": "full_scene_candidate_report_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "resolution_count": 4,
+        "candidate_count": 4,
+        "source_substitute_count": 3,
+        "direct_default_count": 1,
+        "unsupported_count": 0,
+        "default_candidate_ready": true,
+        "default_measured_runtime_directly": false,
+        "failed_checks": 0
+      },
+      "message": "Full-scene first-party measurement candidate resolver report passes."
+    },
+    {
+      "id": "preview_first_party_measurement_available",
+      "passed": true,
+      "value": {
+        "gaussian": true,
+        "comparison": true,
+        "stress": true
+      },
+      "message": "Preview first-party renderer measurement reports are available."
+    },
+    {
+      "id": "default_aholo_visual_baseline_available",
+      "passed": true,
+      "value": {
+        "format": "sog",
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SOG",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "visual_quality": "Passed (114.3)",
+        "contrast": 114.33333333333333,
+        "evaluated_at_ms": 1716,
+        "screenshot": "artifacts/format-matrix/scene-sog.png",
+        "failure_reason": null
+      },
+      "message": "Aholo-backed default runtime visual baseline is available."
+    },
+    {
+      "id": "default_aholo_comparison_available",
+      "passed": true,
+      "value": {
+        "splats": 0,
+        "contrast": -378.22222222222223,
+        "max_abs_bounds": 7.2311665003349415
+      },
+      "message": "ARK wrapper versus direct Aholo default-runtime comparison is available."
+    }
+  ],
+  "visual_requirements": [
+    {
+      "id": "default_runtime_direct_format_supported",
+      "passed": false,
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "defaultType": "sog",
+        "supportedFormats": [
+          "ply"
+        ]
+      },
+      "message": "Manifest default format is directly loadable by the first-party renderer."
+    },
+    {
+      "id": "default_runtime_not_preview_substitute",
+      "passed": false,
+      "value": {
+        "label": "default",
+        "requested_asset_id": "runtime-sog",
+        "requested_type": "sog",
+        "renderable_asset_id": "preview-ply",
+        "renderable_type": "ply",
+        "mode": "preview-substitute",
+        "directFirstPartyRenderSupported": false,
+        "degraded": true,
+        "renderable_exists": true,
+        "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+        "blockers": [
+          "direct-sog-rendering-not-implemented"
+        ]
+      },
+      "message": "Manifest default resolves to a direct first-party renderable asset, not a degraded preview substitute."
+    },
+    {
+      "id": "direct_full_scene_load_available",
+      "passed": false,
+      "value": null,
+      "message": "The first-party renderer can load the manifest default full scene directly."
+    },
+    {
+      "id": "direct_full_scene_visual_measurement_available",
+      "passed": false,
+      "value": null,
+      "message": "A measured first-party full-scene visual QA run exists."
+    },
+    {
+      "id": "first_party_full_scene_comparison_available",
+      "passed": false,
+      "value": null,
+      "message": "A first-party full-scene visual comparison against Aholo baseline exists."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "default_runtime_direct_format_supported",
+      "message": "Manifest default format is directly loadable by the first-party renderer.",
+      "value": {
+        "defaultAsset": "runtime-sog",
+        "defaultType": "sog",
+        "supportedFormats": [
+          "ply"
+        ]
+      }
+    },
+    {
+      "id": "default_runtime_not_preview_substitute",
+      "message": "Manifest default resolves to a direct first-party renderable asset, not a degraded preview substitute.",
+      "value": {
+        "label": "default",
+        "requested_asset_id": "runtime-sog",
+        "requested_type": "sog",
+        "renderable_asset_id": "preview-ply",
+        "renderable_type": "ply",
+        "mode": "preview-substitute",
+        "directFirstPartyRenderSupported": false,
+        "degraded": true,
+        "renderable_exists": true,
+        "reason": "SOG is not directly supported; using preview PLY as a degraded first-party substitute.",
+        "blockers": [
+          "direct-sog-rendering-not-implemented"
+        ]
+      }
+    },
+    {
+      "id": "direct_full_scene_load_available",
+      "message": "The first-party renderer can load the manifest default full scene directly.",
+      "value": null
+    },
+    {
+      "id": "direct_full_scene_visual_measurement_available",
+      "message": "A measured first-party full-scene visual QA run exists.",
+      "value": null
+    },
+    {
+      "id": "first_party_full_scene_comparison_available",
+      "message": "A first-party full-scene visual comparison against Aholo baseline exists.",
+      "value": null
+    }
+  ],
+  "baselines": {
+    "default_format_matrix_row": {
+      "format": "sog",
+      "passed": true,
+      "runtime": "Loaded",
+      "viewer_format": "SOG",
+      "splats": 1855266,
+      "sh_degree": 0,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "visual_quality": "Passed (114.3)",
+      "contrast": 114.33333333333333,
+      "evaluated_at_ms": 1716,
+      "screenshot": "artifacts/format-matrix/scene-sog.png",
+      "failure_reason": null
+    },
+    "default_aholo_comparison": {
+      "format": "sog",
+      "passed": true,
+      "ark": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SOG",
+        "splats": 1855266,
+        "sh_degree": 0,
+        "fit_bounds": "broad_01_99 (sidecar)",
+        "fit_bounds_id": "broad_01_99",
+        "fit_bounds_source": "sidecar",
+        "dense_min": [
+          -2.535121,
+          -4.258497,
+          -4.28949
+        ],
+        "dense_max": [
+          4.863048,
+          1.211781,
+          9.86895
+        ],
+        "display_scale": 0.2825170004605027,
+        "visual_quality": "Passed (114.3)",
+        "contrast": 114.33333333333333,
+        "evaluated_at_ms": 1674,
+        "screenshot": "artifacts/baseline-compare/ark-sog.png",
+        "failure_reason": null
+      },
+      "baseline": {
+        "passed": true,
+        "runtime": "Loaded",
+        "viewer_format": "SOG",
+        "splats": 1855266,
+        "sh_degree": 3,
+        "fit_bounds": "sog_meta_dense (renderer)",
+        "fit_bounds_id": "sog_meta_dense",
+        "fit_bounds_source": "renderer",
+        "dense_min": [
+          -1.7244828278583595,
+          -2.0118710851177815,
+          -1.8867884778786876
+        ],
+        "dense_max": [
+          2.596758502228941,
+          1.7930607055860268,
+          2.637783499665059
+        ],
+        "display_scale": 0.8840615244608131,
+        "visual_quality": "Passed (492.6)",
+        "contrast": 492.55555555555554,
+        "evaluated_at_ms": 920,
+        "screenshot": "artifacts/baseline-compare/baseline-sog.png",
+        "failure_reason": null
+      },
+      "deltas": {
+        "splats": 0,
+        "contrast": -378.22222222222223,
+        "max_abs_bounds": 7.2311665003349415
+      },
+      "interpretation": "Both ARK and Aholo direct baseline loaded the same format and splat count. Bounds may differ because ARK uses sidecar fit bounds and baseline uses renderer-computed bounds."
+    },
+    "default_full_scene_candidate": {
+      "label": "default",
+      "requested_asset_id": "runtime-sog",
+      "requested_type": "sog",
+      "requested_splats": 1855266,
+      "candidate_asset_id": "source-ply",
+      "candidate_type": "ply",
+      "candidate_role": "source",
+      "candidate_splats": 1855266,
+      "candidate_url": "gaussian/scene.ply",
+      "candidate_path": "public/scenes/demo_room_001/gaussian/scene.ply",
+      "candidate_exists": true,
+      "mode": "source-ply-substitute",
+      "firstPartyLoadable": true,
+      "measuredDefaultRuntime": false,
+      "degraded": true,
+      "splatEquivalent": true,
+      "requiresLocalSourceAsset": true,
+      "reason": "SOG is not directly supported; using full source PLY as a degraded measurement candidate.",
+      "blockers": [
+        "direct-sog-rendering-not-implemented"
+      ]
+    },
+    "source_ply_smoke": {
+      "passed": true,
+      "smoke_passed": true,
+      "attempted": true,
+      "timed_out": false,
+      "runtime": "Loaded",
+      "renderer": "ark-gaussian-webgl2",
+      "asset": "source-ply",
+      "candidate_mode": "source-ply-substitute",
+      "measured_default_runtime_directly": false,
+      "splats": 1854627,
+      "expected_valid_splats": 1854627,
+      "expected_manifest_splats": 1855266,
+      "skipped_invalid_splats": 639,
+      "rendered_splats": 300000,
+      "lod_enabled": true,
+      "lod_mode": "deterministic-stride-budget",
+      "lod_budget_splats": 300000,
+      "lod_sampling_stride": 6.182,
+      "lod_rendered_ratio": 0.161758,
+      "sorting": "cpu-back-to-front",
+      "sort_enabled": true,
+      "sort_reason": "camera-depth-order",
+      "visual_quality": "Passed (252.4)",
+      "visual_quality_status": "passed",
+      "visual_quality_contrast": 252.44444444444446,
+      "visual_gate_settle_frames": 1,
+      "visual_gate_evaluated_ms": 10758,
+      "signature_contrast": 211,
+      "cdp_wait_elapsed_ms": 10955,
+      "renderer_load_ms": 2046,
+      "renderer_read_ms": 888.7,
+      "renderer_decode_ms": 1109.4,
+      "renderer_pack_ms": 40.9,
+      "renderer_upload_ms": 5.5,
+      "renderer_last_render_ms": 0.1,
+      "renderer_average_render_ms": 13.46,
+      "renderer_max_render_ms": 67.1,
+      "renderer_render_count": 5,
+      "retained_cpu_buffer_mib": 34.332,
+      "gpu_upload_mib": 16.022,
+      "load_peak_mib": 579.25,
+      "checks": {
+        "loaded": true,
+        "visualGateResolved": true,
+        "expectedRenderer": true,
+        "expectedFormat": true,
+        "expectedCandidate": true,
+        "splatCountMatchesDecodedSource": true,
+        "invalidSplatsSkipped": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "budgetedLodForLargeScene": true,
+        "canvasReady": true,
+        "visualEvidenceVisible": true
+      },
+      "duration_seconds": 15.951
+    },
+    "first_party_preview": {
+      "passed": true,
+      "checks": {
+        "visualQualityPassed": true,
+        "isArkRenderer": true,
+        "hasDepthSorting": true,
+        "hasScaleAwarePipeline": true,
+        "hasGaussianProjection": true,
+        "hasClippingState": true
+      },
+      "runtime": "Loaded",
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-instanced-ellipse-gaussian",
+        "sorting": "cpu-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true
+      },
+      "renderInfo": {
+        "lastLoadMs": 157,
+        "lastSortMs": 19.4,
+        "sortEnabled": true,
+        "sortReason": "camera-depth-order",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "sortVersion": 1,
+        "lod": {
+          "enabled": false,
+          "mode": "full-resolution",
+          "decodedSplats": 99966,
+          "renderedSplats": 99966,
+          "budgetSplats": 300000,
+          "samplingStride": 1,
+          "renderedRatio": 1,
+          "reason": "not-needed"
+        },
+        "performance": {
+          "inputBytes": 24793098,
+          "inputMiB": 23.645,
+          "readMs": 73.2,
+          "decodeMs": 66.9,
+          "packMs": 13.9,
+          "uploadMs": 2.2,
+          "totalLoadMs": 157.3,
+          "retainedCpuBufferBytes": 11995920,
+          "retainedCpuBufferMiB": 11.44,
+          "gpuUploadBytes": 5598096,
+          "gpuUploadMiB": 5.339,
+          "loadPeakBytes": 42786978,
+          "loadPeakMiB": 40.805,
+          "sortSplatLimit": 400000
+        },
+        "frameTiming": {
+          "lastRenderMs": 0,
+          "maxRenderMs": 19.7,
+          "averageRenderMs": 1.882,
+          "renderCount": 11
+        },
+        "ellipse": {
+          "extent": 2.05,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 10,
+          "opacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        },
+        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+      },
+      "splats": 99966,
+      "visual_quality": "Passed (216)",
+      "contrast": 216,
+      "duration_seconds": 11.983
+    },
+    "first_party_comparison": {
+      "passed": true,
+      "all_targets_passed": true,
+      "data_equivalence_passed": true,
+      "gaussian_projection_passed": true,
+      "clipping_passed": true,
+      "primary_signature_comparison_passed": true,
+      "visual_difference_gated": false,
+      "duration_seconds": 25.104
+    },
+    "first_party_stress": {
+      "passed": true,
+      "case_count": 4,
+      "passed_cases": 4,
+      "clipping_hard_gate_passed": true,
+      "duration_seconds": 39.288
+    }
+  },
+  "reports": {
+    "manifest": {
+      "passed": true,
+      "total_checks": 8,
+      "failed_checks": 0,
+      "asset_count": 4
+    },
+    "runtime_metadata": {
+      "passed": true,
+      "metadata_ready": true,
+      "runtime_asset_count": 2,
+      "direct_renderable_runtime_asset_count": 0,
+      "failed_checks": 0
+    },
+    "renderable_assets": {
+      "passed": true,
+      "resolution_count": 5,
+      "direct_count": 2,
+      "preview_substitute_count": 3,
+      "unsupported_count": 0,
+      "failed_checks": 0
+    },
+    "full_scene_candidate": {
+      "passed": true,
+      "resolution_count": 4,
+      "candidate_count": 4,
+      "source_substitute_count": 3,
+      "direct_default_count": 1,
+      "unsupported_count": 0,
+      "default_candidate_ready": true,
+      "default_measured_runtime_directly": false,
+      "failed_checks": 0
+    },
+    "source_ply_smoke": {
+      "passed": true,
+      "smoke_passed": true,
+      "attempted": true,
+      "timed_out": false,
+      "runtime": "Loaded",
+      "renderer": "ark-gaussian-webgl2",
+      "asset": "source-ply",
+      "candidate_mode": "source-ply-substitute",
+      "measured_default_runtime_directly": false,
+      "splats": 1854627,
+      "expected_valid_splats": 1854627,
+      "expected_manifest_splats": 1855266,
+      "skipped_invalid_splats": 639,
+      "rendered_splats": 300000,
+      "lod_enabled": true,
+      "lod_mode": "deterministic-stride-budget",
+      "lod_budget_splats": 300000,
+      "lod_sampling_stride": 6.182,
+      "lod_rendered_ratio": 0.161758,
+      "sorting": "cpu-back-to-front",
+      "sort_enabled": true,
+      "sort_reason": "camera-depth-order",
+      "visual_quality": "Passed (252.4)",
+      "visual_quality_status": "passed",
+      "visual_quality_contrast": 252.44444444444446,
+      "visual_gate_settle_frames": 1,
+      "visual_gate_evaluated_ms": 10758,
+      "signature_contrast": 211,
+      "cdp_wait_elapsed_ms": 10955,
+      "renderer_load_ms": 2046,
+      "renderer_read_ms": 888.7,
+      "renderer_decode_ms": 1109.4,
+      "renderer_pack_ms": 40.9,
+      "renderer_upload_ms": 5.5,
+      "renderer_last_render_ms": 0.1,
+      "renderer_average_render_ms": 13.46,
+      "renderer_max_render_ms": 67.1,
+      "renderer_render_count": 5,
+      "retained_cpu_buffer_mib": 34.332,
+      "gpu_upload_mib": 16.022,
+      "load_peak_mib": 579.25,
+      "checks": {
+        "loaded": true,
+        "visualGateResolved": true,
+        "expectedRenderer": true,
+        "expectedFormat": true,
+        "expectedCandidate": true,
+        "splatCountMatchesDecodedSource": true,
+        "invalidSplatsSkipped": true,
+        "gaussianProjection": true,
+        "clippingState": true,
+        "budgetedLodForLargeScene": true,
+        "canvasReady": true,
+        "visualEvidenceVisible": true
+      },
+      "duration_seconds": 15.951
+    },
+    "format_matrix": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "all_passed": true,
+      "duration_seconds": 11.757
+    },
+    "baseline_comparison": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "all_passed": true,
+      "duration_seconds": 18.364
+    }
+  }
+}
