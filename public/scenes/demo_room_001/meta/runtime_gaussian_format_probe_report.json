@@ -1,0 +1,412 @@
+{
+  "generated_at": "2026-06-03T11:31:50.136Z",
+  "target": "ARK first-party runtime Gaussian format probe",
+  "manifest": "public/scenes/demo_room_001/manifest.json",
+  "require_pass": false,
+  "summary": {
+    "passed": true,
+    "probe_ready": true,
+    "runtime_probe_count": 2,
+    "default_asset": "runtime-sog",
+    "default_type": "sog",
+    "default_probe_ready": true,
+    "sog_meta_ready": true,
+    "sog_channel_file_count": 7,
+    "direct_decode_supported_count": 0,
+    "transcode_required_count": 2,
+    "failed_checks": 0,
+    "note": "Runtime format probing does not imply direct first-party renderer support."
+  },
+  "checks": [
+    {
+      "id": "manifest_loaded",
+      "passed": true,
+      "value": "public/scenes/demo_room_001/manifest.json",
+      "message": "Scene manifest is readable."
+    },
+    {
+      "id": "runtime_assets_declared",
+      "passed": true,
+      "value": [
+        "runtime-sog:sog",
+        "runtime-spz:spz"
+      ],
+      "message": "Manifest declares runtime SOG/SPZ assets."
+    },
+    {
+      "id": "runtime_files_present",
+      "passed": true,
+      "value": [],
+      "message": "Runtime SOG/SPZ files are present locally."
+    },
+    {
+      "id": "runtime_sizes_match_manifest",
+      "passed": true,
+      "value": [
+        {
+          "asset_id": "runtime-sog",
+          "declared_size_bytes": 22887509,
+          "actual_size_bytes": 22887509
+        },
+        {
+          "asset_id": "runtime-spz",
+          "declared_size_bytes": 35364142,
+          "actual_size_bytes": 35364142
+        }
+      ],
+      "message": "Runtime file sizes match manifest declarations."
+    },
+    {
+      "id": "sog_container_identified",
+      "passed": true,
+      "value": {
+        "magic_hex": "50 4B 03 04 14 00 00 00 08 00 C2 7A",
+        "zip_entry_count": 8,
+        "webp_entry_count": 7
+      },
+      "message": "SOG runtime is recognized as a ZIP/WEBP-style container."
+    },
+    {
+      "id": "sog_meta_extracted",
+      "passed": true,
+      "value": {
+        "version": 2,
+        "count": 1855266,
+        "channel_file_count": 7,
+        "error": null
+      },
+      "message": "SOG meta.json is extracted and summarized."
+    },
+    {
+      "id": "sog_meta_count_matches_manifest",
+      "passed": true,
+      "value": {
+        "meta_count": 1855266,
+        "manifest_splats": 1855266
+      },
+      "message": "SOG meta count matches manifest splat count."
+    },
+    {
+      "id": "sog_channel_files_present",
+      "passed": true,
+      "value": {
+        "means": {
+          "files": [
+            "means_l.webp",
+            "means_u.webp"
+          ],
+          "fileCount": 2,
+          "codebook": null,
+          "count": null,
+          "bands": null
+        },
+        "scales": {
+          "files": [
+            "scales.webp"
+          ],
+          "fileCount": 1,
+          "codebook": {
+            "length": 256,
+            "min": -10,
+            "max": 0.5625000596046448
+          },
+          "count": null,
+          "bands": null
+        },
+        "quats": {
+          "files": [
+            "quats.webp"
+          ],
+          "fileCount": 1,
+          "codebook": null,
+          "count": null,
+          "bands": null
+        },
+        "sh0": {
+          "files": [
+            "sh0.webp"
+          ],
+          "fileCount": 1,
+          "codebook": {
+            "length": 256,
+            "min": -2.0784313678741455,
+            "max": 3.3333332538604736
+          },
+          "count": null,
+          "bands": null
+        },
+        "shN": {
+          "files": [
+            "shN_centroids.webp",
+            "shN_labels.webp"
+          ],
+          "fileCount": 2,
+          "codebook": {
+            "length": 256,
+            "min": -0.37772688269615173,
+            "max": 0.45779022574424744
+          },
+          "count": 65536,
+          "bands": 3
+        }
+      },
+      "message": "SOG meta declares the expected means/scales/quats/sh0/shN channel files."
+    },
+    {
+      "id": "spz_container_identified",
+      "passed": true,
+      "value": {
+        "magic_hex": "1F 8B 08 00 00 00 00 00 00 0A EC BC"
+      },
+      "message": "SPZ runtime is recognized as a GZIP-compressed container."
+    },
+    {
+      "id": "direct_decode_not_falsely_claimed",
+      "passed": true,
+      "value": [
+        {
+          "asset_id": "runtime-sog",
+          "direct_first_party_decode_supported": false
+        },
+        {
+          "asset_id": "runtime-spz",
+          "direct_first_party_decode_supported": false
+        }
+      ],
+      "message": "Runtime SOG/SPZ direct first-party decoding is not falsely claimed."
+    },
+    {
+      "id": "runtime_transcode_blockers_recorded",
+      "passed": true,
+      "value": [
+        {
+          "asset_id": "runtime-sog",
+          "blockers": [
+            "direct-sog-decode-not-implemented",
+            "sog-to-ark-gaussian-buffer-transcode-not-implemented"
+          ]
+        },
+        {
+          "asset_id": "runtime-spz",
+          "blockers": [
+            "direct-spz-decode-not-implemented",
+            "spz-to-ark-gaussian-buffer-transcode-not-implemented"
+          ]
+        }
+      ],
+      "message": "Runtime SOG/SPZ transcode/decode blockers are explicitly recorded."
+    }
+  ],
+  "probes": [
+    {
+      "asset_id": "runtime-sog",
+      "role": "runtime",
+      "label": "SOG runtime",
+      "format": "sog",
+      "url": "gaussian/scene.sog",
+      "path": "public/scenes/demo_room_001/gaussian/scene.sog",
+      "exists": true,
+      "declared_size_bytes": 22887509,
+      "actual_size_bytes": 22887509,
+      "size_matches_manifest": true,
+      "splats": 1855266,
+      "bytes_per_splat": 12.337,
+      "compression_ratio_to_source": 0.049744,
+      "magic_hex": "50 4B 03 04 14 00 00 00 08 00 C2 7A",
+      "container": "sog-zip-webp",
+      "zip_entries": [
+        {
+          "name": "means_l.webp",
+          "compressionMethod": 8,
+          "compressedSize": 4946936,
+          "uncompressedSize": 4945940
+        },
+        {
+          "name": "means_u.webp",
+          "compressionMethod": 8,
+          "compressedSize": 740073,
+          "uncompressedSize": 741912
+        },
+        {
+          "name": "quats.webp",
+          "compressionMethod": 8,
+          "compressedSize": 3521292,
+          "uncompressedSize": 3520766
+        },
+        {
+          "name": "scales.webp",
+          "compressionMethod": 8,
+          "compressedSize": 4448118,
+          "uncompressedSize": 4447448
+        },
+        {
+          "name": "sh0.webp",
+          "compressionMethod": 8,
+          "compressedSize": 4551895,
+          "uncompressedSize": 4553420
+        },
+        {
+          "name": "shN_centroids.webp",
+          "compressionMethod": 8,
+          "compressedSize": 1764910,
+          "uncompressedSize": 1764550
+        },
+        {
+          "name": "shN_labels.webp",
+          "compressionMethod": 8,
+          "compressedSize": 2908357,
+          "uncompressedSize": 2907914
+        },
+        {
+          "name": "meta.json",
+          "compressionMethod": 8,
+          "compressedSize": 5108,
+          "uncompressedSize": 12549
+        }
+      ],
+      "zip_entry_count": 8,
+      "webp_entry_count": 7,
+      "sog_meta": {
+        "version": 2,
+        "count": 1855266,
+        "means": {
+          "mins": [
+            -1.7244828278583595,
+            -2.0118710851177815,
+            -1.8867884778786876
+          ],
+          "maxs": [
+            2.596758502228941,
+            1.7930607055860268,
+            2.637783499665059
+          ],
+          "files": [
+            "means_l.webp",
+            "means_u.webp"
+          ]
+        },
+        "channels": {
+          "means": {
+            "files": [
+              "means_l.webp",
+              "means_u.webp"
+            ],
+            "fileCount": 2,
+            "codebook": null,
+            "count": null,
+            "bands": null
+          },
+          "scales": {
+            "files": [
+              "scales.webp"
+            ],
+            "fileCount": 1,
+            "codebook": {
+              "length": 256,
+              "min": -10,
+              "max": 0.5625000596046448
+            },
+            "count": null,
+            "bands": null
+          },
+          "quats": {
+            "files": [
+              "quats.webp"
+            ],
+            "fileCount": 1,
+            "codebook": null,
+            "count": null,
+            "bands": null
+          },
+          "sh0": {
+            "files": [
+              "sh0.webp"
+            ],
+            "fileCount": 1,
+            "codebook": {
+              "length": 256,
+              "min": -2.0784313678741455,
+              "max": 3.3333332538604736
+            },
+            "count": null,
+            "bands": null
+          },
+          "shN": {
+            "files": [
+              "shN_centroids.webp",
+              "shN_labels.webp"
+            ],
+            "fileCount": 2,
+            "codebook": {
+              "length": 256,
+              "min": -0.37772688269615173,
+              "max": 0.45779022574424744
+            },
+            "count": 65536,
+            "bands": 3
+          }
+        },
+        "channelFileCount": 7
+      },
+      "sog_meta_error": null,
+      "sog_meta_ready": true,
+      "first_party_probe_supported": true,
+      "direct_first_party_decode_supported": false,
+      "runtime_transcode_required": true,
+      "blockers": [
+        "direct-sog-decode-not-implemented",
+        "sog-to-ark-gaussian-buffer-transcode-not-implemented"
+      ],
+      "warnings": []
+    },
+    {
+      "asset_id": "runtime-spz",
+      "role": "runtime",
+      "label": "SPZ runtime",
+      "format": "spz",
+      "url": "gaussian/scene.spz",
+      "path": "public/scenes/demo_room_001/gaussian/scene.spz",
+      "exists": true,
+      "declared_size_bytes": 35364142,
+      "actual_size_bytes": 35364142,
+      "size_matches_manifest": true,
+      "splats": 1855266,
+      "bytes_per_splat": 19.061,
+      "compression_ratio_to_source": 0.076861,
+      "magic_hex": "1F 8B 08 00 00 00 00 00 00 0A EC BC",
+      "container": "spz-gzip",
+      "zip_entries": [],
+      "zip_entry_count": 0,
+      "webp_entry_count": 0,
+      "sog_meta": null,
+      "sog_meta_error": null,
+      "sog_meta_ready": false,
+      "first_party_probe_supported": true,
+      "direct_first_party_decode_supported": false,
+      "runtime_transcode_required": true,
+      "blockers": [
+        "direct-spz-decode-not-implemented",
+        "spz-to-ark-gaussian-buffer-transcode-not-implemented"
+      ],
+      "warnings": []
+    }
+  ],
+  "blockers": [
+    {
+      "asset_id": "runtime-sog",
+      "blocker": "direct-sog-decode-not-implemented"
+    },
+    {
+      "asset_id": "runtime-sog",
+      "blocker": "sog-to-ark-gaussian-buffer-transcode-not-implemented"
+    },
+    {
+      "asset_id": "runtime-spz",
+      "blocker": "direct-spz-decode-not-implemented"
+    },
+    {
+      "asset_id": "runtime-spz",
+      "blocker": "spz-to-ark-gaussian-buffer-transcode-not-implemented"
+    }
+  ]
+}

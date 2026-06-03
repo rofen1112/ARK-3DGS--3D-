@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T12:57:50.490Z",
+  "generated_at": "2026-06-03T09:20:22.455Z",
   "target": "ARK first-party default backend readiness assessment",
   "manifest": "public/scenes/demo_room_001/manifest.json",
   "require_ready": false,
@@ -13,6 +13,7 @@
   "summary": {
     "passed": true,
     "preview_path_ready": true,
+    "runtime_format_probe_ready": true,
     "default_backend_ready": false,
     "should_keep_aholo_default": true,
     "blocking_count": 4,
@@ -149,6 +150,25 @@
         "failed_checks": 0
       },
       "message": "Runtime SOG/SPZ metadata adapter report passes."
+    },
+    {
+      "id": "runtime_format_probe_passed",
+      "passed": true,
+      "value": {
+        "passed": true,
+        "probe_ready": true,
+        "runtime_probe_count": 2,
+        "default_asset": "runtime-sog",
+        "default_type": "sog",
+        "default_probe_ready": true,
+        "sog_meta_ready": true,
+        "sog_channel_file_count": 7,
+        "direct_decode_supported_count": 0,
+        "transcode_required_count": 2,
+        "failed_checks": 0,
+        "note": "Runtime format probing does not imply direct first-party renderer support."
+      },
+      "message": "Runtime SOG/SPZ format probe report passes."
     },
     {
       "id": "renderable_asset_resolver_passed",
@@ -540,6 +560,20 @@
       "runtime_asset_count": 2,
       "direct_renderable_runtime_asset_count": 0,
       "failed_checks": 0
+    },
+    "runtime_format_probe": {
+      "passed": true,
+      "probe_ready": true,
+      "runtime_probe_count": 2,
+      "default_asset": "runtime-sog",
+      "default_type": "sog",
+      "default_probe_ready": true,
+      "sog_meta_ready": true,
+      "sog_channel_file_count": 7,
+      "direct_decode_supported_count": 0,
+      "transcode_required_count": 2,
+      "failed_checks": 0,
+      "note": "Runtime format probing does not imply direct first-party renderer support."
     },
     "renderable_assets": {
       "passed": true,

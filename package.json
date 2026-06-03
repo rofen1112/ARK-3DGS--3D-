@@ -10,6 +10,7 @@
     "test:gaussian": "node scripts/test-gaussian-parser.mjs",
     "validate:manifest": "node scripts/validate-scene-manifest.mjs",
     "validate:runtime-metadata": "node scripts/validate-runtime-gaussian-metadata.mjs",
+    "validate:runtime-formats": "node scripts/validate-first-party-runtime-formats.mjs",
     "validate:renderable-assets": "node scripts/validate-first-party-renderable-assets.mjs",
     "validate:full-scene-candidate": "node scripts/validate-first-party-full-scene-candidate.mjs",
     "validate:ply": "node scripts/validate-gaussian-ply.mjs",

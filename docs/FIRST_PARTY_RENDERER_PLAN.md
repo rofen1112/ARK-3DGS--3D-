@@ -261,6 +261,8 @@ Current progress:
 - Current full-scene performance budget QA: `assessment_passed=true`, `performance_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, `1,855,266` splats, current CPU sort limit `400,000`, ratio `4.638x`.
 - Added `src/sdk/gaussian/runtimeMetadata.ts` and `scripts/validate-runtime-gaussian-metadata.mjs` for SOG/SPZ runtime metadata adapters.
 - Current runtime metadata QA: `metadata_ready=true`, `runtime_asset_count=2`, `direct_renderable_runtime_asset_count=0`.
+- Added `src/sdk/gaussian/runtimeFormatProbe.ts` and `scripts/validate-first-party-runtime-formats.mjs` for SOG/SPZ runtime container probing.
+- Current runtime format probe QA: `probe_ready=true`, default `runtime-sog`, SOG container `sog-zip-webp` with `7` WEBP entries and `12.337` bytes/splat, SOG `meta.json` summary ready with channels `means`, `scales`, `quats`, `sh0`, and `shN`; SPZ container `spz-gzip` with `19.061` bytes/splat; `direct_decode_supported_count=0`.
 - Added `src/sdk/gaussian/renderableAsset.ts` and `scripts/validate-first-party-renderable-assets.mjs` for first-party renderable asset resolution.
 - Current renderable asset QA: default/runtime SOG/SPZ resolve to `preview-ply` in `preview-substitute` mode; `preview-ply` and `source-ply` resolve in `direct` mode.
 - Added `src/sdk/gaussian/fullSceneCandidate.ts` and `scripts/validate-first-party-full-scene-candidate.mjs` for full-scene first-party measurement candidate resolution.
@@ -275,6 +277,7 @@ Known limitation:
 - The first Gaussian backend still uses SH0 color and CPU sorting. It is a renderer milestone, not the final production WebGPU renderer.
 - The Kellogg independent baseline visibly renders and matches splat count, but direct headless canvas signature downsampling returns near-zero contrast, so it is used for visual/data compatibility rather than signature-difference gating.
 - The manifest default remains `runtime-sog`; first-party `ark-gaussian` currently loads direct PLY data only. The readiness gate must stay red until SOG/SPZ direct loading or a first-party runtime conversion path exists.
+- Runtime format probing is now complete enough to identify the default SOG as a ZIP/WEBP-style container and summarize its `meta.json` channel layout, but no SOG/SPZ-to-ARK Gaussian buffer transcode path exists yet.
 - The source PLY full-scene candidate can support degraded measurement work, but it is not the manifest default runtime and must not clear default backend readiness.
 - The full default runtime has `1,855,266` splats, above the current `400,000` CPU sort limit. A worker/GPU sorting or streaming path is required before default replacement.
 - The measured full-scene source PLY smoke is visible through a degraded deterministic stride LOD: it decodes all `1,854,627` valid splats but renders `300,000` budget splats. Adaptive QA and budgeted LOD reduced the previous `223.251s` smoke to `15.951s`, but this is not a default-runtime replacement path.
@@ -295,6 +298,7 @@ Completed renderer tuning:
 - Added camera-edge and near-plane stress cases. Edge stress uses canvas signature contrast instead of only the sparse 3x3 pixel sample, because edge-visible content can miss fixed sample points.
 - Added default backend readiness reporting with explicit blockers and an optional `--require-ready` hard failure mode.
 - Added SOG/SPZ runtime metadata adapters. These adapters make runtime assets auditable in the first-party data layer, but they do not claim direct first-party rendering support.
+- Added SOG/SPZ runtime format probes. These identify container signatures, extract the SOG `meta.json` layout summary, and record decode/transcode blockers without claiming direct first-party rendering support.
 - Added renderable asset resolver. Preview substitutes are degraded first-party candidates for QA and diagnostics; they do not remove the default backend blockers.
 - Added full-scene measurement candidate resolver. Source PLY substitutes are allowed for measurement scaffolding only; they do not make SOG/SPZ directly supported.
 - Added degraded full-scene source PLY smoke QA. This is the first real full-scene first-party renderer measurement, but it is not a default-runtime readiness gate.
@@ -306,7 +310,7 @@ Next renderer tuning target:
 - Harden covariance projection math and alpha compositing while keeping `ark-gaussian` vs Aholo preview splat delta at `0`.
 - Replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison.
 - Convert the full-scene visual and performance assessments into measured gates before changing the default backend.
-- Add SOG/SPZ direct loading or a first-party runtime conversion path so the manifest default can be evaluated without Aholo.
+- Implement the first SOG-to-ARK Gaussian buffer conversion path from `means_l.webp`, `means_u.webp`, `scales.webp`, `quats.webp`, `sh0.webp`, `shN_centroids.webp`, and `shN_labels.webp`. SPZ remains a GZIP payload probe until its layout is decoded.
 - Keep `gaussianProjection=true`, `covarianceProjection=true`, `instancing=true`, and clipping debug state as hard QA requirements.
 
 Exit criteria:

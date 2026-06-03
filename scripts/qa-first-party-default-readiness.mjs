@@ -78,6 +78,7 @@ const comparisonReport = await readJson(resolve(metaDir, 'first_party_gaussian_c
 const stressReport = await readJson(resolve(metaDir, 'first_party_gaussian_stress_report.json'));
 const manifestReport = await readJson(resolve(metaDir, 'manifest_validation_report.json'));
 const runtimeMetadataReport = await readJson(resolve(metaDir, 'runtime_gaussian_metadata_report.json'));
+const runtimeFormatProbeReport = await readJson(resolve(metaDir, 'runtime_gaussian_format_probe_report.json'));
 const renderableAssetsReport = await readJson(resolve(metaDir, 'first_party_renderable_assets_report.json'));
 
 const checks = [];
@@ -89,6 +90,7 @@ addCheck(checks, 'source_ply_declared', Boolean(sourcePly?.url), sourcePly?.id ?
 addCheck(checks, 'asset_files_present', assetReports.every((asset) => asset.exists), assetReports.filter((asset) => !asset.exists), 'All declared Gaussian asset files are present in the local workspace.');
 addCheck(checks, 'manifest_validation_passed', manifestReport.summary?.passed === true, manifestReport.summary ?? null, 'Manifest validator report passes.');
 addCheck(checks, 'runtime_metadata_adapters_passed', runtimeMetadataReport.summary?.passed === true, runtimeMetadataReport.summary ?? null, 'Runtime SOG/SPZ metadata adapter report passes.');
+addCheck(checks, 'runtime_format_probe_passed', runtimeFormatProbeReport.summary?.passed === true, runtimeFormatProbeReport.summary ?? null, 'Runtime SOG/SPZ format probe report passes.');
 addCheck(checks, 'renderable_asset_resolver_passed', renderableAssetsReport.summary?.passed === true, renderableAssetsReport.summary ?? null, 'First-party renderable asset resolver report passes.');
 addCheck(checks, 'preview_renderer_qa_passed', gaussianReport.summary?.passed === true, gaussianReport.summary?.checks ?? null, 'First-party preview renderer QA passes.');
 addCheck(checks, 'comparison_qa_passed', comparisonReport.summary?.passed === true, comparisonReport.summary ?? null, 'First-party comparison QA passes.');
@@ -171,6 +173,7 @@ const report = {
   summary: {
     passed: assessmentPassed,
     preview_path_ready: previewPathReady,
+    runtime_format_probe_ready: runtimeFormatProbeReport.summary?.probe_ready === true,
     default_backend_ready: defaultBackendReady,
     should_keep_aholo_default: !defaultBackendReady,
     blocking_count: blockers.length,
@@ -187,6 +190,7 @@ const report = {
     first_party_comparison: comparisonReport.summary ?? null,
     first_party_stress: stressReport.summary ?? null,
     runtime_metadata: runtimeMetadataReport.summary ?? null,
+    runtime_format_probe: runtimeFormatProbeReport.summary ?? null,
     renderable_assets: renderableAssetsReport.summary ?? null,
     full_scene_visual: fullSceneVisualReport.summary ?? null,
     full_scene_performance: fullScenePerfReport.summary ?? null

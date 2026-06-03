@@ -132,6 +132,12 @@ Validate first-party runtime Gaussian metadata adapters:
 npm.cmd run validate:runtime-metadata
 ```
 
+Validate first-party runtime Gaussian format probes:
+
+```bash
+npm.cmd run validate:runtime-formats
+```
+
 Validate first-party renderable asset resolution:
 
 ```bash
@@ -345,9 +351,9 @@ Current first-party full-scene performance budget result:
 
 Current first-party default readiness result:
 
-| Preview Path | Default Backend Ready | Keep Aholo Default | Blockers |
-|---|---|---|---:|
-| Passed | No | Yes | `4` |
+| Preview Path | Runtime Format Probe | Default Backend Ready | Keep Aholo Default | Blockers |
+|---|---|---|---|---:|
+| Passed | Passed | No | Yes | `4` |
 
 Current blockers before switching the default backend:
 
@@ -362,6 +368,23 @@ Current runtime Gaussian metadata adapter result:
 |---|---|---|---|---:|---:|
 | `runtime-sog` | SOG | Ready | No | `1,855,266` | `22,887,509` |
 | `runtime-spz` | SPZ | Ready | No | `1,855,266` | `35,364,142` |
+
+Current runtime Gaussian format probe result:
+
+| Runtime Asset | Container | Probe | Layout | Direct Decode | Bytes / Splat | Source Ratio | Notes |
+|---|---|---|---|---|---:|---:|---|
+| `runtime-sog` | `sog-zip-webp` | Passed | `meta.json` ready | No | `12.337` | `0.049744` | `7` WEBP channel files |
+| `runtime-spz` | `spz-gzip` | Passed | Pending | No | `19.061` | `0.076861` | GZIP container identified |
+
+Current SOG layout summary:
+
+| Channel | Files | Contract Notes |
+|---|---|---|
+| `means` | `means_l.webp`, `means_u.webp` | meta includes mins/maxs |
+| `scales` | `scales.webp` | meta includes codebook |
+| `quats` | `quats.webp` | quaternion channel |
+| `sh0` | `sh0.webp` | meta includes SH0 codebook |
+| `shN` | `shN_centroids.webp`, `shN_labels.webp` | `bands=3`, `count=65,536` |
 
 Current first-party renderable asset resolver result:
 
@@ -412,6 +435,7 @@ Done:
 - ARK vs independent GaussianSplats3D preview comparison harness
 - manifest-level Gaussian asset set and manifest validator
 - first-party runtime Gaussian metadata adapters for SOG/SPZ
+- first-party runtime Gaussian format probes for SOG/SPZ containers
 - first-party renderable asset resolver with preview PLY substitute mode
 - first-party full-scene measurement candidate resolver with source PLY substitute mode
 - first-party WebGL point renderer diagnostic backend
@@ -443,7 +467,7 @@ Done:
 Next:
 
 - harden the covariance projection math, alpha compositing, and performance
-- add SOG/SPZ direct first-party loading or a first-party runtime conversion path
+- implement SOG-to-ARK Gaussian buffer transcode from the probed SOG layout; SPZ remains a GZIP container probe until its payload layout is decoded
 - replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison
 - turn the full-scene visual assessment into a measured first-party default-runtime visual gate
 - turn the full-scene performance budget assessment into a measured gate after direct runtime loading and large-scene sorting/streaming exist
