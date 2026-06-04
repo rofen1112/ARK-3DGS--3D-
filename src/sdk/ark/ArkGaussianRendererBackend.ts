@@ -49,6 +49,25 @@ const FULL_DENSITY_MIN_PIXEL_AXIS = 0.35;
 const FULL_DENSITY_MAX_PIXEL_AXIS = 1024;
 const FULL_DENSITY_OPACITY_SCALE = 0.18;
 
+type ArkGaussianCompositeMode = 'premultiplied-alpha' | 'straight-alpha';
+type ArkGaussianSortOverride = 'auto' | 'source-order' | 'exact-depth' | 'bucket-depth';
+type ArkGaussianProjectionProfile = 'default' | 'no-preblur' | 'unit-focal' | 'compact-kernel';
+
+type ArkGaussianProjectionSettings = {
+  profile: ArkGaussianProjectionProfile;
+  preBlurAmount: number;
+  blurAmount: number;
+  focalAdjustment: number;
+  maxStdDev: number;
+};
+
+type ArkGaussianDiagnostics = {
+  enabled: boolean;
+  sortOverride: ArkGaussianSortOverride;
+  compositeMode: ArkGaussianCompositeMode;
+  projectionProfile: ArkGaussianProjectionProfile;
+};
+
 type RenderProfile = {
   id: string;
   ellipseExtent: number;
@@ -280,8 +299,80 @@ function createRenderProfile(lodEnabled: boolean, renderedRatio: number, largeSc
   };
 }
 
-function chooseSortMode(renderSplatCount: number): SortMode {
+function readDiagnostics(): ArkGaussianDiagnostics {
+  const params = new URLSearchParams(window.location.search);
+  const rawSort = params.get('arkDiagSort')?.toLowerCase();
+  const rawComposite = params.get('arkDiagComposite')?.toLowerCase();
+  const rawProjection = params.get('arkDiagProjection')?.toLowerCase();
+  const sortOverride: ArkGaussianSortOverride = rawSort === 'source-order'
+    ? 'source-order'
+    : rawSort === 'exact-depth'
+      ? 'exact-depth'
+      : rawSort === 'bucket-depth'
+        ? 'bucket-depth'
+        : 'auto';
+  const compositeMode: ArkGaussianCompositeMode = rawComposite === 'straight'
+    || rawComposite === 'straight-alpha'
+    ? 'straight-alpha'
+    : 'premultiplied-alpha';
+  const projectionProfile: ArkGaussianProjectionProfile = rawProjection === 'no-preblur'
+    ? 'no-preblur'
+    : rawProjection === 'unit-focal'
+      ? 'unit-focal'
+      : rawProjection === 'compact-kernel'
+        ? 'compact-kernel'
+        : 'default';
+
+  return {
+    enabled: sortOverride !== 'auto' || compositeMode !== 'premultiplied-alpha' || projectionProfile !== 'default',
+    sortOverride,
+    compositeMode,
+    projectionProfile
+  };
+}
+
+function createProjectionSettings(profile: ArkGaussianProjectionProfile): ArkGaussianProjectionSettings {
+  if (profile === 'no-preblur') {
+    return {
+      profile,
+      preBlurAmount: 0,
+      blurAmount: BLUR_AMOUNT,
+      focalAdjustment: FOCAL_ADJUSTMENT,
+      maxStdDev: MAX_STD_DEV
+    };
+  }
+  if (profile === 'unit-focal') {
+    return {
+      profile,
+      preBlurAmount: PRE_BLUR_AMOUNT,
+      blurAmount: BLUR_AMOUNT,
+      focalAdjustment: 1,
+      maxStdDev: MAX_STD_DEV
+    };
+  }
+  if (profile === 'compact-kernel') {
+    return {
+      profile,
+      preBlurAmount: PRE_BLUR_AMOUNT,
+      blurAmount: BLUR_AMOUNT,
+      focalAdjustment: FOCAL_ADJUSTMENT,
+      maxStdDev: 2.05
+    };
+  }
+  return {
+    profile,
+    preBlurAmount: PRE_BLUR_AMOUNT,
+    blurAmount: BLUR_AMOUNT,
+    focalAdjustment: FOCAL_ADJUSTMENT,
+    maxStdDev: MAX_STD_DEV
+  };
+}
+
+function chooseSortMode(renderSplatCount: number, override: ArkGaussianSortOverride = 'auto'): SortMode {
   if (renderSplatCount <= 0) return 'disabled';
+  if (override === 'source-order') return 'disabled';
+  if (override === 'exact-depth') return renderSplatCount <= SORT_SPLAT_LIMIT ? 'exact-depth' : 'bucket-depth';
+  if (override === 'bucket-depth') return renderSplatCount <= BUCKET_SORT_SPLAT_LIMIT ? 'bucket-depth' : 'disabled';
   if (renderSplatCount <= SORT_SPLAT_LIMIT) return 'exact-depth';
   if (renderSplatCount <= BUCKET_SORT_SPLAT_LIMIT) return 'bucket-depth';
   return 'disabled';
@@ -335,8 +426,11 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private readonly blurAmountLocation: WebGLUniformLocation | null;
   private readonly maxStdDevLocation: WebGLUniformLocation | null;
   private readonly focalAdjustmentLocation: WebGLUniformLocation | null;
+  private readonly premultipliedAlphaLocation: WebGLUniformLocation | null;
   private readonly minClipWLocation: WebGLUniformLocation | null;
   private readonly clipPaddingLocation: WebGLUniformLocation | null;
+  private readonly diagnostics = readDiagnostics();
+  private readonly projectionSettings = createProjectionSettings(this.diagnostics.projectionProfile);
   private renderRequestHandler: (() => void) | null = null;
   private splatCount = 0;
   private renderSplatCount = 0;
@@ -564,6 +658,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       `
         precision highp float;
         uniform float uMaxStdDev;
+        uniform float uPremultipliedAlpha;
         varying vec4 vColor;
         varying vec2 vSplatUv;
         varying float vClipDiscard;
@@ -573,7 +668,11 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           if (r2 > uMaxStdDev * uMaxStdDev) discard;
           float alpha = vColor.a * exp(-0.5 * r2);
           if (alpha < ${ALPHA_CUTOFF.toFixed(6)}) discard;
-          gl_FragColor = vec4(vColor.rgb * alpha, alpha);
+          if (uPremultipliedAlpha > 0.5) {
+            gl_FragColor = vec4(vColor.rgb * alpha, alpha);
+          } else {
+            gl_FragColor = vec4(vColor.rgb, alpha);
+          }
         }
       `
     );
@@ -603,6 +702,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.blurAmountLocation = this.gl.getUniformLocation(this.program, 'uBlurAmount');
     this.maxStdDevLocation = this.gl.getUniformLocation(this.program, 'uMaxStdDev');
     this.focalAdjustmentLocation = this.gl.getUniformLocation(this.program, 'uFocalAdjustment');
+    this.premultipliedAlphaLocation = this.gl.getUniformLocation(this.program, 'uPremultipliedAlpha');
     this.minClipWLocation = this.gl.getUniformLocation(this.program, 'uMinClipW');
     this.clipPaddingLocation = this.gl.getUniformLocation(this.program, 'uClipPadding');
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.quadBuffer);
@@ -714,7 +814,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       rotations[renderIndex * 4 + 3] = q[3];
     }
 
-    const sortMode = chooseSortMode(renderSplatCount);
+    const sortMode = chooseSortMode(renderSplatCount, this.diagnostics.sortOverride);
     const sortEnabled = sortMode !== 'disabled';
     this.rawPositions = positions;
     this.rawColors = colors;
@@ -864,13 +964,14 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       this.gl.uniformMatrix4fv(this.projectionLocation, false, projection);
       this.gl.uniform3f(this.cameraPositionLocation, this.cameraPosition[0], this.cameraPosition[1], this.cameraPosition[2]);
       this.gl.uniform2f(this.viewportLocation, this.canvas.width, this.canvas.height);
-      this.gl.uniform1f(this.ellipseExtentLocation, this.renderProfile.ellipseExtent);
+      this.gl.uniform1f(this.ellipseExtentLocation, Math.min(this.renderProfile.ellipseExtent, this.projectionSettings.maxStdDev));
       this.gl.uniform1f(this.minPixelAxisLocation, this.renderProfile.minPixelAxis);
       this.gl.uniform1f(this.maxPixelAxisLocation, this.renderProfile.maxPixelAxis);
-      this.gl.uniform1f(this.preBlurAmountLocation, PRE_BLUR_AMOUNT);
-      this.gl.uniform1f(this.blurAmountLocation, BLUR_AMOUNT);
-      this.gl.uniform1f(this.maxStdDevLocation, MAX_STD_DEV);
-      this.gl.uniform1f(this.focalAdjustmentLocation, FOCAL_ADJUSTMENT);
+      this.gl.uniform1f(this.preBlurAmountLocation, this.projectionSettings.preBlurAmount);
+      this.gl.uniform1f(this.blurAmountLocation, this.projectionSettings.blurAmount);
+      this.gl.uniform1f(this.maxStdDevLocation, this.projectionSettings.maxStdDev);
+      this.gl.uniform1f(this.focalAdjustmentLocation, this.projectionSettings.focalAdjustment);
+      this.gl.uniform1f(this.premultipliedAlphaLocation, this.diagnostics.compositeMode === 'premultiplied-alpha' ? 1 : 0);
       this.gl.uniform1f(this.minClipWLocation, MIN_CLIP_W);
       this.gl.uniform1f(this.clipPaddingLocation, OFFSCREEN_CLIP_PADDING);
 
@@ -922,7 +1023,11 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
 
       this.gl.disable(this.gl.DEPTH_TEST);
       this.gl.enable(this.gl.BLEND);
-      this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+      if (this.diagnostics.compositeMode === 'premultiplied-alpha') {
+        this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+      } else {
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+      }
       this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, 6, this.renderSplatCount);
     }
     this.recordRenderTiming(renderStartedAt);
@@ -966,11 +1071,13 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         covarianceProjection: true,
         instancing: true,
         projectionModel: 'jacobian-covariance',
-        composite: 'premultiplied-alpha',
+        projectionProfile: this.projectionSettings.profile,
+        composite: this.diagnostics.compositeMode,
         shading: this.renderShDegree > 0 ? 'sh1-view-dependent' : 'sh0-dc-only',
         sourceShDegree: this.activeInfo?.shDegree ?? null,
         renderShDegree: this.renderShDegree,
-        renderShRestCount: this.renderShRestCount
+        renderShRestCount: this.renderShRestCount,
+        diagnostics: this.diagnostics
       },
       scene: {
         splats: this.splatCount,
@@ -1000,6 +1107,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           renderedRatio: this.splatCount > 0 ? Number((this.renderSplatCount / this.splatCount).toFixed(6)) : 0,
           reason: this.lodReason
         },
+        diagnostics: this.diagnostics,
         performance: {
           inputBytes: this.lastInputBytes,
           inputMiB: bytesToMiB(this.lastInputBytes),
@@ -1041,11 +1149,11 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         },
         ellipse: {
           profile: this.renderProfile.id,
-          extent: this.renderProfile.ellipseExtent,
-          maxStdDev: MAX_STD_DEV,
-          preBlurAmount: PRE_BLUR_AMOUNT,
-          blurAmount: BLUR_AMOUNT,
-          focalAdjustment: FOCAL_ADJUSTMENT,
+          extent: Math.min(this.renderProfile.ellipseExtent, this.projectionSettings.maxStdDev),
+          maxStdDev: this.projectionSettings.maxStdDev,
+          preBlurAmount: this.projectionSettings.preBlurAmount,
+          blurAmount: this.projectionSettings.blurAmount,
+          focalAdjustment: this.projectionSettings.focalAdjustment,
           minPixelAxis: this.renderProfile.minPixelAxis,
           maxPixelAxis: this.renderProfile.maxPixelAxis,
           opacityScale: this.renderProfile.opacityScale,

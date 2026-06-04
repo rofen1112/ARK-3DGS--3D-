@@ -417,6 +417,36 @@ Important current SH limitation:
 > `renderShDegree=1` (`sh1-view-dependent`). Full SH3 color evaluation and
 > GPU-friendly SH packing remain first-party visual parity blockers.
 
+Current same-camera SH3 diagnostic:
+
+| Pair | Asset | Mean Abs RGB | RMS RGB | Similarity | Interpretation |
+|---|---|---:|---:|---:|---|
+| ARK SH1 vs Aholo SH0 | `source-ply` | `1.6336` | `7.5424` | `0.993594` | Current source baseline |
+| ARK SH1 vs Aholo SH3 | `source-ply` | `1.6483` | `7.7097` | `0.993536` | SH3 reference does not reduce ARK delta |
+| Aholo SH0 vs Aholo SH3 | `source-ply` | `0.1345` | `1.1341` | `0.999473` | SH3 color effect is small in this camera |
+| Aholo SH0 vs Aholo SH3 | `preview-ply` | `0.0518` | `0.6282` | `0.999797` | Preview confirms small SH3 delta |
+
+This means full SH3 is still required for format completeness, but it is not the
+current leading explanation for the remaining first-party visual delta.
+
+Current same-camera pipeline isolation:
+
+| Pair | Asset | Mean Abs RGB | RMS RGB | Similarity | Interpretation |
+|---|---|---:|---:|---:|---|
+| ARK default vs Aholo SH0 | `preview-ply` | `0.9728` | `3.5066` | `0.996185` | Preview baseline |
+| ARK source-order vs Aholo SH0 | `preview-ply` | `0.9758` | `3.5421` | `0.996173` | Sorting override is slightly worse |
+| ARK straight alpha vs Aholo SH0 | `preview-ply` | `0.9728` | `3.5066` | `0.996185` | Blend override is identical to default |
+| ARK no-preblur vs Aholo SH0 | `preview-ply` | `1.0002` | `3.7612` | `0.996078` | Projection shortcut is worse |
+| ARK unit-focal vs Aholo SH0 | `preview-ply` | `0.9985` | `3.5961` | `0.996084` | Projection shortcut is worse |
+| ARK compact-kernel vs Aholo SH0 | `preview-ply` | `1.0090` | `3.8946` | `0.996043` | Projection shortcut is worse |
+| ARK default vs Aholo SH0 | `source-ply` | `1.6336` | `7.5424` | `0.993594` | Source baseline |
+| ARK source-order vs Aholo SH0 | `source-ply` | `1.6602` | `7.8448` | `0.993489` | Sorting override is worse |
+| ARK straight alpha vs Aholo SH0 | `source-ply` | `1.6336` | `7.5424` | `0.993594` | Blend override is identical to default |
+
+This isolates the current renderer gap away from splat count, source-order
+sorting, and the tested alpha blend function. Projection remains sensitive, but
+the tested parameter shortcuts did not improve parity.
+
 Important current asset coverage limitation:
 
 > `preview-ply` is only a diagnostic preview asset. It contains `99,966` splats,
@@ -494,7 +524,7 @@ Primary functions:
 ## Next Data Contract Work
 
 - Persist visual QA outputs into versioned scene reports.
-- Move first-party renderer sorting from CPU main-thread sort toward worker or GPU-assisted sorting after the projection path is stable.
+- Move first-party renderer sorting from CPU main-thread sort toward worker or GPU-assisted sorting after the projection and packed data path is stable.
 - Add SOG/SPZ direct loading or a first-party runtime conversion path.
 - Use the runtime format probe as the next decoder entry point: SOG exposes WEBP channels and a summarized `meta.json` layout; SPZ is currently only identified as GZIP.
 - Replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison.

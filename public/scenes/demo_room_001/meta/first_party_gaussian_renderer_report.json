@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04T02:55:10.747Z",
+  "generated_at": "2026-06-04T08:00:52.421Z",
   "target": "ARK first-party Gaussian ellipse renderer preview QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
   "summary": {
@@ -23,15 +23,22 @@
       "covarianceProjection": true,
       "instancing": true,
       "projectionModel": "jacobian-covariance",
+      "projectionProfile": "default",
       "composite": "premultiplied-alpha",
       "shading": "sh1-view-dependent",
       "sourceShDegree": 3,
       "renderShDegree": 1,
-      "renderShRestCount": 9
+      "renderShRestCount": 9,
+      "diagnostics": {
+        "enabled": false,
+        "sortOverride": "auto",
+        "compositeMode": "premultiplied-alpha",
+        "projectionProfile": "default"
+      }
     },
     "renderInfo": {
       "lastLoadMs": 178,
-      "lastSortMs": 25.6,
+      "lastSortMs": 23.9,
       "sortEnabled": true,
       "sortMode": "exact-depth",
       "sortReason": "camera-depth-order",
@@ -49,14 +56,20 @@
         "renderedRatio": 1,
         "reason": "not-needed"
       },
+      "diagnostics": {
+        "enabled": false,
+        "sortOverride": "auto",
+        "compositeMode": "premultiplied-alpha",
+        "projectionProfile": "default"
+      },
       "performance": {
         "inputBytes": 24793098,
         "inputMiB": 23.645,
-        "readMs": 73,
-        "decodeMs": 84.4,
-        "packMs": 16.1,
-        "uploadMs": 3.1,
-        "totalLoadMs": 178.3,
+        "readMs": 71.5,
+        "decodeMs": 83,
+        "packMs": 17.5,
+        "uploadMs": 3.6,
+        "totalLoadMs": 177.5,
         "retainedCpuBufferBytes": 19193472,
         "retainedCpuBufferMiB": 18.304,
         "gpuUploadBytes": 9196872,
@@ -78,8 +91,8 @@
       },
       "frameTiming": {
         "lastRenderMs": 0,
-        "maxRenderMs": 26,
-        "averageRenderMs": 2.464,
+        "maxRenderMs": 24.4,
+        "averageRenderMs": 2.291,
         "renderCount": 11
       },
       "ellipse": {
@@ -111,7 +124,7 @@
     "splats": 99966,
     "visual_quality": "Passed (87.1)",
     "contrast": 87.11111111111111,
-    "duration_seconds": 10.236
+    "duration_seconds": 10.23
   },
   "result": {
     "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
@@ -217,7 +230,7 @@
           ],
           "contrast": 87.11111111111111
         },
-        "evaluatedAtMs": 7079
+        "evaluatedAtMs": 7177
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -235,11 +248,18 @@
         "covarianceProjection": true,
         "instancing": true,
         "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
         "composite": "premultiplied-alpha",
         "shading": "sh1-view-dependent",
         "sourceShDegree": 3,
         "renderShDegree": 1,
-        "renderShRestCount": 9
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": false,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
       },
       "scene": {
         "splats": 99966,
@@ -249,7 +269,7 @@
       },
       "renderInfo": {
         "lastLoadMs": 178,
-        "lastSortMs": 25.6,
+        "lastSortMs": 23.9,
         "sortEnabled": true,
         "sortMode": "exact-depth",
         "sortReason": "camera-depth-order",
@@ -267,14 +287,20 @@
           "renderedRatio": 1,
           "reason": "not-needed"
         },
+        "diagnostics": {
+          "enabled": false,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        },
         "performance": {
           "inputBytes": 24793098,
           "inputMiB": 23.645,
-          "readMs": 73,
-          "decodeMs": 84.4,
-          "packMs": 16.1,
-          "uploadMs": 3.1,
-          "totalLoadMs": 178.3,
+          "readMs": 71.5,
+          "decodeMs": 83,
+          "packMs": 17.5,
+          "uploadMs": 3.6,
+          "totalLoadMs": 177.5,
           "retainedCpuBufferBytes": 19193472,
           "retainedCpuBufferMiB": 18.304,
           "gpuUploadBytes": 9196872,
@@ -296,8 +322,8 @@
         },
         "frameTiming": {
           "lastRenderMs": 0,
-          "maxRenderMs": 26,
-          "averageRenderMs": 2.464,
+          "maxRenderMs": 24.4,
+          "averageRenderMs": 2.291,
           "renderCount": 11
         },
         "ellipse": {

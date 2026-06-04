@@ -398,6 +398,75 @@ Debug value for future renderer work:
   SH degree reporting, sort mode, and projection/composite debug fields before
   changing opacity or density constants.
 
+Same-camera comparison checkpoint:
+
+- Added `scripts/qa-first-party-same-camera-compare.mjs` and
+  `npm.cmd run qa:first-party-same-camera`.
+- The script derives a canonical camera from `ark-gaussian` source PLY, then
+  applies the same `position`, `target`, and `distance` to Aholo and ARK before
+  screenshot/signature sampling.
+- Source PLY result:
+  - camera delta: `0`
+  - ARK splats: `1,854,627`
+  - Aholo splats: `1,855,266`
+  - splat delta: `639`, explained by ARK skipping invalid source positions
+  - signature mean absolute RGB delta: `1.6336`
+  - signature similarity: `0.993594`
+- Optional SH3 diagnostic entry exists behind `--include-aholo-sh3`. It should
+  be used as a color reference only, not as a default renderer requirement.
+
+SH3 diagnostic result:
+
+- Source PLY same-camera SH3 run completed without timeout.
+- Aholo SH0 vs Aholo SH3 on source PLY:
+  - mean absolute RGB delta: `0.1345`
+  - RMS RGB delta: `1.1341`
+  - similarity: `0.999473`
+- ARK SH1 vs Aholo SH0 on source PLY:
+  - mean absolute RGB delta: `1.6336`
+  - similarity: `0.993594`
+- ARK SH1 vs Aholo SH3 on source PLY:
+  - mean absolute RGB delta: `1.6483`
+  - similarity: `0.993536`
+- Preview PLY confirms the same trend:
+  - Aholo SH0 vs Aholo SH3 mean absolute RGB delta: `0.0518`
+  - ARK SH1 vs Aholo SH0: `0.9728`
+  - ARK SH1 vs Aholo SH3: `0.9731`
+- Decision: full SH3 is still needed for renderer completeness, but current
+  same-camera evidence does not support SH3 as the primary cause of the
+  remaining visual delta. Next visual repair should focus on projection,
+  sorting, and alpha/composite isolation before adding a full SH3 renderer path.
+
+Pipeline isolation result:
+
+- Added dev-only renderer switches:
+  - `arkDiagSort=source-order|exact-depth|bucket-depth`
+  - `arkDiagComposite=straight`
+  - `arkDiagProjection=no-preblur|unit-focal|compact-kernel`
+- Added `qa:first-party-pipeline-isolation:preview` for the exhaustive preview
+  matrix and `qa:first-party-pipeline-isolation` for the full-source core
+  matrix. The full-source default is intentionally core-only because the
+  exhaustive source matrix exceeded `15` minutes before producing a report.
+- Preview exhaustive matrix:
+  - all targets loaded and used the same camera
+  - default ARK vs Aholo SH0 mean absolute RGB delta: `0.9728`
+  - source-order sorting vs Aholo SH0: `0.9758`
+  - straight alpha vs Aholo SH0: `0.9728`
+  - projection profiles vs Aholo SH0: `1.0002` no-preblur, `0.9985`
+    unit-focal, `1.0090` compact-kernel
+- Source core matrix:
+  - all targets loaded and used the same camera
+  - default ARK vs Aholo SH0 mean absolute RGB delta: `1.6336`
+  - source-order sorting vs Aholo SH0: `1.6602`
+  - straight alpha vs Aholo SH0: `1.6336`
+  - source-order vs ARK default delta: `0.0583`
+  - straight alpha vs ARK default delta: `0`
+- Decision: sorting-order and blend-function changes are not the current
+  primary fix path. Projection remains sensitive, but the tested parameter
+  shortcuts did not improve parity. Next repair should compare Aholo's
+  covariance/projection math against ARK's shader path and move renderer data
+  access toward packed textures/order buffers before adding full SH3.
+
 Remaining risk:
 
 - SH1 produced only a small source smoke change (`222.8` to `223.7`), so the

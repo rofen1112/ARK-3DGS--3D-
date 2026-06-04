@@ -1,0 +1,4965 @@
+{
+  "generated_at": "2026-06-04T08:02:49.989Z",
+  "target": "ARK first-party Gaussian same-camera comparison",
+  "asset": "ply-preview",
+  "timeout_ms": 120000,
+  "signature": {
+    "width": 96,
+    "height": 54,
+    "visual_difference_gated": false
+  },
+  "canonical_camera_source": "ark-gaussian",
+  "canonical_camera": {
+    "position": [
+      1.2962542293049429e-15,
+      -2.1456287725866607,
+      -10.584719040685409
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "distance": 10.799999999999999,
+    "fov": 60,
+    "near": 0.01,
+    "far": 10000,
+    "up": [
+      0,
+      -1,
+      0
+    ]
+  },
+  "pipeline_isolation": {
+    "enabled": true,
+    "diagnostic_target_count": 7,
+    "default_target": "ark-gaussian",
+    "reference_target": "aholo-adapter-sh0",
+    "best_reference_match": {
+      "pair": "ark-sort-bucket-depth vs aholo-adapter-sh0",
+      "available": true,
+      "mean_abs_rgb": 0.9727,
+      "rms_rgb": 3.506,
+      "max_abs_rgb": 74,
+      "changed_pixel_ratio": 0.008681,
+      "similarity_score": 0.996186,
+      "splat_delta": 0,
+      "data_delta_explained_by_invalid_skip": false
+    },
+    "ark_variant_deltas_from_default": [
+      {
+        "pair": "ark-sort-source-order vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0.0146,
+        "rms_rgb": 0.348,
+        "max_abs_rgb": 22,
+        "changed_pixel_ratio": 0.000193,
+        "similarity_score": 0.999943,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-sort-exact-depth vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0,
+        "rms_rgb": 0,
+        "max_abs_rgb": 0,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 1,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-sort-bucket-depth vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0.0001,
+        "rms_rgb": 0.0113,
+        "max_abs_rgb": 1,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 0.999999,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-composite-straight vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0,
+        "rms_rgb": 0,
+        "max_abs_rgb": 0,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 1,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-projection-no-preblur vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0.0332,
+        "rms_rgb": 0.3807,
+        "max_abs_rgb": 12,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 0.99987,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-projection-unit-focal vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0.3466,
+        "rms_rgb": 3.8571,
+        "max_abs_rgb": 89,
+        "changed_pixel_ratio": 0.008295,
+        "similarity_score": 0.998641,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      },
+      {
+        "pair": "ark-projection-compact-kernel vs ark-gaussian",
+        "available": true,
+        "mean_abs_rgb": 0.0569,
+        "rms_rgb": 0.6379,
+        "max_abs_rgb": 21,
+        "changed_pixel_ratio": 0.000386,
+        "similarity_score": 0.999777,
+        "splat_delta": 0,
+        "data_delta_explained_by_invalid_skip": false
+      }
+    ]
+  },
+  "sh3_diagnostic": {
+    "enabled": false,
+    "target_label": null,
+    "note": "Aholo SH3 is an optional reference path for color diagnostics only; it is not an ARK renderer implementation."
+  },
+  "summary": {
+    "passed": true,
+    "all_targets_passed": true,
+    "all_targets_loaded": true,
+    "same_camera_applied": true,
+    "primary_signature_comparison_available": true,
+    "primary_mean_abs_rgb": 0.9728,
+    "primary_similarity_score": 0.996185,
+    "visual_difference_gated": false,
+    "duration_seconds": 105.375
+  },
+  "targets": [
+    {
+      "label": "ark-gaussian",
+      "role": "candidate-default",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (87.1)",
+      "signature_contrast": 177,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": false,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": false,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-gaussian.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-sort-source-order",
+      "role": "sort-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (86.2)",
+      "signature_contrast": 176,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "source-order",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "source-order",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "render_info": {
+        "sorting": "source-order",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "source-order",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        },
+        "sortMode": "disabled",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-source-order.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-sort-exact-depth",
+      "role": "sort-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (87.1)",
+      "signature_contrast": 177,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "exact-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "exact-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-exact-depth.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-sort-bucket-depth",
+      "role": "sort-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (87.1)",
+      "signature_contrast": 177,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-bucket-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "bucket-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-bucket-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "bucket-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        },
+        "sortMode": "bucket-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-bucket-depth.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-composite-straight",
+      "role": "composite-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (87.1)",
+      "signature_contrast": 177,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "straight-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "straight-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "straight-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "straight-alpha",
+          "projectionProfile": "default"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-composite-straight.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-projection-no-preblur",
+      "role": "projection-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (85.3)",
+      "signature_contrast": 181,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "no-preblur",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "no-preblur"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "no-preblur",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "no-preblur"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-no-preblur.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-projection-unit-focal",
+      "role": "projection-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (224)",
+      "signature_contrast": 191,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "unit-focal",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "unit-focal"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "unit-focal",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "unit-focal"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 1,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-unit-focal.png",
+      "failure_reason": null
+    },
+    {
+      "label": "ark-projection-compact-kernel",
+      "role": "projection-diagnostic",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 99966,
+      "sh_degree": 3,
+      "asset": "preview-ply (preview)",
+      "coverage": "99,966 / 1,855,266 (5.39%)",
+      "visual_quality": "Passed (77.3)",
+      "signature_contrast": 175,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "compact-kernel",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "compact-kernel"
+        }
+      },
+      "render_info": {
+        "sorting": "cpu-exact-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "compact-kernel",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "compact-kernel"
+        },
+        "sortMode": "exact-depth",
+        "sortedSplats": 99966,
+        "renderedSplats": 99966,
+        "ellipse": {
+          "profile": "standard",
+          "extent": 2.05,
+          "maxStdDev": 2.05,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
+          "minPixelAxis": 0.75,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.44,
+          "baseOpacityScale": 0.44,
+          "alphaCutoff": 0.003,
+          "clipping": {
+            "minClipW": 0.02,
+            "offscreenPadding": 1.4,
+            "centerClip": true,
+            "nearFarClip": true
+          },
+          "sourceAxis": {
+            "min": 0.0001,
+            "max": 0.337948,
+            "mean": 0.005467
+          }
+        }
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-compact-kernel.png",
+      "failure_reason": null
+    },
+    {
+      "label": "aholo-adapter-sh0",
+      "role": "reference",
+      "passed": true,
+      "renderer": "aholo",
+      "splats": 99966,
+      "sh_degree": 0,
+      "asset": "Bundled asset",
+      "coverage": "Direct / unknown",
+      "visual_quality": "Passed (128.9)",
+      "signature_contrast": 193,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "render_info": {
+        "sorting": null,
+        "projectionModel": null,
+        "projectionProfile": null,
+        "composite": null,
+        "shading": null,
+        "sourceShDegree": null,
+        "renderShDegree": null,
+        "renderShRestCount": null,
+        "diagnostics": null,
+        "sortMode": null,
+        "sortedSplats": null,
+        "renderedSplats": null,
+        "ellipse": null
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/aholo-adapter-sh0.png",
+      "failure_reason": null
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "ark-gaussian vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9728,
+        "rms_rgb": 3.5066,
+        "max_abs_rgb": 74,
+        "changed_pixel_ratio": 0.008681,
+        "similarity_score": 0.996185
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -16
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-source-order vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9758,
+        "rms_rgb": 3.5421,
+        "max_abs_rgb": 74,
+        "changed_pixel_ratio": 0.008488,
+        "similarity_score": 0.996173
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -17
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-exact-depth vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9728,
+        "rms_rgb": 3.5066,
+        "max_abs_rgb": 74,
+        "changed_pixel_ratio": 0.008681,
+        "similarity_score": 0.996185
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -16
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-bucket-depth vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9727,
+        "rms_rgb": 3.506,
+        "max_abs_rgb": 74,
+        "changed_pixel_ratio": 0.008681,
+        "similarity_score": 0.996186
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -16
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-composite-straight vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9728,
+        "rms_rgb": 3.5066,
+        "max_abs_rgb": 74,
+        "changed_pixel_ratio": 0.008681,
+        "similarity_score": 0.996185
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -16
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-no-preblur vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 1.0002,
+        "rms_rgb": 3.7612,
+        "max_abs_rgb": 78,
+        "changed_pixel_ratio": 0.009452,
+        "similarity_score": 0.996078
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -12
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-unit-focal vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.9985,
+        "rms_rgb": 3.5961,
+        "max_abs_rgb": 85,
+        "changed_pixel_ratio": 0.009259,
+        "similarity_score": 0.996084
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -2
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-compact-kernel vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 1.009,
+        "rms_rgb": 3.8946,
+        "max_abs_rgb": 84,
+        "changed_pixel_ratio": 0.009066,
+        "similarity_score": 0.996043
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -18
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-source-order vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.0146,
+        "rms_rgb": 0.348,
+        "max_abs_rgb": 22,
+        "changed_pixel_ratio": 0.000193,
+        "similarity_score": 0.999943
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -1
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-exact-depth vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0,
+        "rms_rgb": 0,
+        "max_abs_rgb": 0,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 1
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 0
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-sort-bucket-depth vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.0001,
+        "rms_rgb": 0.0113,
+        "max_abs_rgb": 1,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 0.999999
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 0
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-composite-straight vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0,
+        "rms_rgb": 0,
+        "max_abs_rgb": 0,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 1
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 0
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-no-preblur vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.0332,
+        "rms_rgb": 0.3807,
+        "max_abs_rgb": 12,
+        "changed_pixel_ratio": 0,
+        "similarity_score": 0.99987
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 4
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-unit-focal vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.3466,
+        "rms_rgb": 3.8571,
+        "max_abs_rgb": 89,
+        "changed_pixel_ratio": 0.008295,
+        "similarity_score": 0.998641
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 14
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-projection-compact-kernel vs ark-gaussian",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.0569,
+        "rms_rgb": 0.6379,
+        "max_abs_rgb": 21,
+        "changed_pixel_ratio": 0.000386,
+        "similarity_score": 0.999777
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": -2
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    }
+  ],
+  "raw_results": [
+    {
+      "label": "ark-gaussian",
+      "role": "candidate-default",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-gaussian.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": false,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (87.1)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 87.11111111111111,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19,
+              21.666666666666668,
+              20.22222222222222
+            ],
+            "contrast": 87.11111111111111
+          },
+          "evaluatedAtMs": 8962
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "default",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": false,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 164,
+          "lastSortMs": 23,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": false,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 65.9,
+            "decodeMs": 78,
+            "packMs": 15.5,
+            "uploadMs": 3.1,
+            "totalLoadMs": 164.2,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 23.4,
+            "averageRenderMs": 1.613,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.884645061728396,
+          18.861689814814813,
+          17.988233024691358
+        ],
+        "minRgb": 15,
+        "maxRgb": 192,
+        "contrast": 177
+      },
+      "splats": 99966,
+      "chromeErrors": "[52000:21268:0604/160104.792:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18954/devtools/browser/2ad3afeb-ba54-43aa-9a80-a5f8d99e7144\r\n[52000:48604:0604/160109.159:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[52000:48604:0604/160109.167:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[52000:48604:0604/160109.168:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[52000:48604:0604/160109.894:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:702]   Error code: 401  Error message: Authentication Failed: wrong_secret\r\n[52000:48604:0604/160109.894:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:704] Failed to log in to GCM, resetting connection.\r\n"
+    },
+    {
+      "label": "ark-sort-source-order",
+      "role": "sort-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagSort=source-order",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-source-order.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "source-order",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "source-order",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (86.2)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 86.22222222222223,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              18.88888888888889,
+              21.666666666666668,
+              20.22222222222222
+            ],
+            "contrast": 86.22222222222223
+          },
+          "evaluatedAtMs": 8872
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "source-order",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "default",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "source-order",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 156,
+          "lastSortMs": 0,
+          "sortEnabled": false,
+          "sortMode": "disabled",
+          "sortReason": "disabled-over-2000000-rendered-splats",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 0,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "source-order",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 55.8,
+            "decodeMs": 81.5,
+            "packMs": 13.7,
+            "uploadMs": 2.7,
+            "totalLoadMs": 155.7,
+            "retainedCpuBufferBytes": 9196872,
+            "retainedCpuBufferMiB": 8.771,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 43586706,
+            "loadPeakMiB": 41.568,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0,
+            "maxRenderMs": 0.3,
+            "averageRenderMs": 0.06,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.879050925925926,
+          18.856867283950617,
+          17.98726851851852
+        ],
+        "minRgb": 15,
+        "maxRgb": 191,
+        "contrast": 176
+      },
+      "splats": 99966,
+      "chromeErrors": "[16720:33880:0604/160117.512:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16614/devtools/browser/fd856f50-24b0-4e78-b215-2d7037acc56a\r\n[16720:30824:0604/160121.981:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[16720:30824:0604/160121.982:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[16720:30824:0604/160121.983:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    },
+    {
+      "label": "ark-sort-exact-depth",
+      "role": "sort-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagSort=exact-depth",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-exact-depth.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "exact-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (87.1)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 87.11111111111111,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19,
+              21.666666666666668,
+              20.22222222222222
+            ],
+            "contrast": 87.11111111111111
+          },
+          "evaluatedAtMs": 9003
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "default",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "exact-depth",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 157,
+          "lastSortMs": 25.1,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "exact-depth",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 55.7,
+            "decodeMs": 78.7,
+            "packMs": 17.8,
+            "uploadMs": 3.1,
+            "totalLoadMs": 157.3,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 25.4,
+            "averageRenderMs": 1.747,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.884645061728396,
+          18.861689814814813,
+          17.988233024691358
+        ],
+        "minRgb": 15,
+        "maxRgb": 192,
+        "contrast": 177
+      },
+      "splats": 99966,
+      "chromeErrors": "[46280:34400:0604/160130.258:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16133/devtools/browser/bc6dfa72-855b-4d99-82fa-bd9ea927503a\r\n[46280:29796:0604/160135.033:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[46280:29796:0604/160135.038:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[46280:29796:0604/160135.265:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    },
+    {
+      "label": "ark-sort-bucket-depth",
+      "role": "sort-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagSort=bucket-depth",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-sort-bucket-depth.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-bucket-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "bucket-depth",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (87.1)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 87.11111111111111,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19,
+              21.666666666666668,
+              20.22222222222222
+            ],
+            "contrast": 87.11111111111111
+          },
+          "evaluatedAtMs": 8993
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-bucket-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "default",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "bucket-depth",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 166,
+          "lastSortMs": 14.6,
+          "sortEnabled": true,
+          "sortMode": "bucket-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": [
+            8.72815,
+            13.396484
+          ],
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "bucket-depth",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "default"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 64.6,
+            "decodeMs": 81.6,
+            "packMs": 14.6,
+            "uploadMs": 3,
+            "totalLoadMs": 166,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0,
+            "maxRenderMs": 15.1,
+            "averageRenderMs": 1.067,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.884452160493828,
+          18.861496913580247,
+          17.988233024691358
+        ],
+        "minRgb": 15,
+        "maxRgb": 192,
+        "contrast": 177
+      },
+      "splats": 99966,
+      "chromeErrors": "[47144:23468:0604/160143.191:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19519/devtools/browser/574baf25-2d70-4581-a6cd-679100a309fa\r\n[47144:16424:0604/160147.909:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[47144:16424:0604/160147.909:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[47144:16424:0604/160147.909:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    },
+    {
+      "label": "ark-composite-straight",
+      "role": "composite-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagComposite=straight",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-composite-straight.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "default",
+        "composite": "straight-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "straight-alpha",
+          "projectionProfile": "default"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (87.1)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 87.11111111111111,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19,
+              21.666666666666668,
+              20.22222222222222
+            ],
+            "contrast": 87.11111111111111
+          },
+          "evaluatedAtMs": 8834
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "default",
+          "composite": "straight-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "straight-alpha",
+            "projectionProfile": "default"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 162,
+          "lastSortMs": 23.8,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "straight-alpha",
+            "projectionProfile": "default"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 60.5,
+            "decodeMs": 81,
+            "packMs": 15.7,
+            "uploadMs": 3,
+            "totalLoadMs": 161.9,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0,
+            "maxRenderMs": 24.1,
+            "averageRenderMs": 1.673,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.884645061728396,
+          18.861689814814813,
+          17.988233024691358
+        ],
+        "minRgb": 15,
+        "maxRgb": 192,
+        "contrast": 177
+      },
+      "splats": 99966,
+      "chromeErrors": "[7792:39056:0604/160156.138:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19305/devtools/browser/b660dd90-a3b4-4cf6-bbf2-e3ad736e0952\r\n[7792:34392:0604/160201.835:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+    },
+    {
+      "label": "ark-projection-no-preblur",
+      "role": "projection-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagProjection=no-preblur",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-no-preblur.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "no-preblur",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "no-preblur"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (85.3)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 85.33333333333333,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              19,
+              21.555555555555557,
+              20.11111111111111
+            ],
+            "contrast": 85.33333333333333
+          },
+          "evaluatedAtMs": 8996
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "no-preblur",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "no-preblur"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 164,
+          "lastSortMs": 23.9,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "no-preblur"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 63.9,
+            "decodeMs": 79.4,
+            "packMs": 16,
+            "uploadMs": 3.1,
+            "totalLoadMs": 164.2,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 24.2,
+            "averageRenderMs": 1.693,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.859953703703704,
+          18.84182098765432,
+          17.961033950617285
+        ],
+        "minRgb": 15,
+        "maxRgb": 196,
+        "contrast": 181
+      },
+      "splats": 99966,
+      "chromeErrors": "[43128:6668:0604/160208.784:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18353/devtools/browser/0d43372e-6763-4268-8695-8ec2ac444090\r\n[43128:40852:0604/160217.298:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[43128:40852:0604/160217.311:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[43128:40852:0604/160217.318:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[43128:40852:0604/160219.160:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:702]   Error code: 401  Error message: Authentication Failed: wrong_secret\r\n[43128:40852:0604/160219.160:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:704] Failed to log in to GCM, resetting connection.\r\n"
+    },
+    {
+      "label": "ark-projection-unit-focal",
+      "role": "projection-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagProjection=unit-focal",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-unit-focal.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "unit-focal",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "unit-focal"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (224)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 224,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              24.88888888888889,
+              26.555555555555557,
+              26.555555555555557
+            ],
+            "contrast": 224
+          },
+          "evaluatedAtMs": 8919
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "unit-focal",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "unit-focal"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 162,
+          "lastSortMs": 23.6,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "unit-focal"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 58,
+            "decodeMs": 82.3,
+            "packMs": 16.4,
+            "uploadMs": 3,
+            "totalLoadMs": 161.6,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0,
+            "maxRenderMs": 24,
+            "averageRenderMs": 1.66,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 1,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          16.115162037037038,
+          19.090470679012345,
+          18.274498456790123
+        ],
+        "minRgb": 15,
+        "maxRgb": 206,
+        "contrast": 191
+      },
+      "splats": 99966,
+      "chromeErrors": "[34224:42256:0604/160221.726:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:17515/devtools/browser/9fa0d7bb-83a4-48cf-89a5-b7f03e474117\r\n[34224:42340:0604/160227.529:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[34224:42340:0604/160228.010:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    },
+    {
+      "label": "ark-projection-compact-kernel",
+      "role": "projection-diagnostic",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagProjection=compact-kernel",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/ark-projection-compact-kernel.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "projectionProfile": "compact-kernel",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "diagnostics": {
+          "enabled": true,
+          "sortOverride": "auto",
+          "compositeMode": "premultiplied-alpha",
+          "projectionProfile": "compact-kernel"
+        }
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.2s.",
+        "visualQuality": "Passed (77.3)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "preview-ply (preview)",
+        "coverage": "99,966 / 1,855,266 (5.39%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 77.33333333333334,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              18.555555555555557,
+              21.333333333333332,
+              19.77777777777778
+            ],
+            "contrast": 77.33333333333334
+          },
+          "evaluatedAtMs": 8784
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-exact-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "projectionProfile": "compact-kernel",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9,
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "compact-kernel"
+          }
+        },
+        "scene": {
+          "splats": 99966,
+          "splatCounts": 99966,
+          "renderedSplats": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 178,
+          "lastSortMs": 24.1,
+          "sortEnabled": true,
+          "sortMode": "exact-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": null,
+          "sortedSplats": 99966,
+          "renderedSplats": 99966,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 99966,
+            "renderedSplats": 99966,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "not-needed"
+          },
+          "diagnostics": {
+            "enabled": true,
+            "sortOverride": "auto",
+            "compositeMode": "premultiplied-alpha",
+            "projectionProfile": "compact-kernel"
+          },
+          "performance": {
+            "inputBytes": 24793098,
+            "inputMiB": 23.645,
+            "readMs": 72.1,
+            "decodeMs": 84.6,
+            "packMs": 16.3,
+            "uploadMs": 3.2,
+            "totalLoadMs": 177.9,
+            "retainedCpuBufferBytes": 19193472,
+            "retainedCpuBufferMiB": 18.304,
+            "gpuUploadBytes": 9196872,
+            "gpuUploadMiB": 8.771,
+            "loadPeakBytes": 53583306,
+            "loadPeakMiB": 51.101,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": false,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-resolution-sorted"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 24.5,
+            "averageRenderMs": 1.693,
+            "renderCount": 15
+          },
+          "ellipse": {
+            "profile": "standard",
+            "extent": 2.05,
+            "maxStdDev": 2.05,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.75,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.44,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.337948,
+              "mean": 0.005467
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "preview-ply",
+          "assetRole": "preview",
+          "sourceAssetId": "source-ply",
+          "declaredSplats": 99966,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.053882300435624864
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          15.83641975308642,
+          18.81712962962963,
+          17.93460648148148
+        ],
+        "minRgb": 15,
+        "maxRgb": 190,
+        "contrast": 175
+      },
+      "splats": 99966,
+      "chromeErrors": "[30792:5744:0604/160234.474:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18650/devtools/browser/f6581fb8-8932-41d6-bc59-2d97e0acdfb1\r\n[30792:20516:0604/160239.063:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+    },
+    {
+      "label": "aholo-adapter-sh0",
+      "role": "reference",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&sh=0",
+      "screenshot": "artifacts/first-party-pipeline-isolation-preview/aholo-adapter-sh0.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "aholo",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene-preview-100k.ply loaded in 0.1s.",
+        "visualQuality": "Passed (128.9)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "Bundled asset",
+        "coverage": "Direct / unknown",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
+          "format": "PLY",
+          "splats": 99966,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 99966,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 128.88888888888889,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 8
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              21,
+              22.555555555555557,
+              20.555555555555557
+            ],
+            "contrast": 128.88888888888889
+          },
+          "evaluatedAtMs": 512
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 99966,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "layers": 1,
+          "netLayer": 1,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 1,
+            "calls": 3,
+            "vertices": 552966,
+            "faces": 184322,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 3,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
+        },
+        "splattingPlugin": {
+          "counters": {
+            "updateEffect": 94,
+            "updateRenderGraph": 2,
+            "addSortTask": 2,
+            "flushSortTask": 4,
+            "lastAddSortTaskCounts": 99966,
+            "lastFlushState": "current=2;last=2;sorting=false;hasPending=true"
+          },
+          "enabled": true,
+          "shouldRender": false,
+          "isSortDirty": false,
+          "isSorting": false,
+          "sortCurrentVersion": 2,
+          "sortLastVersion": 2,
+          "packQueueSize": 0,
+          "precalculateQueueSize": 0,
+          "instancedCount": 720,
+          "activeSplats": 92045,
+          "orderTex": {
+            "width": 304,
+            "height": 303
+          }
+        },
+        "splat": {
+          "id": 62,
+          "counts": 99966,
+          "shDegree": 0,
+          "visible": true,
+          "layers": 1,
+          "netLayer": 1,
+          "position": [
+            -0.32883947666550833,
+            0.4303745327875105,
+            -0.7881461516946783
+          ],
+          "scale": [
+            0.2825170004605027,
+            0.2825170004605027,
+            0.2825170004605027
+          ]
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          16.085262345679013,
+          18.06057098765432,
+          17.228202160493826
+        ],
+        "minRgb": 13,
+        "maxRgb": 206,
+        "contrast": 193
+      },
+      "splats": 99966,
+      "chromeErrors": "[39532:49432:0604/160247.008:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:17055/devtools/browser/a262646e-2a8d-445b-b5b4-b965cf56931c\r\n"
+    }
+  ]
+}

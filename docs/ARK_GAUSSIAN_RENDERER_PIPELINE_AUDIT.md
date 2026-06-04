@@ -22,8 +22,9 @@ The current full-source PLY issue is not a source-data density problem.
 
 - The local/source PLY contains `1,854,627` valid decoded splats.
 - The first-party renderer now draws all decoded splats for this scene.
-- The remaining visual failure is in the renderer pipeline: sorting,
-  projection/compositing, and color/shading fidelity.
+- The remaining visual delta is in the renderer pipeline: projection math,
+  packed data access, and full color/shading fidelity. Same-camera isolation now
+  makes sorting order and alpha blend function unlikely as the primary cause.
 
 ## Aholo Pipeline Evidence
 
@@ -127,6 +128,47 @@ Round 5 observation:
   display normally. Future debug sessions should preserve this checkpoint and
   first verify asset coverage and SH rest ordering before tuning renderer
   constants.
+
+Round 6 baseline setup:
+
+- `qa:first-party-same-camera` now produces a source PLY Aholo-vs-ARK
+  comparison under a canonical ARK-derived camera.
+- The current source baseline has `camera_delta=0`; data-count difference is
+  explained by the `639` invalid splats skipped by ARK.
+- This report is the baseline for deciding whether the next SH3/color work is
+  improving visual parity or merely changing renderer constants.
+
+Round 6 SH3 diagnostic:
+
+- Source PLY Aholo SH0 and Aholo SH3 are visually close under the same camera:
+  mean absolute RGB delta `0.1345`, similarity `0.999473`.
+- Preview PLY confirms this with Aholo SH0 vs SH3 mean absolute RGB delta
+  `0.0518`.
+- ARK's same-camera delta to Aholo is about an order of magnitude larger than
+  Aholo's own SH0-to-SH3 delta. The next audit target should therefore be
+  projection/sort/composite isolation, while keeping full SH3 as a later packed
+  data requirement.
+
+Round 7 pipeline isolation:
+
+- Added dev-only ARK diagnostics for sort override, composite mode, and
+  projection profile. Default rendering stays unchanged when these URL
+  parameters are absent.
+- Preview exhaustive isolation passed for all targets. Default ARK vs Aholo SH0
+  has mean absolute RGB delta `0.9728`; source-order sorting is slightly worse
+  at `0.9758`; straight alpha is identical to default at `0.9728`; tested
+  projection shortcuts are worse at `1.0002`, `0.9985`, and `1.0090`.
+- Full-source core isolation passed for default ARK, source-order ARK,
+  straight-alpha ARK, and Aholo SH0. Default ARK vs Aholo SH0 remains `1.6336`;
+  source-order sorting worsens to `1.6602`; straight alpha is identical to
+  default. The `639` splat delta remains explained by invalid source positions.
+- The full-source exhaustive matrix exceeded `15` minutes before report
+  generation, so full-source routine QA is intentionally core-only and the
+  exhaustive matrix remains a manual deep-dive command.
+- Decision: do not continue tuning density, sort order, or blend function as the
+  main repair. The next focused audit should compare the covariance projection,
+  focal adjustment, falloff, and data packing/order-access assumptions against
+  Aholo and local open-source references.
 
 ## External Renderer Framework Trigger
 

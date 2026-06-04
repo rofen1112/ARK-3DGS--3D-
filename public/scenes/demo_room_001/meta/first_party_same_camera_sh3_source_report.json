@@ -1,0 +1,1766 @@
+{
+  "generated_at": "2026-06-04T07:40:03.342Z",
+  "target": "ARK first-party Gaussian same-camera comparison",
+  "asset": "source-ply",
+  "timeout_ms": 420000,
+  "signature": {
+    "width": 96,
+    "height": 54,
+    "visual_difference_gated": false
+  },
+  "canonical_camera_source": "ark-gaussian",
+  "canonical_camera": {
+    "position": [
+      1.2962542293049429e-15,
+      -2.1456287725866607,
+      -10.584719040685409
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "distance": 10.799999999999999,
+    "fov": 60,
+    "near": 0.01,
+    "far": 10000,
+    "up": [
+      0,
+      -1,
+      0
+    ]
+  },
+  "sh3_diagnostic": {
+    "enabled": true,
+    "target_label": "aholo-adapter-sh3",
+    "note": "Aholo SH3 is an optional reference path for color diagnostics only; it is not an ARK renderer implementation."
+  },
+  "summary": {
+    "passed": true,
+    "all_targets_passed": true,
+    "all_targets_loaded": true,
+    "same_camera_applied": true,
+    "primary_signature_comparison_available": true,
+    "primary_mean_abs_rgb": 1.6336,
+    "primary_similarity_score": 0.993594,
+    "visual_difference_gated": false,
+    "duration_seconds": 210.617
+  },
+  "targets": [
+    {
+      "label": "ark-gaussian",
+      "role": "candidate",
+      "passed": true,
+      "renderer": "ark-gaussian-webgl2",
+      "splats": 1854627,
+      "sh_degree": 3,
+      "asset": "source-ply (source)",
+      "coverage": "1,854,627 / 1,855,266 (99.97%)",
+      "visual_quality": "Passed (223.7)",
+      "signature_contrast": 222,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-bucket-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9
+      },
+      "render_info": {
+        "sorting": "cpu-bucket-back-to-front",
+        "projectionModel": "jacobian-covariance",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9,
+        "sortMode": "bucket-depth",
+        "sortedSplats": 1854627,
+        "renderedSplats": 1854627
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/ark-gaussian.png",
+      "failure_reason": null
+    },
+    {
+      "label": "aholo-adapter-sh0",
+      "role": "reference",
+      "passed": true,
+      "renderer": "aholo",
+      "splats": 1855266,
+      "sh_degree": 0,
+      "asset": "Bundled asset",
+      "coverage": "Direct / unknown",
+      "visual_quality": "Failed (0)",
+      "signature_contrast": 251,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "render_info": {
+        "sorting": null,
+        "projectionModel": null,
+        "composite": null,
+        "shading": null,
+        "sourceShDegree": null,
+        "renderShDegree": null,
+        "renderShRestCount": null,
+        "sortMode": null,
+        "sortedSplats": null,
+        "renderedSplats": null
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/aholo-adapter-sh0.png",
+      "failure_reason": null
+    },
+    {
+      "label": "aholo-adapter-sh3",
+      "role": "sh3-diagnostic-reference",
+      "passed": true,
+      "renderer": "aholo",
+      "splats": 1855266,
+      "sh_degree": 3,
+      "asset": "Bundled asset",
+      "coverage": "Direct / unknown",
+      "visual_quality": "Failed (0)",
+      "signature_contrast": 248,
+      "fit_bounds": "broad_01_99 (sidecar)",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "render_info": {
+        "sorting": null,
+        "projectionModel": null,
+        "composite": null,
+        "shading": null,
+        "sourceShDegree": null,
+        "renderShDegree": null,
+        "renderShRestCount": null,
+        "sortMode": null,
+        "sortedSplats": null,
+        "renderedSplats": null
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/aholo-adapter-sh3.png",
+      "failure_reason": null
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "ark-gaussian vs aholo-adapter-sh0",
+      "passed": true,
+      "data_equivalence_passed": false,
+      "data_delta_explained_by_invalid_skip": true,
+      "invalid_splats_skipped_by_candidate": 639,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 1.6336,
+        "rms_rgb": 7.5424,
+        "max_abs_rgb": 153,
+        "changed_pixel_ratio": 0.021798,
+        "similarity_score": 0.993594
+      },
+      "deltas": {
+        "splats": -639,
+        "signature_contrast": -29
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "ark-gaussian vs aholo-adapter-sh3",
+      "passed": true,
+      "data_equivalence_passed": false,
+      "data_delta_explained_by_invalid_skip": true,
+      "invalid_splats_skipped_by_candidate": 639,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 1.6483,
+        "rms_rgb": 7.7097,
+        "max_abs_rgb": 153,
+        "changed_pixel_ratio": 0.021412,
+        "similarity_score": 0.993536
+      },
+      "deltas": {
+        "splats": -639,
+        "signature_contrast": -26
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    },
+    {
+      "pair": "aholo-adapter-sh0 vs aholo-adapter-sh3",
+      "passed": true,
+      "data_equivalence_passed": true,
+      "data_delta_explained_by_invalid_skip": false,
+      "invalid_splats_skipped_by_candidate": null,
+      "camera_delta": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature_difference": {
+        "available": true,
+        "signature_size": [
+          96,
+          54
+        ],
+        "mean_abs_rgb": 0.1345,
+        "rms_rgb": 1.1341,
+        "max_abs_rgb": 33,
+        "changed_pixel_ratio": 0.002701,
+        "similarity_score": 0.999473
+      },
+      "deltas": {
+        "splats": 0,
+        "signature_contrast": 3
+      },
+      "interpretation": "Same-camera signature difference is diagnostic only. Use it to decide whether color, projection, or sorting needs the next focused repair."
+    }
+  ],
+  "raw_results": [
+    {
+      "label": "ark-gaussian",
+      "role": "candidate",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&renderer=ark-gaussian",
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/ark-gaussian.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "ark-gaussian-webgl2",
+      "pipeline": {
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-bucket-back-to-front",
+        "scaleAware": true,
+        "opacityAware": true,
+        "gaussianProjection": true,
+        "covarianceProjection": true,
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.ply loaded in 2.7s.",
+        "visualQuality": "Passed (223.7)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "source-ply (source)",
+        "coverage": "1,854,627 / 1,855,266 (99.97%)",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Source PLY)",
+          "format": "PLY",
+          "splats": 1854627,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "source-ply",
+          "assetRole": "source",
+          "declaredSplats": 1855266,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.9996555749957149
+        },
+        "visualQualityGate": {
+          "status": "passed",
+          "reason": "Visual sample passed all runtime checks.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1854627,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": true,
+              "value": "visible",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": true,
+              "value": 223.66666666666669,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 1
+          },
+          "sample": {
+            "status": "visible",
+            "averageRgb": [
+              24.22222222222222,
+              27.333333333333332,
+              26.77777777777778
+            ],
+            "contrast": 223.66666666666669
+          },
+          "evaluatedAtMs": 47998
+        },
+        "renderer": {
+          "id": "ark-gaussian-webgl2",
+          "backend": {
+            "family": "ark-first-party",
+            "mode": "instanced-ellipse-gaussian-renderer"
+          }
+        },
+        "pipeline": {
+          "shader": "sh0-jacobian-covariance-gaussian",
+          "sorting": "cpu-bucket-back-to-front",
+          "scaleAware": true,
+          "opacityAware": true,
+          "gaussianProjection": true,
+          "covarianceProjection": true,
+          "instancing": true,
+          "projectionModel": "jacobian-covariance",
+          "composite": "premultiplied-alpha",
+          "shading": "sh1-view-dependent",
+          "sourceShDegree": 3,
+          "renderShDegree": 1,
+          "renderShRestCount": 9
+        },
+        "scene": {
+          "splats": 1854627,
+          "splatCounts": 1854627,
+          "renderedSplats": 1854627,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "lastLoadMs": 2700,
+          "lastSortMs": 163.3,
+          "sortEnabled": true,
+          "sortMode": "bucket-depth",
+          "sortReason": "camera-change-within-sort-threshold",
+          "sortDepthRange": [
+            8.484722,
+            13.676867
+          ],
+          "sortedSplats": 1854627,
+          "renderedSplats": 1854627,
+          "sortVersion": 1,
+          "lod": {
+            "enabled": false,
+            "mode": "full-resolution",
+            "decodedSplats": 1854627,
+            "renderedSplats": 1854627,
+            "budgetSplats": 300000,
+            "samplingStride": 1,
+            "renderedRatio": 1,
+            "reason": "decoded-under-2000000-full-density-rendering"
+          },
+          "performance": {
+            "inputBytes": 460107500,
+            "inputMiB": 438.793,
+            "readMs": 1111.2,
+            "decodeMs": 1317.7,
+            "packMs": 190.6,
+            "uploadMs": 77.7,
+            "totalLoadMs": 2699.5,
+            "retainedCpuBufferBytes": 356088384,
+            "retainedCpuBufferMiB": 339.592,
+            "gpuUploadBytes": 170625684,
+            "gpuUploadMiB": 162.721,
+            "loadPeakBytes": 994242632,
+            "loadPeakMiB": 948.184,
+            "sortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortBucketCount": 65536,
+            "fullDensitySplatLimit": 2000000
+          },
+          "largeScene": {
+            "fullDensity": true,
+            "fullDensitySplatLimit": 2000000,
+            "cpuSortSplatLimit": 400000,
+            "bucketSortSplatLimit": 2000000,
+            "sortingLimited": false,
+            "strategy": "full-density-bucket-depth-sort"
+          },
+          "frameTiming": {
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 163.6,
+            "averageRenderMs": 12.662,
+            "renderCount": 13
+          },
+          "ellipse": {
+            "profile": "large-scene-full-density",
+            "extent": 2.8284271247461903,
+            "maxStdDev": 2.8284271247461903,
+            "preBlurAmount": 0.3,
+            "blurAmount": 0,
+            "focalAdjustment": 2,
+            "minPixelAxis": 0.35,
+            "maxPixelAxis": 1024,
+            "opacityScale": 0.18,
+            "baseOpacityScale": 0.44,
+            "alphaCutoff": 0.003,
+            "clipping": {
+              "minClipW": 0.02,
+              "offscreenPadding": 1.4,
+              "centerClip": true,
+              "nearFarClip": true
+            },
+            "sourceAxis": {
+              "min": 0.0001,
+              "max": 0.480947,
+              "mean": 0.005457
+            }
+          },
+          "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, full-density large-scene rendering, bucket depth sorting, and premultiplied alpha compositing."
+        },
+        "splattingPlugin": null,
+        "splat": {
+          "name": "Dongguan Heritage Gaussian (Source PLY)",
+          "format": "PLY",
+          "splats": 1854627,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled",
+          "assetId": "source-ply",
+          "assetRole": "source",
+          "declaredSplats": 1855266,
+          "sourceSplats": 1855266,
+          "coverageRatio": 0.9996555749957149
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          16.484182098765434,
+          19.379436728395063,
+          18.607831790123456
+        ],
+        "minRgb": 14,
+        "maxRgb": 236,
+        "contrast": 222
+      },
+      "splats": 1854627,
+      "chromeErrors": "[40136:38468:0604/153632.889:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19179/devtools/browser/ce9ee61c-10bf-4fc0-b79c-cf912245aecd\r\n[40136:47848:0604/153639.490:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[40136:47848:0604/153639.491:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[40136:47848:0604/153640.246:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:702]   Error code: 401  Error message: Authentication Failed: wrong_secret\r\n[40136:47848:0604/153640.246:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:704] Failed to log in to GCM, resetting connection.\r\nCreated TensorFlow Lite XNNPACK delegate for CPU.\r\n[40136:47848:0604/153705.640:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[40136:47848:0604/153758.550:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[40136:47848:0604/153923.168:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+    },
+    {
+      "label": "aholo-adapter-sh0",
+      "role": "reference",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&sh=0",
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/aholo-adapter-sh0.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "aholo",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.ply loaded in 2.2s.",
+        "visualQuality": "Failed (0)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "Bundled asset",
+        "coverage": "Direct / unknown",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Source PLY)",
+          "format": "PLY",
+          "splats": 1855266,
+          "shDegree": 0,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "failed",
+          "reason": "One or more visual runtime checks failed.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1855266,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": false,
+              "value": "empty",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": false,
+              "value": 0,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 1
+          },
+          "sample": {
+            "status": "empty",
+            "averageRgb": [
+              15,
+              17,
+              16
+            ],
+            "contrast": 0
+          },
+          "evaluatedAtMs": 2397
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 1855266,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "layers": 1,
+          "netLayer": 1,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 1,
+            "calls": 3,
+            "vertices": 10242822,
+            "faces": 3414274,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 3,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
+        },
+        "splattingPlugin": {
+          "counters": {
+            "updateEffect": 32,
+            "updateRenderGraph": 2,
+            "addSortTask": 2,
+            "flushSortTask": 4,
+            "lastAddSortTaskCounts": 1855266,
+            "lastFlushState": "current=2;last=2;sorting=false;hasPending=true"
+          },
+          "enabled": true,
+          "shouldRender": false,
+          "isSortDirty": false,
+          "isSorting": false,
+          "sortCurrentVersion": 2,
+          "sortLastVersion": 2,
+          "packQueueSize": 0,
+          "precalculateQueueSize": 0,
+          "instancedCount": 13337,
+          "activeSplats": 1707103,
+          "orderTex": {
+            "width": 1308,
+            "height": 1306
+          }
+        },
+        "splat": {
+          "id": 62,
+          "counts": 1855266,
+          "shDegree": 0,
+          "visible": true,
+          "layers": 1,
+          "netLayer": 1,
+          "position": [
+            -0.32883947666550833,
+            0.4303745327875105,
+            -0.7881461516946783
+          ],
+          "scale": [
+            0.2825170004605027,
+            0.2825170004605027,
+            0.2825170004605027
+          ]
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          16.98341049382716,
+          18.811149691358025,
+          18.224537037037038
+        ],
+        "minRgb": 2,
+        "maxRgb": 253,
+        "contrast": 251
+      },
+      "splats": 1855266,
+      "chromeErrors": "[49808:9176:0604/153946.860:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16380/devtools/browser/5c05eca9-3f27-4202-8a5b-f737821c7f88\r\n[49808:49304:0604/153951.931:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[49808:49304:0604/153952.543:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[49808:49304:0604/153952.543:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    },
+    {
+      "label": "aholo-adapter-sh3",
+      "role": "sh3-diagnostic-reference",
+      "url": "http://127.0.0.1:5173/?autoload=1&asset=source-ply&sh=3",
+      "screenshot": "artifacts/first-party-same-camera-sh3-source/aholo-adapter-sh3.png",
+      "passed": true,
+      "checks": {
+        "loaded": true,
+        "expectedRenderer": true,
+        "visualGateResolved": true,
+        "signatureRequired": true,
+        "signatureAvailable": true,
+        "cameraApplied": true
+      },
+      "renderer": "aholo",
+      "pipeline": {
+        "plugins": [
+          {
+            "name": "SceneClip",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "shadowMap",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "background",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "deferred",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "transparent_line",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "forward",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "debug",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "Splatting",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "stylize",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "AO",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "outline",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "overlay_scene",
+            "enabled": true,
+            "envSupported": true
+          },
+          {
+            "name": "highlight",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "taa",
+            "enabled": false,
+            "envSupported": true
+          },
+          {
+            "name": "composite",
+            "enabled": false,
+            "envSupported": true
+          }
+        ],
+        "graphCacheSize": 3,
+        "volatileGraphCacheSize": 0,
+        "cachedPluginNames": [
+          "SceneClip",
+          "shadowMap",
+          "background",
+          "deferred",
+          "transparent_line",
+          "forward",
+          "debug",
+          "Splatting",
+          "stylize",
+          "AO",
+          "outline",
+          "overlay_scene",
+          "highlight",
+          "taa",
+          "composite"
+        ]
+      },
+      "pageState": {
+        "runtime": "Loaded",
+        "status": "scene.ply loaded in 2.4s.",
+        "visualQuality": "Failed (0)",
+        "fitBounds": "broad_01_99 (sidecar)",
+        "asset": "Bundled asset",
+        "coverage": "Direct / unknown",
+        "canvas": {
+          "width": 1424,
+          "height": 805,
+          "clientWidth": 1424,
+          "clientHeight": 805
+        },
+        "activeInfo": {
+          "name": "Dongguan Heritage Gaussian (Source PLY)",
+          "format": "PLY",
+          "splats": 1855266,
+          "shDegree": 3,
+          "denseMin": [
+            -2.535121,
+            -4.258497,
+            -4.28949
+          ],
+          "denseMax": [
+            4.863048,
+            1.211781,
+            9.86895
+          ],
+          "displayScale": 0.2825170004605027,
+          "fitRadius": 2.9999999999999996,
+          "fitBoundsId": "broad_01_99",
+          "fitBoundsSource": "sidecar",
+          "source": "bundled"
+        },
+        "visualQualityGate": {
+          "status": "failed",
+          "reason": "One or more visual runtime checks failed.",
+          "checks": {
+            "sceneLoaded": {
+              "passed": true,
+              "value": 1855266,
+              "message": "Scene has renderable splats."
+            },
+            "canvasReady": {
+              "passed": true,
+              "value": {
+                "width": 1424,
+                "height": 805,
+                "clientWidth": 1424,
+                "clientHeight": 805
+              },
+              "message": "Renderer canvas has non-zero drawing and display size."
+            },
+            "fitBoundsResolved": {
+              "passed": true,
+              "value": "broad_01_99",
+              "message": "Camera fit bounds are resolved."
+            },
+            "bundledSidecarApplied": {
+              "passed": true,
+              "value": "broad_01_99 (sidecar)",
+              "message": "Bundled scenes should use sidecar fit bounds."
+            },
+            "renderVisible": {
+              "passed": false,
+              "value": "empty",
+              "message": "Pixel sample detects visible rendered content."
+            },
+            "contrastAboveThreshold": {
+              "passed": false,
+              "value": 0,
+              "message": "Pixel contrast is at least 12."
+            }
+          },
+          "thresholds": {
+            "minContrast": 12,
+            "settleFrames": 1
+          },
+          "sample": {
+            "status": "empty",
+            "averageRgb": [
+              15,
+              17,
+              16
+            ],
+            "contrast": 0
+          },
+          "evaluatedAtMs": 2683
+        },
+        "renderer": {
+          "id": "aholo",
+          "backend": "WEBGL2_JS"
+        },
+        "pipeline": {
+          "plugins": [
+            {
+              "name": "SceneClip",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "shadowMap",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "background",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "deferred",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "transparent_line",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "forward",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "debug",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "Splatting",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "stylize",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "AO",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "outline",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "overlay_scene",
+              "enabled": true,
+              "envSupported": true
+            },
+            {
+              "name": "highlight",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "taa",
+              "enabled": false,
+              "envSupported": true
+            },
+            {
+              "name": "composite",
+              "enabled": false,
+              "envSupported": true
+            }
+          ],
+          "graphCacheSize": 3,
+          "volatileGraphCacheSize": 0,
+          "cachedPluginNames": [
+            "SceneClip",
+            "shadowMap",
+            "background",
+            "deferred",
+            "transparent_line",
+            "forward",
+            "debug",
+            "Splatting",
+            "stylize",
+            "AO",
+            "outline",
+            "overlay_scene",
+            "highlight",
+            "taa",
+            "composite"
+          ]
+        },
+        "scene": {
+          "splats": 1,
+          "splatCounts": 1855266,
+          "sceneVersion": 1
+        },
+        "camera": {
+          "fov": 60,
+          "near": 0.01,
+          "far": 10000,
+          "aspect": 1.768944099378882,
+          "layers": 1,
+          "netLayer": 1,
+          "up": [
+            0,
+            -1,
+            0
+          ],
+          "position": [
+            1.2962542293049429e-15,
+            -2.1456287725866607,
+            -10.584719040685409
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 10.799999999999999,
+          "yaw": 3.141592653589793,
+          "pitch": -0.20000000000000004
+        },
+        "renderInfo": {
+          "objectInfo": {
+            "geometries": 2,
+            "textures": 5,
+            "calls": 3,
+            "vertices": 10242822,
+            "faces": 3414274,
+            "programs": 6,
+            "callsByObjectCategoryId": {},
+            "callsBySourceType": {},
+            "enableDrawcallClassify": false
+          },
+          "refreshProgramCount": 3,
+          "refreshMaterialCount": 0,
+          "refreshLightsCount": 0
+        },
+        "splattingPlugin": {
+          "counters": {
+            "updateEffect": 30,
+            "updateRenderGraph": 2,
+            "addSortTask": 2,
+            "flushSortTask": 4,
+            "lastAddSortTaskCounts": 1855266,
+            "lastFlushState": "current=2;last=2;sorting=false;hasPending=true"
+          },
+          "enabled": true,
+          "shouldRender": false,
+          "isSortDirty": false,
+          "isSorting": false,
+          "sortCurrentVersion": 2,
+          "sortLastVersion": 2,
+          "packQueueSize": 0,
+          "precalculateQueueSize": 0,
+          "instancedCount": 13337,
+          "activeSplats": 1707103,
+          "orderTex": {
+            "width": 1308,
+            "height": 1306
+          }
+        },
+        "splat": {
+          "id": 62,
+          "counts": 1855266,
+          "shDegree": 3,
+          "visible": true,
+          "layers": 1,
+          "netLayer": 1,
+          "position": [
+            -0.32883947666550833,
+            0.4303745327875105,
+            -0.7881461516946783
+          ],
+          "scale": [
+            0.2825170004605027,
+            0.2825170004605027,
+            0.2825170004605027
+          ]
+        },
+        "renderSample": null
+      },
+      "initialCamera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "camera": {
+        "position": [
+          1.2962542293049429e-15,
+          -2.1456287725866607,
+          -10.584719040685409
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 10.799999999999999,
+        "fov": 60,
+        "near": 0.01,
+        "far": 10000,
+        "up": [
+          0,
+          -1,
+          0
+        ]
+      },
+      "cameraDeltaFromCanonical": {
+        "position": 0,
+        "target": 0,
+        "distance": 0
+      },
+      "signature": {
+        "available": true,
+        "width": 96,
+        "height": 54,
+        "pixels": 5184,
+        "averageRgb": [
+          17.002314814814813,
+          18.815007716049383,
+          18.19502314814815
+        ],
+        "minRgb": 4,
+        "maxRgb": 252,
+        "contrast": 248
+      },
+      "splats": 1855266,
+      "chromeErrors": "[9960:48588:0604/153955.639:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:20450/devtools/browser/25d633c5-c353-4a32-97e5-d3bf22e28a1c\r\n[9960:22684:0604/154000.127:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[9960:22684:0604/154000.171:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
+    }
+  ]
+}

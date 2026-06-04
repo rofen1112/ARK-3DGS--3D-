@@ -275,7 +275,7 @@ Known limitation:
 
 - The diagnostic point backend renders SH0 color as circular scale-aware points with alpha. It is retained only as a baseline.
 - The first Gaussian backend now uses Jacobian covariance projection, premultiplied alpha, SH0 color, exact CPU sorting for preview scenes, and bucket CPU sorting for the current full source PLY. It is a renderer milestone, not the final production WebGPU renderer.
-- The current source PLY is SH degree `3`, but `ark-gaussian` renders SH0 only. SH color fidelity remains a first-party visual blocker.
+- The current source PLY is SH degree `3`, but `ark-gaussian` renders only SH1. Full SH3 remains a first-party format-completeness blocker, though current same-camera evidence does not identify SH3 as the main visual delta.
 - The Kellogg independent baseline visibly renders and matches splat count, but direct headless canvas signature downsampling returns near-zero contrast, so it is used for visual/data compatibility rather than signature-difference gating.
 - The manifest default remains `runtime-sog`; first-party `ark-gaussian` currently loads direct PLY data only. The readiness gate must stay red until SOG/SPZ direct loading or a first-party runtime conversion path exists.
 - Runtime format probing is now complete enough to identify the default SOG as a ZIP/WEBP-style container and summarize its `meta.json` channel layout, but no SOG/SPZ-to-ARK Gaussian buffer transcode path exists yet.
@@ -314,10 +314,18 @@ Completed renderer tuning:
 - Corrected SH1 field selection for the 3DGS channel-major PLY layout. For the current SH3 source, SH1 reads `f_rest_0/15/30`, `f_rest_1/16/31`, and `f_rest_2/17/32`.
 - Verified that SH1 alone does not materially close the visual gap. Source smoke moved only from `Passed (222.8)` to `Passed (223.7)`, while memory rose to `948.184MiB` load peak.
 - Added a manual debug note after user visual confirmation on 2026-06-04: the repaired source PLY path displays normally when the app is on `asset=source-ply`, with HUD coverage `1,854,627 / 1,855,266 (99.97%)`.
+- Added `qa:first-party-same-camera` to lock Aholo and ARK to the same source PLY camera before comparing visual signatures. The current source result has `camera_delta=0`, ARK `1,854,627` splats, Aholo `1,855,266` splats, and the `639` splat delta is explained by ARK's invalid-position skip policy.
+- Current source same-camera signature result: `ark-gaussian` vs `aholo-adapter-sh0` mean absolute RGB delta `1.6336`, RMS `7.5424`, max channel delta `153`, changed pixel ratio `0.021798`, similarity `0.993594`.
+- Ran the same-camera SH3 diagnostic references. On source PLY, Aholo SH0 vs Aholo SH3 mean absolute RGB delta is only `0.1345` with similarity `0.999473`; ARK vs Aholo SH3 is `1.6483`, slightly worse than ARK vs Aholo SH0. On preview PLY, Aholo SH0 vs Aholo SH3 mean absolute RGB delta is only `0.0518`. This lowers SH3/color from the immediate visual-fix hypothesis.
+- Added renderer pipeline isolation diagnostics behind URL parameters and `qa:first-party-pipeline-isolation`. The defaults remain unchanged unless `arkDiagSort`, `arkDiagComposite`, or `arkDiagProjection` are present.
+- Current preview exhaustive isolation: default ARK vs Aholo SH0 mean absolute RGB delta `0.9728`, similarity `0.996185`; source-order sorting is slightly worse (`0.9758`), straight alpha is identical to default (`0.9728`), and tested projection profiles are worse (`1.0002`, `0.9985`, `1.0090`).
+- Current source core isolation: default ARK vs Aholo SH0 remains `1.6336` with similarity `0.993594`; source-order sorting worsens to `1.6602`; straight alpha is exactly identical to default (`0` delta vs ARK default). This makes sorting order and blend function unlikely as the primary remaining visual delta.
 
 Next renderer tuning target:
 
-- Implement a measured SH3 experiment without adding all coefficients as per-instance attributes. Preferred paths are packed SH textures/order buffers or a CPU SH3 A/B diagnostic used only to isolate color parity.
+- Use the same-camera report as the baseline before changing renderer constants. If visual quality regresses, compare against the latest `first_party_same_camera_comparison_report.json` before tuning opacity, scale, or density.
+- Treat projection math and packed data access as the next focused target. The current isolation pass does not justify further sorting-order or alpha-blend tuning, and the tested projection parameter shortcuts did not improve Aholo parity.
+- When SH3 work resumes, do it without adding all coefficients as per-instance attributes. Preferred paths are packed SH textures/order buffers or a CPU SH3 A/B diagnostic used only to isolate color parity.
 - Move first-party data access from large CPU attribute buffers toward packed GPU textures/order buffers, matching the architecture needed for SOG/SPZ runtime conversion.
 - Replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison.
 - Convert the full-scene visual and performance assessments into measured gates before changing the default backend.
