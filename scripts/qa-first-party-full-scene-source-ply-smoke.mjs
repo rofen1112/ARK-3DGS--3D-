@@ -10,6 +10,7 @@ const requirePass = process.argv.includes('--require-pass');
 const url = 'http://127.0.0.1:5173/?autoload=1&asset=source-ply&renderer=ark-gaussian';
 const minSignatureContrast = 12;
 const cpuSortSplatLimit = 400_000;
+const bucketSortSplatLimit = 2_000_000;
 
 async function readJson(path) {
   try {
@@ -225,6 +226,10 @@ function buildChecks(pageState, signature, context) {
     gaussianProjection: pageState?.pipeline?.gaussianProjection === true
       && pageState?.pipeline?.covarianceProjection === true
       && pageState?.pipeline?.instancing === true,
+    jacobianCompositePipeline: pageState?.pipeline?.projectionModel === 'jacobian-covariance'
+      && pageState?.pipeline?.composite === 'premultiplied-alpha'
+      && pageState?.pipeline?.shading === 'sh1-view-dependent'
+      && pageState?.pipeline?.renderShDegree === 1,
     clippingState: clipping?.centerClip === true
       && clipping?.nearFarClip === true
       && clipping?.minClipW > 0
@@ -235,16 +240,19 @@ function buildChecks(pageState, signature, context) {
         && lod?.renderedSplats === renderedSplats
         && renderedSplats > 0
         && renderedSplats <= cpuSortSplatLimit
-        && pageState?.pipeline?.sorting === 'cpu-back-to-front'
+        && pageState?.pipeline?.sorting === 'cpu-exact-back-to-front'
         && pageState?.renderInfo?.sortEnabled === true
         && pageState?.renderInfo?.sortedSplats === renderedSplats
     ) || (
       largeScene?.fullDensity === true
-        && largeScene?.strategy === 'full-density-source-order'
+        && largeScene?.strategy === 'full-density-bucket-depth-sort'
         && lod?.enabled === false
         && renderedSplats === splats
-        && pageState?.pipeline?.sorting === 'source-order'
-        && pageState?.renderInfo?.sortEnabled === false
+        && renderedSplats <= bucketSortSplatLimit
+        && pageState?.pipeline?.sorting === 'cpu-bucket-back-to-front'
+        && pageState?.renderInfo?.sortEnabled === true
+        && pageState?.renderInfo?.sortMode === 'bucket-depth'
+        && pageState?.renderInfo?.sortedSplats === renderedSplats
     ),
     canvasReady: pageState?.canvas?.width > 0
       && pageState?.canvas?.height > 0

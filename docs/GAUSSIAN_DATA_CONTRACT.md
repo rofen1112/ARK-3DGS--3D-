@@ -230,7 +230,7 @@ Current result:
 
 | Renderer | Asset | Splats | Visual QA | Shader | Sorting | Projection | Clipping |
 |---|---|---:|---|---|---|---|---|
-| `ark-gaussian-webgl2` | `scene-preview-100k.ply` | `99,966` | `Passed (216)` | `sh0-instanced-ellipse-gaussian` | `cpu-back-to-front` | `gaussianProjection=true` | `minClipW=0.02`, `offscreenPadding=1.4` |
+| `ark-gaussian-webgl2` | `scene-preview-100k.ply` | `99,966` | `Passed (89.8)` | `sh0-jacobian-covariance-gaussian` | `cpu-exact-back-to-front` | `projectionModel=jacobian-covariance`, `composite=premultiplied-alpha` | `minClipW=0.02`, `offscreenPadding=1.4` |
 
 ## First-Party Gaussian Comparison QA
 
@@ -298,7 +298,7 @@ Current comparison result:
 
 | Target | Renderer | Splats | Visual QA |
 |---|---|---:|---|
-| `ark-gaussian` | `ark-gaussian-webgl2` | `99,966` | `Passed (216)` |
+| `ark-gaussian` | `ark-gaussian-webgl2` | `99,966` | `Passed (89.8)` |
 | `aholo-adapter` | `aholo` | `99,966` | `Passed (128.9)` |
 | `kellogg-independent` | `gaussian-splats-3d` | `99,966` | `Passed (162.7)` |
 
@@ -323,7 +323,7 @@ Current full-scene visual gate result:
 
 | Assessment | Visual Gate | Status | Default Asset | Measurement Candidate | Default Runtime? | Preview First-Party Visual QA |
 |---|---|---|---|---|---|---|
-| Passed | No | `blocked-before-measurement` | `runtime-sog` | `source-ply` | No | `Passed (216)` |
+| Passed | No | `blocked-before-measurement` | `runtime-sog` | `source-ply` | No | `Passed (89.8)` |
 
 Current full-scene performance budget result:
 
@@ -385,19 +385,43 @@ Current full-scene measurement candidate result:
 | `runtime-spz` | `source-ply` | `source-ply-substitute` | Yes | No | Yes |
 | `source-ply` | `source-ply` | `direct-default` | Yes | Yes | Yes |
 
-Current source PLY full-scene smoke result:
+Previous source PLY full-scene smoke result before Round 3 sorting repair:
 
 | Asset | Result | Renderer | Decoded Splats | Rendered Splats | Invalid Skipped | Sorting | LOD | Visual QA | Settle Frames | Duration |
 |---|---|---|---:|---:|---:|---|---|---|---:|---:|
 | `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `1,854,627` | `639` | `source-order` | disabled, `full-density-source-order` | `Passed (202.7)` | `1` | `83.376s` |
 
+Round 4 source PLY full-scene smoke result:
+
+| Asset | Result | Renderer | Decoded Splats | Rendered Splats | Invalid Skipped | Sorting | Projection / Composite | LOD | Visual QA | Duration |
+|---|---|---|---:|---:|---:|---|---|---|---|---:|
+| `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `1,854,627` | `639` | `cpu-bucket-back-to-front` | `jacobian-covariance` / `premultiplied-alpha` | disabled, `full-density-bucket-depth-sort` | `Passed (222.8)` | `76.476s` |
+
+Round 5 source PLY full-scene smoke result:
+
+| Asset | Result | Renderer | Decoded Splats | Rendered Splats | Invalid Skipped | Coverage | Shading | Source / Render SH | Visual QA | Duration |
+|---|---|---|---:|---:|---:|---:|---|---|---|---:|
+| `source-ply` | Passed | `ark-gaussian-webgl2` | `1,854,627` | `1,854,627` | `639` | `99.97%` | `sh1-view-dependent` | `3 / 1` | `Passed (223.7)` | `71.769s` |
+
 Current source PLY timing breakdown:
 
 | Read | Decode | Pack | Upload | Renderer Load | Visual Gate | Load Peak |
 |---:|---:|---:|---:|---:|---:|---:|
-| `992ms` | `1,130.4ms` | `171.4ms` | `50.7ms` | `2,346ms` | `55,821ms` | `643.966MiB` |
+| `1,444.5ms` | `1,388.4ms` | `197.6ms` | `84.0ms` | `3,117ms` | `48,492ms` | `948.184MiB` |
 
-This confirms the invalid-splat policy on the real full source PLY: the first-party decoder skips the `639` invalid positions and preserves `1,854,627` valid decoded splats. The smoke renderer now draws all decoded source splats for this scene, but it uses `source-order` blending because the current CPU sort path is capped at `400,000` splats. This remains a degraded measurement candidate rather than proof that the full default runtime is production-ready.
+This confirms the invalid-splat policy on the real full source PLY: the first-party decoder skips the `639` invalid positions and preserves `1,854,627` valid decoded splats. The smoke renderer now draws all decoded source splats for this scene. Round 3 replaced the previous `source-order` blending fallback with `cpu-bucket-back-to-front` sorting for source PLY scenes up to `2,000,000` splats. Round 4 replaced the simplified axis-endpoint projection with Jacobian covariance projection and premultiplied alpha. This remains a degraded measurement candidate rather than proof that the full default runtime is production-ready.
+
+Important current SH limitation:
+
+> The source PLY is SH degree `3`, but `ark-gaussian` currently renders only
+> `renderShDegree=1` (`sh1-view-dependent`). Full SH3 color evaluation and
+> GPU-friendly SH packing remain first-party visual parity blockers.
+
+Important current asset coverage limitation:
+
+> `preview-ply` is only a diagnostic preview asset. It contains `99,966` splats,
+> or `5.39%` of the source manifest splat count. Use `source-ply` for full
+> source-density first-party renderer checks on this machine.
 
 Important renderer requirements:
 

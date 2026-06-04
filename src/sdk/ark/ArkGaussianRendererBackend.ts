@@ -1,4 +1,4 @@
-import { decodeGaussianPly } from '../gaussian/ply';
+import { decodeGaussianPly, parseGaussianPlyHeader } from '../gaussian/ply';
 import type { ArkGaussianPercentileBounds, ArkGaussianPercentileSpec } from '../gaussian/types';
 import type {
   ArkFitBounds,
@@ -13,13 +13,24 @@ import type {
 type Gl = WebGL2RenderingContext;
 
 const SH_C0 = 0.28209479177387814;
+const SH_C1 = 0.4886025;
+const RENDER_SH_DEGREE = 1;
+const RENDER_SH_REST_COUNT = 9;
 const SORT_SPLAT_LIMIT = 400_000;
 const FULL_DENSITY_SPLAT_LIMIT = 2_000_000;
+const BUCKET_SORT_SPLAT_LIMIT = FULL_DENSITY_SPLAT_LIMIT;
+const SORT_BUCKET_COUNT = 65_536;
+const SORT_BUCKET_MAX = SORT_BUCKET_COUNT - 1;
 const LARGE_SCENE_RENDER_SPLAT_BUDGET = 300_000;
 const CAMERA_EPSILON = 0.0001;
-const ELLIPSE_EXTENT = 2.05;
+const BUCKET_SORT_CAMERA_EPSILON = 0.02;
+const MAX_STD_DEV = Math.sqrt(8);
+const PRE_BLUR_AMOUNT = 0.3;
+const BLUR_AMOUNT = 0;
+const FOCAL_ADJUSTMENT = 2;
+const ELLIPSE_EXTENT = MAX_STD_DEV;
 const MIN_PIXEL_AXIS = 0.75;
-const MAX_PIXEL_AXIS = 10;
+const MAX_PIXEL_AXIS = 1024;
 const OPACITY_SCALE = 0.44;
 const ALPHA_CUTOFF = 0.003;
 const MIN_CLIP_W = 0.02;
@@ -29,14 +40,14 @@ const COMPUTED_FIT_BOUNDS_SPEC: ArkGaussianPercentileSpec = {
   low: 0.01,
   high: 0.99
 };
-const LOD_ELLIPSE_EXTENT = 2.45;
+const LOD_ELLIPSE_EXTENT = MAX_STD_DEV;
 const LOD_MIN_PIXEL_AXIS = 0.35;
-const LOD_MAX_PIXEL_AXIS = 5.5;
+const LOD_MAX_PIXEL_AXIS = 1024;
 const LOD_MIN_OPACITY_RATIO = 0.28;
-const FULL_DENSITY_ELLIPSE_EXTENT = 1.85;
+const FULL_DENSITY_ELLIPSE_EXTENT = MAX_STD_DEV;
 const FULL_DENSITY_MIN_PIXEL_AXIS = 0.35;
-const FULL_DENSITY_MAX_PIXEL_AXIS = 4.5;
-const FULL_DENSITY_OPACITY_SCALE = 0.12;
+const FULL_DENSITY_MAX_PIXEL_AXIS = 1024;
+const FULL_DENSITY_OPACITY_SCALE = 0.18;
 
 type RenderProfile = {
   id: string;
@@ -45,6 +56,8 @@ type RenderProfile = {
   maxPixelAxis: number;
   opacityScale: number;
 };
+
+type SortMode = 'disabled' | 'exact-depth' | 'bucket-depth';
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
@@ -267,6 +280,37 @@ function createRenderProfile(lodEnabled: boolean, renderedRatio: number, largeSc
   };
 }
 
+function chooseSortMode(renderSplatCount: number): SortMode {
+  if (renderSplatCount <= 0) return 'disabled';
+  if (renderSplatCount <= SORT_SPLAT_LIMIT) return 'exact-depth';
+  if (renderSplatCount <= BUCKET_SORT_SPLAT_LIMIT) return 'bucket-depth';
+  return 'disabled';
+}
+
+function createChannelMajorSh1RestIndices(shRestCount: number) {
+  if (shRestCount < RENDER_SH_REST_COUNT || shRestCount % 3 !== 0) return [];
+  const coefficientsPerChannel = shRestCount / 3;
+  if (coefficientsPerChannel < 3) return [];
+  // 3DGS PLY stores f_rest channel-major: all R coefficients, then G, then B.
+  return [
+    0, coefficientsPerChannel, coefficientsPerChannel * 2,
+    1, coefficientsPerChannel + 1, coefficientsPerChannel * 2 + 1,
+    2, coefficientsPerChannel + 2, coefficientsPerChannel * 2 + 2
+  ];
+}
+
+function sortModeLabel(sortMode: SortMode) {
+  if (sortMode === 'exact-depth') return 'cpu-exact-back-to-front';
+  if (sortMode === 'bucket-depth') return 'cpu-bucket-back-to-front';
+  return 'source-order';
+}
+
+function quantizeDepthToBucket(depth: number, minDepth: number, depthRange: number) {
+  if (!Number.isFinite(depth)) return 0;
+  if (depthRange <= 0.000001) return 0;
+  return Math.max(0, Math.min(SORT_BUCKET_MAX, Math.floor(((depth - minDepth) / depthRange) * SORT_BUCKET_MAX)));
+}
+
 export class ArkGaussianRendererBackend implements ArkRendererBackend {
   readonly id = 'ark-gaussian-webgl2';
 
@@ -278,11 +322,19 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private readonly colorBuffer: WebGLBuffer;
   private readonly scaleBuffer: WebGLBuffer;
   private readonly rotationBuffer: WebGLBuffer;
+  private readonly sh1Buffer: WebGLBuffer;
   private readonly viewProjectionLocation: WebGLUniformLocation | null;
+  private readonly viewLocation: WebGLUniformLocation | null;
+  private readonly projectionLocation: WebGLUniformLocation | null;
+  private readonly cameraPositionLocation: WebGLUniformLocation | null;
   private readonly viewportLocation: WebGLUniformLocation | null;
   private readonly ellipseExtentLocation: WebGLUniformLocation | null;
   private readonly minPixelAxisLocation: WebGLUniformLocation | null;
   private readonly maxPixelAxisLocation: WebGLUniformLocation | null;
+  private readonly preBlurAmountLocation: WebGLUniformLocation | null;
+  private readonly blurAmountLocation: WebGLUniformLocation | null;
+  private readonly maxStdDevLocation: WebGLUniformLocation | null;
+  private readonly focalAdjustmentLocation: WebGLUniformLocation | null;
   private readonly minClipWLocation: WebGLUniformLocation | null;
   private readonly clipPaddingLocation: WebGLUniformLocation | null;
   private renderRequestHandler: (() => void) | null = null;
@@ -315,23 +367,32 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private rawColors: Float32Array | null = null;
   private rawScales: Float32Array | null = null;
   private rawRotations: Float32Array | null = null;
+  private rawSh1: Float32Array | null = null;
   private sortedPositions: Float32Array | null = null;
   private sortedColors: Float32Array | null = null;
   private sortedScales: Float32Array | null = null;
   private sortedRotations: Float32Array | null = null;
+  private sortedSh1: Float32Array | null = null;
+  private sortMode: SortMode = 'disabled';
   private sortIndices: number[] = [];
+  private sortOrder: Uint32Array | null = null;
   private sortDepths: Float32Array | null = null;
+  private readonly sortBuckets = new Uint32Array(SORT_BUCKET_COUNT);
+  private readonly sortBucketWriteOffsets = new Uint32Array(SORT_BUCKET_COUNT);
   private lastSortMs = 0;
   private lastSortedCount = 0;
   private sortEnabled = false;
   private sortDirty = false;
   private sortReason = 'no-scene';
+  private lastSortDepthRange: [number, number] | null = null;
   private lastSortCameraPosition: ArkVec3 | null = null;
   private lastSortCameraForward: ArkVec3 | null = null;
   private axisMin = 0;
   private axisMax = 0;
   private axisMean = 0;
   private largeSceneFullDensity = false;
+  private renderShDegree = 0;
+  private renderShRestCount = 0;
   private renderProfile = createRenderProfile(false, 1, false);
 
   constructor(private readonly host: HTMLElement) {
@@ -357,28 +418,63 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         attribute vec4 aColor;
         attribute vec3 aScale;
         attribute vec4 aRotation;
+        attribute vec3 aSh1_0;
+        attribute vec3 aSh1_1;
+        attribute vec3 aSh1_2;
         uniform mat4 uViewProjection;
+        uniform mat4 uView;
+        uniform mat4 uProjection;
+        uniform vec3 uCameraPosition;
         uniform vec2 uViewport;
         uniform float uEllipseExtent;
         uniform float uMinPixelAxis;
         uniform float uMaxPixelAxis;
+        uniform float uPreBlurAmount;
+        uniform float uBlurAmount;
+        uniform float uMaxStdDev;
+        uniform float uFocalAdjustment;
         uniform float uMinClipW;
         uniform float uClipPadding;
         varying vec4 vColor;
         varying float vClipDiscard;
+        varying vec2 vSplatUv;
 
         vec3 rotateByQuaternion(vec4 q, vec3 value) {
           vec3 u = q.yzw;
           return value + 2.0 * cross(u, cross(u, value) + q.x * value);
         }
 
-        vec2 projectAxisToPixels(vec3 center, vec2 centerNdc, vec3 axis) {
-          vec4 axisClip = uViewProjection * vec4(center + axis, 1.0);
-          vec2 axisNdc = axisClip.xy / max(abs(axisClip.w), 0.0001);
-          return (axisNdc - centerNdc) * 0.5 * uViewport;
+        vec3 evaluateSh1Color(vec3 baseColor, vec3 viewDir) {
+          vec3 sh1 = aSh1_0 * (-${SH_C1.toFixed(7)} * viewDir.y)
+            + aSh1_1 * (${SH_C1.toFixed(7)} * viewDir.z)
+            + aSh1_2 * (-${SH_C1.toFixed(7)} * viewDir.x);
+          return clamp(baseColor + sh1, 0.0, 1.0);
         }
 
-        varying vec2 vLocal;
+        mat3 computeCovariance3D(vec4 q, vec3 scale) {
+          vec3 axis0 = rotateByQuaternion(q, vec3(scale.x, 0.0, 0.0));
+          vec3 axis1 = rotateByQuaternion(q, vec3(0.0, scale.y, 0.0));
+          vec3 axis2 = rotateByQuaternion(q, vec3(0.0, 0.0, scale.z));
+          float c00 = axis0.x * axis0.x + axis1.x * axis1.x + axis2.x * axis2.x;
+          float c01 = axis0.x * axis0.y + axis1.x * axis1.y + axis2.x * axis2.y;
+          float c02 = axis0.x * axis0.z + axis1.x * axis1.z + axis2.x * axis2.z;
+          float c11 = axis0.y * axis0.y + axis1.y * axis1.y + axis2.y * axis2.y;
+          float c12 = axis0.y * axis0.z + axis1.y * axis1.z + axis2.y * axis2.z;
+          float c22 = axis0.z * axis0.z + axis1.z * axis1.z + axis2.z * axis2.z;
+          return mat3(
+            c00, c01, c02,
+            c01, c11, c12,
+            c02, c12, c22
+          );
+        }
+
+        mat3 transposeMat3(mat3 value) {
+          return mat3(
+            value[0][0], value[1][0], value[2][0],
+            value[0][1], value[1][1], value[2][1],
+            value[0][2], value[1][2], value[2][2]
+          );
+        }
 
         void main() {
           vec4 centerClip = uViewProjection * vec4(aPosition, 1.0);
@@ -396,25 +492,55 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           if (outsideClip) {
             gl_Position = vec4(2.0, 2.0, 0.0, 1.0);
             vColor = vec4(0.0);
-            vLocal = vec2(999.0);
+            vSplatUv = vec2(999.0);
             vClipDiscard = 1.0;
             return;
           }
           vec4 q = normalize(aRotation);
-          vec3 axis0 = rotateByQuaternion(q, vec3(aScale.x, 0.0, 0.0));
-          vec3 axis1 = rotateByQuaternion(q, vec3(0.0, aScale.y, 0.0));
-          vec3 axis2 = rotateByQuaternion(q, vec3(0.0, 0.0, aScale.z));
-          vec2 s0 = projectAxisToPixels(aPosition, centerNdc, axis0);
-          vec2 s1 = projectAxisToPixels(aPosition, centerNdc, axis1);
-          vec2 s2 = projectAxisToPixels(aPosition, centerNdc, axis2);
+          mat3 cov3D = computeCovariance3D(q, aScale);
+          vec3 viewCenter = (uView * vec4(aPosition, 1.0)).xyz;
+          vec2 scaledViewport = uViewport * uFocalAdjustment;
+          vec2 focal = 0.5 * scaledViewport * vec2(uProjection[0][0], uProjection[1][1]);
+          float invZ = 1.0 / min(viewCenter.z, -0.0001);
+          vec2 j1 = focal * invZ;
+          vec2 j2 = -(j1 * viewCenter.xy) * invZ;
+          mat3 jacobian = mat3(
+            j1.x, 0.0, 0.0,
+            0.0, j1.y, 0.0,
+            j2.x, j2.y, 0.0
+          );
+          mat3 viewLinear = mat3(uView);
+          mat3 transform = jacobian * viewLinear;
+          mat3 cov2D = transform * cov3D * transposeMat3(transform);
+          float covA = max(cov2D[0][0], 0.0) + uPreBlurAmount;
+          float covB = cov2D[0][1];
+          float covC = max(cov2D[1][1], 0.0) + uPreBlurAmount;
+          float detOriginal = max(covA * covC - covB * covB, 0.000001);
+          covA += uBlurAmount;
+          covC += uBlurAmount;
+          float det = max(covA * covC - covB * covB, 0.000001);
+          float blurAdjust = sqrt(max(0.0, detOriginal / det));
+          vec3 viewDir = normalize(aPosition - uCameraPosition);
+          vec3 shadedColor = evaluateSh1Color(aColor.rgb, viewDir);
+          vec4 color = vec4(shadedColor, clamp(aColor.a * blurAdjust, 0.0, 1.0));
+          if (color.a < ${ALPHA_CUTOFF.toFixed(6)}) {
+            gl_Position = vec4(2.0, 2.0, 0.0, 1.0);
+            vColor = vec4(0.0);
+            vSplatUv = vec2(999.0);
+            vClipDiscard = 1.0;
+            return;
+          }
 
-          float covA = s0.x * s0.x + s1.x * s1.x + s2.x * s2.x;
-          float covB = s0.x * s0.y + s1.x * s1.y + s2.x * s2.y;
-          float covC = s0.y * s0.y + s1.y * s1.y + s2.y * s2.y;
-          float trace = covA + covC;
-          float delta = sqrt(max((covA - covC) * (covA - covC) + 4.0 * covB * covB, 0.0));
-          float lambdaMajor = clamp(0.5 * (trace + delta), uMinPixelAxis * uMinPixelAxis, uMaxPixelAxis * uMaxPixelAxis);
-          float lambdaMinor = clamp(0.5 * (trace - delta), uMinPixelAxis * uMinPixelAxis, uMaxPixelAxis * uMaxPixelAxis);
+          float avg = 0.5 * (covA + covC);
+          float delta = sqrt(max(avg * avg - det, 0.0));
+          float minAxisSq = uMinPixelAxis * uMinPixelAxis;
+          float lambdaMajor = max(avg + delta, minAxisSq);
+          float lambdaMinor = max(avg - delta, minAxisSq);
+          float maxRadius = min(uMaxPixelAxis * uFocalAdjustment, min(scaledViewport.x, scaledViewport.y));
+          float kernelStdDev = min(uEllipseExtent, uMaxStdDev);
+          float alphaFactor = min(1.0, 0.5 * sqrt(max(0.0, -log((1.0 / 255.0) / max(color.a, 0.0001)))));
+          float axisMajorPixels = min(maxRadius, kernelStdDev * sqrt(lambdaMajor));
+          float axisMinorPixels = min(maxRadius, kernelStdDev * sqrt(lambdaMinor));
 
           vec2 majorAxis = vec2(covB, lambdaMajor - covA);
           if (dot(majorAxis, majorAxis) < 0.0001) {
@@ -424,30 +550,30 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           vec2 minorAxis = vec2(-majorAxis.y, majorAxis.x);
 
           vec2 pixelOffset = (
-            majorAxis * (aQuad.x * sqrt(lambdaMajor))
-            + minorAxis * (aQuad.y * sqrt(lambdaMinor))
-          ) * uEllipseExtent;
-          vec2 ndcOffset = pixelOffset * 2.0 / uViewport;
+            majorAxis * (aQuad.x * axisMajorPixels)
+            + minorAxis * (aQuad.y * axisMinorPixels)
+          ) * alphaFactor;
+          vec2 ndcOffset = pixelOffset * 2.0 / scaledViewport;
 
           gl_Position = centerClip;
           gl_Position.xy += ndcOffset * centerClip.w;
-          vColor = aColor;
-          vLocal = aQuad * uEllipseExtent;
+          vColor = color;
+          vSplatUv = aQuad * kernelStdDev * alphaFactor;
         }
       `,
       `
         precision highp float;
-        uniform float uEllipseExtent;
+        uniform float uMaxStdDev;
         varying vec4 vColor;
-        varying vec2 vLocal;
+        varying vec2 vSplatUv;
         varying float vClipDiscard;
         void main() {
           if (vClipDiscard > 0.5) discard;
-          float r2 = dot(vLocal, vLocal);
-          if (r2 > uEllipseExtent * uEllipseExtent) discard;
+          float r2 = dot(vSplatUv, vSplatUv);
+          if (r2 > uMaxStdDev * uMaxStdDev) discard;
           float alpha = vColor.a * exp(-0.5 * r2);
           if (alpha < ${ALPHA_CUTOFF.toFixed(6)}) discard;
-          gl_FragColor = vec4(vColor.rgb, alpha);
+          gl_FragColor = vec4(vColor.rgb * alpha, alpha);
         }
       `
     );
@@ -457,17 +583,26 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     const color = this.gl.createBuffer();
     const scale = this.gl.createBuffer();
     const rotation = this.gl.createBuffer();
-    if (!quad || !position || !color || !scale || !rotation) throw new Error('Could not create WebGL buffers.');
+    const sh1 = this.gl.createBuffer();
+    if (!quad || !position || !color || !scale || !rotation || !sh1) throw new Error('Could not create WebGL buffers.');
     this.quadBuffer = quad;
     this.positionBuffer = position;
     this.colorBuffer = color;
     this.scaleBuffer = scale;
     this.rotationBuffer = rotation;
+    this.sh1Buffer = sh1;
     this.viewProjectionLocation = this.gl.getUniformLocation(this.program, 'uViewProjection');
+    this.viewLocation = this.gl.getUniformLocation(this.program, 'uView');
+    this.projectionLocation = this.gl.getUniformLocation(this.program, 'uProjection');
+    this.cameraPositionLocation = this.gl.getUniformLocation(this.program, 'uCameraPosition');
     this.viewportLocation = this.gl.getUniformLocation(this.program, 'uViewport');
     this.ellipseExtentLocation = this.gl.getUniformLocation(this.program, 'uEllipseExtent');
     this.minPixelAxisLocation = this.gl.getUniformLocation(this.program, 'uMinPixelAxis');
     this.maxPixelAxisLocation = this.gl.getUniformLocation(this.program, 'uMaxPixelAxis');
+    this.preBlurAmountLocation = this.gl.getUniformLocation(this.program, 'uPreBlurAmount');
+    this.blurAmountLocation = this.gl.getUniformLocation(this.program, 'uBlurAmount');
+    this.maxStdDevLocation = this.gl.getUniformLocation(this.program, 'uMaxStdDev');
+    this.focalAdjustmentLocation = this.gl.getUniformLocation(this.program, 'uFocalAdjustment');
     this.minClipWLocation = this.gl.getUniformLocation(this.program, 'uMinClipW');
     this.clipPaddingLocation = this.gl.getUniformLocation(this.program, 'uClipPadding');
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.quadBuffer);
@@ -497,10 +632,13 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     const inputBuffer = await readInput(request.input);
     this.lastReadMs = performance.now() - readStartedAt;
     this.lastInputBytes = inputBuffer.byteLength;
+    const header = parseGaussianPlyHeader(inputBuffer);
+    const shRestIndices = createChannelMajorSh1RestIndices(header.shRestCount);
 
     const decodeStartedAt = performance.now();
     const data = decodeGaussianPly(inputBuffer, {
-      includeShRest: false,
+      includeShRest: shRestIndices.length === RENDER_SH_REST_COUNT,
+      shRestIndices,
       invalidPolicy: 'skip',
       percentileBounds: request.fitBounds ? undefined : [COMPUTED_FIT_BOUNDS_SPEC]
     });
@@ -530,6 +668,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     const colors = new Float32Array(renderSplatCount * 4);
     const scales = new Float32Array(renderSplatCount * 3);
     const rotations = new Float32Array(renderSplatCount * 4);
+    const sh1 = new Float32Array(renderSplatCount * RENDER_SH_REST_COUNT);
     let axisSum = 0;
     let axisMin = Infinity;
     let axisMax = -Infinity;
@@ -544,6 +683,13 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       colors[renderIndex * 4 + 1] = clamp01(0.5 + data.colorsDc[sourceIndex * 3 + 1] * SH_C0);
       colors[renderIndex * 4 + 2] = clamp01(0.5 + data.colorsDc[sourceIndex * 3 + 2] * SH_C0);
       colors[renderIndex * 4 + 3] = clamp01(sigmoid(data.opacities[sourceIndex]) * renderProfile.opacityScale);
+      if (data.shRest) {
+        const sourceShOffset = sourceIndex * RENDER_SH_REST_COUNT;
+        const targetShOffset = renderIndex * RENDER_SH_REST_COUNT;
+        for (let coefficient = 0; coefficient < RENDER_SH_REST_COUNT; coefficient += 1) {
+          sh1[targetShOffset + coefficient] = data.shRest[sourceShOffset + coefficient] ?? 0;
+        }
+      }
 
       const sx = decodeScale(data.scales[sourceIndex * 3], displayScale);
       const sy = decodeScale(data.scales[sourceIndex * 3 + 1], displayScale);
@@ -568,30 +714,39 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       rotations[renderIndex * 4 + 3] = q[3];
     }
 
+    const sortMode = chooseSortMode(renderSplatCount);
+    const sortEnabled = sortMode !== 'disabled';
     this.rawPositions = positions;
     this.rawColors = colors;
     this.rawScales = scales;
     this.rawRotations = rotations;
-    this.sortedPositions = renderSplatCount <= SORT_SPLAT_LIMIT ? new Float32Array(positions.length) : positions;
-    this.sortedColors = renderSplatCount <= SORT_SPLAT_LIMIT ? new Float32Array(colors.length) : colors;
-    this.sortedScales = renderSplatCount <= SORT_SPLAT_LIMIT ? new Float32Array(scales.length) : scales;
-    this.sortedRotations = renderSplatCount <= SORT_SPLAT_LIMIT ? new Float32Array(rotations.length) : rotations;
-    this.sortIndices = renderSplatCount <= SORT_SPLAT_LIMIT ? Array.from({ length: renderSplatCount }, (_, index) => index) : [];
-    this.sortDepths = renderSplatCount <= SORT_SPLAT_LIMIT ? new Float32Array(renderSplatCount) : null;
-    this.sortEnabled = renderSplatCount > 0 && renderSplatCount <= SORT_SPLAT_LIMIT;
+    this.rawSh1 = sh1;
+    this.sortedPositions = sortEnabled ? new Float32Array(positions.length) : positions;
+    this.sortedColors = sortEnabled ? new Float32Array(colors.length) : colors;
+    this.sortedScales = sortEnabled ? new Float32Array(scales.length) : scales;
+    this.sortedRotations = sortEnabled ? new Float32Array(rotations.length) : rotations;
+    this.sortedSh1 = sortEnabled ? new Float32Array(sh1.length) : sh1;
+    this.sortMode = sortMode;
+    this.sortIndices = sortMode === 'exact-depth' ? Array.from({ length: renderSplatCount }, (_, index) => index) : [];
+    this.sortOrder = sortMode === 'bucket-depth' ? new Uint32Array(renderSplatCount) : null;
+    this.sortDepths = sortEnabled ? new Float32Array(renderSplatCount) : null;
+    this.sortEnabled = sortEnabled;
     this.sortDirty = this.sortEnabled;
     this.sortReason = this.sortEnabled
-      ? (lodEnabled ? 'pending-camera-sort-lod-budget' : 'pending-camera-sort')
-      : `disabled-over-${SORT_SPLAT_LIMIT}-rendered-splats`;
+      ? `${sortMode}-pending-camera-sort${lodEnabled ? '-lod-budget' : ''}`
+      : `disabled-over-${BUCKET_SORT_SPLAT_LIMIT}-rendered-splats`;
     this.lastSortMs = 0;
     this.lastSortedCount = this.sortEnabled ? 0 : renderSplatCount;
+    this.lastSortDepthRange = null;
     this.lastSortCameraPosition = null;
     this.lastSortCameraForward = null;
     this.axisMin = Number.isFinite(axisMin) ? axisMin : 0;
     this.axisMax = Number.isFinite(axisMax) ? axisMax : 0;
     this.axisMean = renderSplatCount > 0 ? axisSum / renderSplatCount : 0;
+    this.renderShDegree = data.shRest ? RENDER_SH_DEGREE : 0;
+    this.renderShRestCount = data.shRest ? RENDER_SH_REST_COUNT : 0;
     this.renderProfile = renderProfile;
-    this.estimatedGpuUploadBytes = positions.byteLength + colors.byteLength + scales.byteLength + rotations.byteLength;
+    this.estimatedGpuUploadBytes = positions.byteLength + colors.byteLength + scales.byteLength + rotations.byteLength + sh1.byteLength;
     const decodedSourceBytes = data.centers.byteLength
       + data.colorsDc.byteLength
       + data.opacities.byteLength
@@ -605,7 +760,9 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         + this.sortedColors.byteLength
         + this.sortedScales.byteLength
         + this.sortedRotations.byteLength
+        + (this.sortedSh1?.byteLength ?? 0)
         + (this.sortDepths?.byteLength ?? 0)
+        + (this.sortOrder?.byteLength ?? 0)
         + this.sortIndices.length * 4
       : 0;
     this.estimatedRetainedCpuBytes = this.estimatedGpuUploadBytes + sortBufferBytes;
@@ -617,7 +774,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       this.sortEnabled ? positions : this.sortedPositions,
       this.sortEnabled ? colors : this.sortedColors,
       this.sortEnabled ? scales : this.sortedScales,
-      this.sortEnabled ? rotations : this.sortedRotations
+      this.sortEnabled ? rotations : this.sortedRotations,
+      this.sortEnabled ? sh1 : this.sortedSh1
     );
     this.lastUploadMs = performance.now() - uploadStartedAt;
     this.splatCount = data.count;
@@ -641,14 +799,20 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       name: request.name,
       format: 'PLY',
       splats: data.count,
-      shDegree: 0,
+      shDegree: data.shDegree,
       denseMin: fitBounds.min,
       denseMax: fitBounds.max,
       displayScale,
       fitRadius,
       fitBoundsId: fitBounds.id,
       fitBoundsSource: fitBounds.source,
-      source: request.source
+      source: request.source,
+      assetId: request.asset?.id,
+      assetRole: request.asset?.role,
+      sourceAssetId: request.asset?.sourceAssetId,
+      declaredSplats: request.asset?.splats,
+      sourceSplats: request.sourceSplats,
+      coverageRatio: request.sourceSplats && request.sourceSplats > 0 ? data.count / request.sourceSplats : undefined
     };
 
     request.onStatus?.({ phase: 'Loaded', message: 'ARK Gaussian renderer buffers ready.' });
@@ -661,8 +825,14 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.cameraTarget = target;
     this.cameraDistance = distance;
     if (this.sortEnabled) {
-      this.sortDirty = true;
-      this.sortReason = 'camera-changed';
+      const cameraForward = this.getCameraForward();
+      const sortReuseEpsilon = this.sortMode === 'bucket-depth' ? BUCKET_SORT_CAMERA_EPSILON : CAMERA_EPSILON;
+      if (!this.shouldReuseSort(cameraForward, sortReuseEpsilon)) {
+        this.sortDirty = true;
+        this.sortReason = 'camera-changed';
+      } else {
+        this.sortReason = 'camera-change-within-sort-threshold';
+      }
     }
     this.invalidate();
   }
@@ -690,10 +860,17 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       const projection = perspective(fovRadians, this.canvas.width / this.canvas.height, 0.01, 10000);
       const view = lookAt(this.cameraPosition, this.cameraTarget, [0, -1, 0]);
       this.gl.uniformMatrix4fv(this.viewProjectionLocation, false, multiplyMat4(projection, view));
+      this.gl.uniformMatrix4fv(this.viewLocation, false, view);
+      this.gl.uniformMatrix4fv(this.projectionLocation, false, projection);
+      this.gl.uniform3f(this.cameraPositionLocation, this.cameraPosition[0], this.cameraPosition[1], this.cameraPosition[2]);
       this.gl.uniform2f(this.viewportLocation, this.canvas.width, this.canvas.height);
       this.gl.uniform1f(this.ellipseExtentLocation, this.renderProfile.ellipseExtent);
       this.gl.uniform1f(this.minPixelAxisLocation, this.renderProfile.minPixelAxis);
       this.gl.uniform1f(this.maxPixelAxisLocation, this.renderProfile.maxPixelAxis);
+      this.gl.uniform1f(this.preBlurAmountLocation, PRE_BLUR_AMOUNT);
+      this.gl.uniform1f(this.blurAmountLocation, BLUR_AMOUNT);
+      this.gl.uniform1f(this.maxStdDevLocation, MAX_STD_DEV);
+      this.gl.uniform1f(this.focalAdjustmentLocation, FOCAL_ADJUSTMENT);
       this.gl.uniform1f(this.minClipWLocation, MIN_CLIP_W);
       this.gl.uniform1f(this.clipPaddingLocation, OFFSCREEN_CLIP_PADDING);
 
@@ -727,9 +904,25 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       this.gl.vertexAttribPointer(rotationLocation, 4, this.gl.FLOAT, false, 0, 0);
       this.gl.vertexAttribDivisor(rotationLocation, 1);
 
+      const sh10Location = this.gl.getAttribLocation(this.program, 'aSh1_0');
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.sh1Buffer);
+      this.gl.enableVertexAttribArray(sh10Location);
+      this.gl.vertexAttribPointer(sh10Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 0);
+      this.gl.vertexAttribDivisor(sh10Location, 1);
+
+      const sh11Location = this.gl.getAttribLocation(this.program, 'aSh1_1');
+      this.gl.enableVertexAttribArray(sh11Location);
+      this.gl.vertexAttribPointer(sh11Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 3 * 4);
+      this.gl.vertexAttribDivisor(sh11Location, 1);
+
+      const sh12Location = this.gl.getAttribLocation(this.program, 'aSh1_2');
+      this.gl.enableVertexAttribArray(sh12Location);
+      this.gl.vertexAttribPointer(sh12Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 6 * 4);
+      this.gl.vertexAttribDivisor(sh12Location, 1);
+
       this.gl.disable(this.gl.DEPTH_TEST);
       this.gl.enable(this.gl.BLEND);
-      this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+      this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
       this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, 6, this.renderSplatCount);
     }
     this.recordRenderTiming(renderStartedAt);
@@ -765,13 +958,19 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         }
       },
       pipeline: {
-        shader: 'sh0-instanced-ellipse-gaussian',
-        sorting: this.sortEnabled ? 'cpu-back-to-front' : 'source-order',
+        shader: 'sh0-jacobian-covariance-gaussian',
+        sorting: sortModeLabel(this.sortMode),
         scaleAware: true,
         opacityAware: true,
         gaussianProjection: true,
         covarianceProjection: true,
-        instancing: true
+        instancing: true,
+        projectionModel: 'jacobian-covariance',
+        composite: 'premultiplied-alpha',
+        shading: this.renderShDegree > 0 ? 'sh1-view-dependent' : 'sh0-dc-only',
+        sourceShDegree: this.activeInfo?.shDegree ?? null,
+        renderShDegree: this.renderShDegree,
+        renderShRestCount: this.renderShRestCount
       },
       scene: {
         splats: this.splatCount,
@@ -785,7 +984,9 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         lastLoadMs: Math.round(this.lastLoadMs),
         lastSortMs: Number(this.lastSortMs.toFixed(3)),
         sortEnabled: this.sortEnabled,
+        sortMode: this.sortMode,
         sortReason: this.sortReason,
+        sortDepthRange: this.lastSortDepthRange,
         sortedSplats: this.lastSortedCount,
         renderedSplats: this.renderSplatCount,
         sortVersion: this.sortVersion,
@@ -814,15 +1015,20 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           loadPeakBytes: this.estimatedLoadPeakBytes,
           loadPeakMiB: bytesToMiB(this.estimatedLoadPeakBytes),
           sortSplatLimit: SORT_SPLAT_LIMIT,
+          bucketSortSplatLimit: BUCKET_SORT_SPLAT_LIMIT,
+          sortBucketCount: SORT_BUCKET_COUNT,
           fullDensitySplatLimit: FULL_DENSITY_SPLAT_LIMIT
         },
         largeScene: {
           fullDensity: this.largeSceneFullDensity,
           fullDensitySplatLimit: FULL_DENSITY_SPLAT_LIMIT,
           cpuSortSplatLimit: SORT_SPLAT_LIMIT,
+          bucketSortSplatLimit: BUCKET_SORT_SPLAT_LIMIT,
           sortingLimited: this.largeSceneFullDensity && !this.sortEnabled,
           strategy: this.largeSceneFullDensity
-            ? 'full-density-source-order'
+            ? this.sortEnabled
+              ? 'full-density-bucket-depth-sort'
+              : 'full-density-source-order'
             : this.lodEnabled
               ? 'deterministic-stride-budget'
               : 'full-resolution-sorted'
@@ -836,6 +1042,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         ellipse: {
           profile: this.renderProfile.id,
           extent: this.renderProfile.ellipseExtent,
+          maxStdDev: MAX_STD_DEV,
+          preBlurAmount: PRE_BLUR_AMOUNT,
+          blurAmount: BLUR_AMOUNT,
+          focalAdjustment: FOCAL_ADJUSTMENT,
           minPixelAxis: this.renderProfile.minPixelAxis,
           maxPixelAxis: this.renderProfile.maxPixelAxis,
           opacityScale: this.renderProfile.opacityScale,
@@ -854,10 +1064,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           }
         },
         note: this.lodEnabled
-          ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget.'
+          ? 'Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, softened deterministic stride LOD, and CPU depth sorting on the render budget.'
           : this.largeSceneFullDensity
-            ? 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, full-density large-scene rendering, and source-order blending because CPU sorting is over budget.'
-          : 'Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting.'
+            ? 'Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, full-density large-scene rendering, bucket depth sorting, and premultiplied alpha compositing.'
+            : 'Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing.'
       },
       memoryInfo: null,
       statistics: null,
@@ -865,7 +1075,13 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     };
   }
 
-  private uploadGaussianBuffers(positions: Float32Array, colors: Float32Array, scales: Float32Array, rotations: Float32Array) {
+  private uploadGaussianBuffers(
+    positions: Float32Array,
+    colors: Float32Array,
+    scales: Float32Array,
+    rotations: Float32Array,
+    sh1: Float32Array
+  ) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
     this.gl.bufferData(this.gl.ARRAY_BUFFER, positions, this.gl.DYNAMIC_DRAW);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
@@ -874,6 +1090,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, scales, this.gl.DYNAMIC_DRAW);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.rotationBuffer);
     this.gl.bufferData(this.gl.ARRAY_BUFFER, rotations, this.gl.DYNAMIC_DRAW);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.sh1Buffer);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, sh1, this.gl.DYNAMIC_DRAW);
   }
 
   private recordRenderTiming(startedAt: number) {
@@ -888,10 +1106,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     return normalize(subtract(this.cameraTarget, this.cameraPosition));
   }
 
-  private shouldReuseSort(cameraForward: ArkVec3) {
+  private shouldReuseSort(cameraForward: ArkVec3, epsilon = CAMERA_EPSILON) {
     if (!this.lastSortCameraPosition || !this.lastSortCameraForward) return false;
-    return distanceSq(this.cameraPosition, this.lastSortCameraPosition) < CAMERA_EPSILON
-      && distanceSq(cameraForward, this.lastSortCameraForward) < CAMERA_EPSILON;
+    return distanceSq(this.cameraPosition, this.lastSortCameraPosition) < epsilon
+      && distanceSq(cameraForward, this.lastSortCameraForward) < epsilon;
   }
 
   private updateSortedBuffers() {
@@ -901,23 +1119,27 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       || !this.rawColors
       || !this.rawScales
       || !this.rawRotations
+      || !this.rawSh1
       || !this.sortedPositions
       || !this.sortedColors
       || !this.sortedScales
       || !this.sortedRotations
+      || !this.sortedSh1
       || !this.sortDepths
     ) {
       return;
     }
 
     const cameraForward = this.getCameraForward();
-    if (!this.sortDirty && this.shouldReuseSort(cameraForward)) return;
+    const sortReuseEpsilon = this.sortMode === 'bucket-depth' ? BUCKET_SORT_CAMERA_EPSILON : CAMERA_EPSILON;
+    if (!this.sortDirty && this.shouldReuseSort(cameraForward, sortReuseEpsilon)) return;
 
     const startedAt = performance.now();
     const positions = this.rawPositions;
     const colors = this.rawColors;
     const scales = this.rawScales;
     const rotations = this.rawRotations;
+    const sh1 = this.rawSh1;
     const depths = this.sortDepths;
     const indices = this.sortIndices;
 
@@ -928,38 +1150,114 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         + (positions[offset + 2] - this.cameraPosition[2]) * cameraForward[2];
     }
 
-    indices.sort((a, b) => depths[b] - depths[a]);
+    if (this.sortMode === 'exact-depth') {
+      indices.sort((a, b) => depths[b] - depths[a]);
 
-    for (let sortedIndex = 0; sortedIndex < this.renderSplatCount; sortedIndex += 1) {
-      const sourceIndex = indices[sortedIndex];
-      const sourcePositionOffset = sourceIndex * 3;
-      const targetPositionOffset = sortedIndex * 3;
-      this.sortedPositions[targetPositionOffset] = positions[sourcePositionOffset];
-      this.sortedPositions[targetPositionOffset + 1] = positions[sourcePositionOffset + 1];
-      this.sortedPositions[targetPositionOffset + 2] = positions[sourcePositionOffset + 2];
+      for (let sortedIndex = 0; sortedIndex < this.renderSplatCount; sortedIndex += 1) {
+        const sourceIndex = indices[sortedIndex];
+        const sourcePositionOffset = sourceIndex * 3;
+        const targetPositionOffset = sortedIndex * 3;
+        this.sortedPositions[targetPositionOffset] = positions[sourcePositionOffset];
+        this.sortedPositions[targetPositionOffset + 1] = positions[sourcePositionOffset + 1];
+        this.sortedPositions[targetPositionOffset + 2] = positions[sourcePositionOffset + 2];
 
-      const sourceColorOffset = sourceIndex * 4;
-      const targetColorOffset = sortedIndex * 4;
-      this.sortedColors[targetColorOffset] = colors[sourceColorOffset];
-      this.sortedColors[targetColorOffset + 1] = colors[sourceColorOffset + 1];
-      this.sortedColors[targetColorOffset + 2] = colors[sourceColorOffset + 2];
-      this.sortedColors[targetColorOffset + 3] = colors[sourceColorOffset + 3];
+        const sourceColorOffset = sourceIndex * 4;
+        const targetColorOffset = sortedIndex * 4;
+        this.sortedColors[targetColorOffset] = colors[sourceColorOffset];
+        this.sortedColors[targetColorOffset + 1] = colors[sourceColorOffset + 1];
+        this.sortedColors[targetColorOffset + 2] = colors[sourceColorOffset + 2];
+        this.sortedColors[targetColorOffset + 3] = colors[sourceColorOffset + 3];
 
-      const sourceScaleOffset = sourceIndex * 3;
-      const targetScaleOffset = sortedIndex * 3;
-      this.sortedScales[targetScaleOffset] = scales[sourceScaleOffset];
-      this.sortedScales[targetScaleOffset + 1] = scales[sourceScaleOffset + 1];
-      this.sortedScales[targetScaleOffset + 2] = scales[sourceScaleOffset + 2];
+        const sourceScaleOffset = sourceIndex * 3;
+        const targetScaleOffset = sortedIndex * 3;
+        this.sortedScales[targetScaleOffset] = scales[sourceScaleOffset];
+        this.sortedScales[targetScaleOffset + 1] = scales[sourceScaleOffset + 1];
+        this.sortedScales[targetScaleOffset + 2] = scales[sourceScaleOffset + 2];
 
-      const sourceRotationOffset = sourceIndex * 4;
-      const targetRotationOffset = sortedIndex * 4;
-      this.sortedRotations[targetRotationOffset] = rotations[sourceRotationOffset];
-      this.sortedRotations[targetRotationOffset + 1] = rotations[sourceRotationOffset + 1];
-      this.sortedRotations[targetRotationOffset + 2] = rotations[sourceRotationOffset + 2];
-      this.sortedRotations[targetRotationOffset + 3] = rotations[sourceRotationOffset + 3];
+        const sourceRotationOffset = sourceIndex * 4;
+        const targetRotationOffset = sortedIndex * 4;
+        this.sortedRotations[targetRotationOffset] = rotations[sourceRotationOffset];
+        this.sortedRotations[targetRotationOffset + 1] = rotations[sourceRotationOffset + 1];
+        this.sortedRotations[targetRotationOffset + 2] = rotations[sourceRotationOffset + 2];
+        this.sortedRotations[targetRotationOffset + 3] = rotations[sourceRotationOffset + 3];
+
+        const sourceShOffset = sourceIndex * RENDER_SH_REST_COUNT;
+        const targetShOffset = sortedIndex * RENDER_SH_REST_COUNT;
+        for (let coefficient = 0; coefficient < RENDER_SH_REST_COUNT; coefficient += 1) {
+          this.sortedSh1[targetShOffset + coefficient] = sh1[sourceShOffset + coefficient];
+        }
+      }
+    } else if (this.sortMode === 'bucket-depth' && this.sortOrder) {
+      let minDepth = Infinity;
+      let maxDepth = -Infinity;
+      for (let index = 0; index < this.renderSplatCount; index += 1) {
+        const depth = depths[index];
+        if (Number.isFinite(depth)) {
+          minDepth = Math.min(minDepth, depth);
+          maxDepth = Math.max(maxDepth, depth);
+        }
+      }
+      if (!Number.isFinite(minDepth) || !Number.isFinite(maxDepth)) {
+        minDepth = 0;
+        maxDepth = 0;
+      }
+      const depthRange = maxDepth - minDepth;
+      this.sortBuckets.fill(0);
+      for (let index = 0; index < this.renderSplatCount; index += 1) {
+        this.sortBuckets[quantizeDepthToBucket(depths[index], minDepth, depthRange)] += 1;
+      }
+
+      let writeOffset = 0;
+      for (let bucket = SORT_BUCKET_MAX; bucket >= 0; bucket -= 1) {
+        const count = this.sortBuckets[bucket];
+        this.sortBucketWriteOffsets[bucket] = writeOffset;
+        writeOffset += count;
+      }
+      for (let index = 0; index < this.renderSplatCount; index += 1) {
+        const bucket = quantizeDepthToBucket(depths[index], minDepth, depthRange);
+        this.sortOrder[this.sortBucketWriteOffsets[bucket]] = index;
+        this.sortBucketWriteOffsets[bucket] += 1;
+      }
+
+      for (let sortedIndex = 0; sortedIndex < this.renderSplatCount; sortedIndex += 1) {
+        const sourceIndex = this.sortOrder[sortedIndex];
+        const sourcePositionOffset = sourceIndex * 3;
+        const targetPositionOffset = sortedIndex * 3;
+        this.sortedPositions[targetPositionOffset] = positions[sourcePositionOffset];
+        this.sortedPositions[targetPositionOffset + 1] = positions[sourcePositionOffset + 1];
+        this.sortedPositions[targetPositionOffset + 2] = positions[sourcePositionOffset + 2];
+
+        const sourceColorOffset = sourceIndex * 4;
+        const targetColorOffset = sortedIndex * 4;
+        this.sortedColors[targetColorOffset] = colors[sourceColorOffset];
+        this.sortedColors[targetColorOffset + 1] = colors[sourceColorOffset + 1];
+        this.sortedColors[targetColorOffset + 2] = colors[sourceColorOffset + 2];
+        this.sortedColors[targetColorOffset + 3] = colors[sourceColorOffset + 3];
+
+        const sourceScaleOffset = sourceIndex * 3;
+        const targetScaleOffset = sortedIndex * 3;
+        this.sortedScales[targetScaleOffset] = scales[sourceScaleOffset];
+        this.sortedScales[targetScaleOffset + 1] = scales[sourceScaleOffset + 1];
+        this.sortedScales[targetScaleOffset + 2] = scales[sourceScaleOffset + 2];
+
+        const sourceRotationOffset = sourceIndex * 4;
+        const targetRotationOffset = sortedIndex * 4;
+        this.sortedRotations[targetRotationOffset] = rotations[sourceRotationOffset];
+        this.sortedRotations[targetRotationOffset + 1] = rotations[sourceRotationOffset + 1];
+        this.sortedRotations[targetRotationOffset + 2] = rotations[sourceRotationOffset + 2];
+        this.sortedRotations[targetRotationOffset + 3] = rotations[sourceRotationOffset + 3];
+
+        const sourceShOffset = sourceIndex * RENDER_SH_REST_COUNT;
+        const targetShOffset = sortedIndex * RENDER_SH_REST_COUNT;
+        for (let coefficient = 0; coefficient < RENDER_SH_REST_COUNT; coefficient += 1) {
+          this.sortedSh1[targetShOffset + coefficient] = sh1[sourceShOffset + coefficient];
+        }
+      }
+
+      this.lastSortDepthRange = [Number(minDepth.toFixed(6)), Number(maxDepth.toFixed(6))];
     }
 
-    this.uploadGaussianBuffers(this.sortedPositions, this.sortedColors, this.sortedScales, this.sortedRotations);
+    this.uploadGaussianBuffers(this.sortedPositions, this.sortedColors, this.sortedScales, this.sortedRotations, this.sortedSh1);
     this.lastSortMs = performance.now() - startedAt;
     this.lastSortedCount = this.renderSplatCount;
     this.lastSortCameraPosition = copyVec3(this.cameraPosition);

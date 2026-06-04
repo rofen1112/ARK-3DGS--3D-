@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T12:26:11.577Z",
+  "generated_at": "2026-06-04T02:55:10.747Z",
   "target": "ARK first-party Gaussian ellipse renderer preview QA",
   "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
   "summary": {
@@ -15,19 +15,27 @@
     "runtime": "Loaded",
     "renderer": "ark-gaussian-webgl2",
     "pipeline": {
-      "shader": "sh0-instanced-ellipse-gaussian",
-      "sorting": "cpu-back-to-front",
+      "shader": "sh0-jacobian-covariance-gaussian",
+      "sorting": "cpu-exact-back-to-front",
       "scaleAware": true,
       "opacityAware": true,
       "gaussianProjection": true,
       "covarianceProjection": true,
-      "instancing": true
+      "instancing": true,
+      "projectionModel": "jacobian-covariance",
+      "composite": "premultiplied-alpha",
+      "shading": "sh1-view-dependent",
+      "sourceShDegree": 3,
+      "renderShDegree": 1,
+      "renderShRestCount": 9
     },
     "renderInfo": {
-      "lastLoadMs": 143,
-      "lastSortMs": 18.9,
+      "lastLoadMs": 178,
+      "lastSortMs": 25.6,
       "sortEnabled": true,
+      "sortMode": "exact-depth",
       "sortReason": "camera-depth-order",
+      "sortDepthRange": null,
       "sortedSplats": 99966,
       "renderedSplats": 99966,
       "sortVersion": 1,
@@ -44,38 +52,45 @@
       "performance": {
         "inputBytes": 24793098,
         "inputMiB": 23.645,
-        "readMs": 60.2,
-        "decodeMs": 65.7,
-        "packMs": 13.8,
-        "uploadMs": 1.8,
-        "totalLoadMs": 142.6,
-        "retainedCpuBufferBytes": 11995920,
-        "retainedCpuBufferMiB": 11.44,
-        "gpuUploadBytes": 5598096,
-        "gpuUploadMiB": 5.339,
-        "loadPeakBytes": 42786978,
-        "loadPeakMiB": 40.805,
+        "readMs": 73,
+        "decodeMs": 84.4,
+        "packMs": 16.1,
+        "uploadMs": 3.1,
+        "totalLoadMs": 178.3,
+        "retainedCpuBufferBytes": 19193472,
+        "retainedCpuBufferMiB": 18.304,
+        "gpuUploadBytes": 9196872,
+        "gpuUploadMiB": 8.771,
+        "loadPeakBytes": 53583306,
+        "loadPeakMiB": 51.101,
         "sortSplatLimit": 400000,
+        "bucketSortSplatLimit": 2000000,
+        "sortBucketCount": 65536,
         "fullDensitySplatLimit": 2000000
       },
       "largeScene": {
         "fullDensity": false,
         "fullDensitySplatLimit": 2000000,
         "cpuSortSplatLimit": 400000,
+        "bucketSortSplatLimit": 2000000,
         "sortingLimited": false,
         "strategy": "full-resolution-sorted"
       },
       "frameTiming": {
         "lastRenderMs": 0,
-        "maxRenderMs": 19.1,
-        "averageRenderMs": 1.8,
+        "maxRenderMs": 26,
+        "averageRenderMs": 2.464,
         "renderCount": 11
       },
       "ellipse": {
         "profile": "standard",
-        "extent": 2.05,
+        "extent": 2.8284271247461903,
+        "maxStdDev": 2.8284271247461903,
+        "preBlurAmount": 0.3,
+        "blurAmount": 0,
+        "focalAdjustment": 2,
         "minPixelAxis": 0.75,
-        "maxPixelAxis": 10,
+        "maxPixelAxis": 1024,
         "opacityScale": 0.44,
         "baseOpacityScale": 0.44,
         "alphaCutoff": 0.003,
@@ -91,12 +106,12 @@
           "mean": 0.005467
         }
       },
-      "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+      "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
     },
     "splats": 99966,
-    "visual_quality": "Passed (216)",
-    "contrast": 216,
-    "duration_seconds": 11.229
+    "visual_quality": "Passed (87.1)",
+    "contrast": 87.11111111111111,
+    "duration_seconds": 10.236
   },
   "result": {
     "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
@@ -113,9 +128,9 @@
     "exitCode": 0,
     "pageState": {
       "runtime": "Loaded",
-      "status": "scene-preview-100k.ply loaded in 0.1s.",
+      "status": "scene-preview-100k.ply loaded in 0.2s.",
       "fitBounds": "broad_01_99 (sidecar)",
-      "visualQuality": "Passed (216)",
+      "visualQuality": "Passed (87.1)",
       "canvas": {
         "width": 1424,
         "height": 805,
@@ -126,7 +141,7 @@
         "name": "Dongguan Heritage Gaussian (Preview PLY 100k)",
         "format": "PLY",
         "splats": 99966,
-        "shDegree": 0,
+        "shDegree": 3,
         "denseMin": [
           -2.535121,
           -4.258497,
@@ -141,7 +156,13 @@
         "fitRadius": 2.9999999999999996,
         "fitBoundsId": "broad_01_99",
         "fitBoundsSource": "sidecar",
-        "source": "bundled"
+        "source": "bundled",
+        "assetId": "preview-ply",
+        "assetRole": "preview",
+        "sourceAssetId": "source-ply",
+        "declaredSplats": 99966,
+        "sourceSplats": 1855266,
+        "coverageRatio": 0.053882300435624864
       },
       "visualQualityGate": {
         "status": "passed",
@@ -179,7 +200,7 @@
           },
           "contrastAboveThreshold": {
             "passed": true,
-            "value": 216,
+            "value": 87.11111111111111,
             "message": "Pixel contrast is at least 12."
           }
         },
@@ -190,13 +211,13 @@
         "sample": {
           "status": "visible",
           "averageRgb": [
-            24.444444444444443,
-            26.22222222222222,
-            26.333333333333332
+            19,
+            21.666666666666668,
+            20.22222222222222
           ],
-          "contrast": 216
+          "contrast": 87.11111111111111
         },
-        "evaluatedAtMs": 7894
+        "evaluatedAtMs": 7079
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -206,13 +227,19 @@
         }
       },
       "pipeline": {
-        "shader": "sh0-instanced-ellipse-gaussian",
-        "sorting": "cpu-back-to-front",
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-exact-back-to-front",
         "scaleAware": true,
         "opacityAware": true,
         "gaussianProjection": true,
         "covarianceProjection": true,
-        "instancing": true
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9
       },
       "scene": {
         "splats": 99966,
@@ -221,10 +248,12 @@
         "sceneVersion": 1
       },
       "renderInfo": {
-        "lastLoadMs": 143,
-        "lastSortMs": 18.9,
+        "lastLoadMs": 178,
+        "lastSortMs": 25.6,
         "sortEnabled": true,
+        "sortMode": "exact-depth",
         "sortReason": "camera-depth-order",
+        "sortDepthRange": null,
         "sortedSplats": 99966,
         "renderedSplats": 99966,
         "sortVersion": 1,
@@ -241,38 +270,45 @@
         "performance": {
           "inputBytes": 24793098,
           "inputMiB": 23.645,
-          "readMs": 60.2,
-          "decodeMs": 65.7,
-          "packMs": 13.8,
-          "uploadMs": 1.8,
-          "totalLoadMs": 142.6,
-          "retainedCpuBufferBytes": 11995920,
-          "retainedCpuBufferMiB": 11.44,
-          "gpuUploadBytes": 5598096,
-          "gpuUploadMiB": 5.339,
-          "loadPeakBytes": 42786978,
-          "loadPeakMiB": 40.805,
+          "readMs": 73,
+          "decodeMs": 84.4,
+          "packMs": 16.1,
+          "uploadMs": 3.1,
+          "totalLoadMs": 178.3,
+          "retainedCpuBufferBytes": 19193472,
+          "retainedCpuBufferMiB": 18.304,
+          "gpuUploadBytes": 9196872,
+          "gpuUploadMiB": 8.771,
+          "loadPeakBytes": 53583306,
+          "loadPeakMiB": 51.101,
           "sortSplatLimit": 400000,
+          "bucketSortSplatLimit": 2000000,
+          "sortBucketCount": 65536,
           "fullDensitySplatLimit": 2000000
         },
         "largeScene": {
           "fullDensity": false,
           "fullDensitySplatLimit": 2000000,
           "cpuSortSplatLimit": 400000,
+          "bucketSortSplatLimit": 2000000,
           "sortingLimited": false,
           "strategy": "full-resolution-sorted"
         },
         "frameTiming": {
           "lastRenderMs": 0,
-          "maxRenderMs": 19.1,
-          "averageRenderMs": 1.8,
+          "maxRenderMs": 26,
+          "averageRenderMs": 2.464,
           "renderCount": 11
         },
         "ellipse": {
           "profile": "standard",
-          "extent": 2.05,
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
           "minPixelAxis": 0.75,
-          "maxPixelAxis": 10,
+          "maxPixelAxis": 1024,
           "opacityScale": 0.44,
           "baseOpacityScale": 0.44,
           "alphaCutoff": 0.003,
@@ -288,7 +324,7 @@
             "mean": 0.005467
           }
         },
-        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, and CPU depth sorting."
+        "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, CPU depth sorting, and premultiplied alpha compositing."
       }
     },
     "parseError": null,

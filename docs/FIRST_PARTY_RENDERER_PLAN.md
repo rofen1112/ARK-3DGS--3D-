@@ -248,7 +248,7 @@ Current progress:
 - Added `?renderer=ark-gaussian` backend selection in the browser shell.
 - Added first WebGL2 instanced quad path for screen-space ellipse projection from decoded scale and rotation quaternion.
 - Added `scripts/qa-first-party-gaussian.mjs` with a hard `gaussianProjection=true` gate.
-- Current Gaussian QA: `scene-preview-100k.ply`, `99,966` splats, `Passed (216)`, shader `sh0-instanced-ellipse-gaussian`, sorting `cpu-back-to-front`, opacity scale `0.44`, ellipse extent `2.05`, max pixel axis `10`, clipping `minClipW=0.02` and `offscreenPadding=1.4`.
+- Current Gaussian QA: `scene-preview-100k.ply`, `99,966` splats, `Passed (89.8)`, shader `sh0-jacobian-covariance-gaussian`, sorting `cpu-exact-back-to-front`, projection `jacobian-covariance`, composite `premultiplied-alpha`, source SH degree `3`, render SH degree `0`, opacity scale `0.44`, maxStdDev `2.828`, max pixel radius `1024`, clipping `minClipW=0.02` and `offscreenPadding=1.4`.
 - Added `scripts/qa-first-party-gaussian-compare.mjs` for first-party Gaussian comparison against Aholo and Kellogg preview baselines.
 - Current comparison QA: all three preview paths render `99,966` splats; `clipping_passed=true`; `ark-gaussian` vs `aholo-adapter` signature similarity is `0.996124` with mean absolute RGB delta `0.9884`; signature contrast is `196` vs Aholo's `193`.
 - Added `scripts/qa-first-party-gaussian-stress.mjs` for camera-edge and near-plane clipping stress QA.
@@ -256,7 +256,7 @@ Current progress:
 - Added `scripts/qa-first-party-default-readiness.mjs` to assess whether `ark-gaussian` can become the default backend.
 - Current readiness QA: `preview_path_ready=true`, `default_backend_ready=false`, `should_keep_aholo_default=true`, `blocking_count=4`.
 - Added `scripts/qa-first-party-full-scene-visual-budget.mjs` for static full-scene visual gate assessment before attempting a full default replacement render.
-- Current full-scene visual QA: `assessment_passed=true`, `visual_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, Aholo-backed default visual QA `Passed (114.3)`, first-party preview visual QA `Passed (216)`.
+- Current full-scene visual QA: `assessment_passed=true`, `visual_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, Aholo-backed default visual QA `Passed (114.3)`, first-party preview visual QA `Passed (89.8)`.
 - Added `scripts/qa-first-party-full-scene-performance-budget.mjs` for static full-scene performance budget assessment before attempting a full default replacement run.
 - Current full-scene performance budget QA: `assessment_passed=true`, `performance_gate_passed=false`, `status=blocked-before-measurement`, default `runtime-sog`, `1,855,266` splats, current CPU sort limit `400,000`, ratio `4.638x`.
 - Added `src/sdk/gaussian/runtimeMetadata.ts` and `scripts/validate-runtime-gaussian-metadata.mjs` for SOG/SPZ runtime metadata adapters.
@@ -268,19 +268,20 @@ Current progress:
 - Added `src/sdk/gaussian/fullSceneCandidate.ts` and `scripts/validate-first-party-full-scene-candidate.mjs` for full-scene first-party measurement candidate resolution.
 - Current full-scene candidate QA: default `runtime-sog` resolves to `source-ply` in `source-ply-substitute` mode; candidate is first-party loadable and splat-equivalent, but `measuredDefaultRuntime=false`.
 - Added `scripts/qa-first-party-full-scene-source-ply-smoke.mjs` for degraded full-scene source PLY measurement.
-- Current source PLY smoke QA: `smoke_passed=true`, renderer `ark-gaussian-webgl2`, decoded `1,854,627` valid splats, rendered `1,854,627` full-density splats, skipped `639` invalid splats, sorting `source-order`, `sortEnabled=false`, LOD disabled, large-scene strategy `full-density-source-order`, visual QA `Passed (202.7)`, settle frames `1`, duration `83.376s`.
-- Current source PLY timing breakdown: read `992ms`, decode `1,130.4ms`, pack `171.4ms`, upload `50.7ms`, renderer load `2,346ms`, visual gate wall-clock `55,821ms`, load peak `643.966MiB`.
+- Current source PLY smoke QA: `smoke_passed=true`, renderer `ark-gaussian-webgl2`, decoded `1,854,627` valid splats, rendered `1,854,627` full-density splats, skipped `639` invalid splats, sorting `cpu-bucket-back-to-front`, `sortEnabled=true`, LOD disabled, large-scene strategy `full-density-bucket-depth-sort`, projection/composite `jacobian-covariance` + `premultiplied-alpha`, visual QA `Passed (222.8)`, settle frames `1`, duration `76.476s`.
+- Current source PLY timing breakdown: read `1,717.1ms`, decode `1,236.1ms`, pack `206.2ms`, upload `84.6ms`, renderer load `3,246ms`, visual gate wall-clock `51,626ms`, load peak `757.163MiB`.
 
 Known limitation:
 
 - The diagnostic point backend renders SH0 color as circular scale-aware points with alpha. It is retained only as a baseline.
-- The first Gaussian backend still uses SH0 color and CPU sorting. It is a renderer milestone, not the final production WebGPU renderer.
+- The first Gaussian backend now uses Jacobian covariance projection, premultiplied alpha, SH0 color, exact CPU sorting for preview scenes, and bucket CPU sorting for the current full source PLY. It is a renderer milestone, not the final production WebGPU renderer.
+- The current source PLY is SH degree `3`, but `ark-gaussian` renders SH0 only. SH color fidelity remains a first-party visual blocker.
 - The Kellogg independent baseline visibly renders and matches splat count, but direct headless canvas signature downsampling returns near-zero contrast, so it is used for visual/data compatibility rather than signature-difference gating.
 - The manifest default remains `runtime-sog`; first-party `ark-gaussian` currently loads direct PLY data only. The readiness gate must stay red until SOG/SPZ direct loading or a first-party runtime conversion path exists.
 - Runtime format probing is now complete enough to identify the default SOG as a ZIP/WEBP-style container and summarize its `meta.json` channel layout, but no SOG/SPZ-to-ARK Gaussian buffer transcode path exists yet.
 - The source PLY full-scene candidate can support degraded measurement work, but it is not the manifest default runtime and must not clear default backend readiness.
-- The full default runtime has `1,855,266` splats, above the current `400,000` CPU sort limit. A worker/GPU sorting or streaming path is required before default replacement.
-- The measured full-scene source PLY smoke now renders all `1,854,627` valid source splats for scenes under the `2,000,000` full-density limit. This fixes the previous sparse 300,000-splat LOD path, but it uses `source-order` blending because the current CPU sort path is capped at `400,000` splats. This is still not a default-runtime replacement path.
+- The full default runtime has `1,855,266` splats, above the exact CPU sort limit. The Round 3 bucket sort path targets source PLY scenes up to `2,000,000` splats, but default replacement still requires direct SOG/SPZ conversion and production-grade worker/GPU sorting or streaming.
+- The measured full-scene source PLY smoke now renders all `1,854,627` valid source splats for scenes under the `2,000,000` full-density limit. Round 3 replaces the previous `source-order` fallback with `cpu-bucket-back-to-front` sorting, but this is still a source-PLY measurement candidate rather than a default-runtime replacement path.
 - The full-scene visual assessment is intentionally non-passing. It records Aholo-backed visibility baselines and keeps readiness red until the first-party renderer can measure the manifest default directly.
 - The full-scene performance budget assessment is intentionally non-passing. It records the blockers and keeps readiness red until a measured full-scene performance gate can run.
 
@@ -294,6 +295,9 @@ Completed renderer tuning:
 - Added adaptive large-scene visual QA settle and initial render burst policy. Preview PLY keeps the normal `8` settle frames; full-source PLY smoke now uses `1` settle frame and reduced smoke duration from `223.251s` to `80.971s`.
 - Added deterministic stride LOD for degraded full-source PLY smoke. The renderer kept decoded splats at `1,854,627`, rendered `300,000` budget splats, enabled CPU sorting on the budget, and reduced smoke duration from `80.971s` to `15.951s`.
 - Added full-density large-scene rendering for source scenes up to `2,000,000` splats. The current source PLY now renders all `1,854,627` splats with `source-order` blending and a `large-scene-full-density` profile. This improves density but keeps readiness blocked until sorting/projection quality is solved.
+- Added Round 3 full-density bucket depth sorting for source scenes up to `2,000,000` splats. The current source PLY target strategy is `full-density-bucket-depth-sort`, with `cpu-bucket-back-to-front` sorting and all `1,854,627` valid splats rendered.
+- Added `docs/ARK_GAUSSIAN_RENDERER_PIPELINE_AUDIT.md` to lock the core renderer checklist, pass conditions, and external renderer framework trigger.
+- Added Round 4 Jacobian covariance projection and premultiplied alpha compositing. The renderer now reports `projectionModel="jacobian-covariance"`, `composite="premultiplied-alpha"`, `sourceShDegree=3`, and `renderShDegree=0`.
 - Added explicit near/far and offscreen center clipping. The current baseline metrics are unchanged after clipping: `ark-gaussian` vs Aholo mean absolute RGB delta `0.9884`, similarity `0.996124`, signature contrast `196` vs Aholo's `193`.
 - Promoted clipping debug state to a hard QA gate in the single renderer, comparison, and stress harnesses.
 - Added camera-edge and near-plane stress cases. Edge stress uses canvas signature contrast instead of only the sparse 3x3 pixel sample, because edge-visible content can miss fixed sample points.
@@ -305,10 +309,16 @@ Completed renderer tuning:
 - Added degraded full-scene source PLY smoke QA. This is the first real full-scene first-party renderer measurement, but it is not a default-runtime readiness gate.
 - Added full-scene visual gate reporting. This is an audit gate scaffold, not proof that the first-party renderer can display the full runtime scene.
 - Added full-scene performance budget reporting. This is an audit gate scaffold, not proof that the full runtime scene is performant.
+- Added Round 5 asset coverage diagnostics in the HUD and renderer debug state. Preview PLY now reports `99,966 / 1,855,266 (5.39%)`; source PLY reports `1,854,627 / 1,855,266 (99.97%)`.
+- Added explicit SH rest index decoding and a limited SH1 view-dependent color path. The renderer now reports `sourceShDegree=3`, `renderShDegree=1`, `renderShRestCount=9`, and `shading="sh1-view-dependent"`.
+- Corrected SH1 field selection for the 3DGS channel-major PLY layout. For the current SH3 source, SH1 reads `f_rest_0/15/30`, `f_rest_1/16/31`, and `f_rest_2/17/32`.
+- Verified that SH1 alone does not materially close the visual gap. Source smoke moved only from `Passed (222.8)` to `Passed (223.7)`, while memory rose to `948.184MiB` load peak.
+- Added a manual debug note after user visual confirmation on 2026-06-04: the repaired source PLY path displays normally when the app is on `asset=source-ply`, with HUD coverage `1,854,627 / 1,855,266 (99.97%)`.
 
 Next renderer tuning target:
 
-- Harden covariance projection math and alpha compositing while keeping `ark-gaussian` vs Aholo preview splat delta at `0`.
+- Implement a measured SH3 experiment without adding all coefficients as per-instance attributes. Preferred paths are packed SH textures/order buffers or a CPU SH3 A/B diagnostic used only to isolate color parity.
+- Move first-party data access from large CPU attribute buffers toward packed GPU textures/order buffers, matching the architecture needed for SOG/SPZ runtime conversion.
 - Replace degraded stride LOD with a production large-scene strategy: direct SOG/SPZ loading, worker/GPU sorting, chunk streaming, or view-dependent LOD with quality comparison.
 - Convert the full-scene visual and performance assessments into measured gates before changing the default backend.
 - Implement the first SOG-to-ARK Gaussian buffer conversion path from `means_l.webp`, `means_u.webp`, `scales.webp`, `quats.webp`, `sh0.webp`, `shN_centroids.webp`, and `shN_labels.webp`. SPZ remains a GZIP payload probe until its layout is decoded.

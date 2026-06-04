@@ -80,6 +80,23 @@ function requireProperty(header: ArkGaussianPlyHeader, name: string) {
   return property;
 }
 
+function resolveShRestIndices(header: ArkGaussianPlyHeader, options: ArkGaussianDecodeOptions) {
+  if (!options.includeShRest || header.shRestCount <= 0) return [];
+  if (options.shRestIndices) {
+    return options.shRestIndices.map((index) => {
+      if (!Number.isInteger(index) || index < 0 || index >= header.shRestCount) {
+        throw new Error(`Invalid Gaussian PLY SH rest index: ${index}`);
+      }
+      return index;
+    });
+  }
+  const selectedShRestCount = Math.max(0, Math.min(
+    header.shRestCount,
+    Math.floor(options.shRestLimit ?? header.shRestCount)
+  ));
+  return Array.from({ length: selectedShRestCount }, (_, index) => index);
+}
+
 function createEmptyBounds(): ArkGaussianBounds {
   return {
     min: [Infinity, Infinity, Infinity],
@@ -406,8 +423,9 @@ export function decodeGaussianPly(input: ArrayBuffer | ArrayBufferView, options:
   const opacities = new Float32Array(count);
   const scales = new Float32Array(count * 3);
   const rotations = new Float32Array(count * 4);
-  const shRest = options.includeShRest && header.shRestCount > 0
-    ? new Float32Array(count * header.shRestCount)
+  const selectedShRestIndices = resolveShRestIndices(header, options);
+  const shRest = selectedShRestIndices.length > 0
+    ? new Float32Array(count * selectedShRestIndices.length)
     : undefined;
 
   const props = {
@@ -427,7 +445,7 @@ export function decodeGaussianPly(input: ArrayBuffer | ArrayBufferView, options:
     rot3: requireProperty(header, 'rot_3')
   };
   const restProps = shRest
-    ? Array.from({ length: header.shRestCount }, (_, index) => requireProperty(header, `f_rest_${index}`))
+    ? selectedShRestIndices.map((index) => requireProperty(header, `f_rest_${index}`))
     : [];
 
   let decodedIndex = 0;

@@ -246,14 +246,23 @@ const checks = {
   computedRobustFitBounds: pageState?.activeInfo?.fitBoundsId === 'ply_01_99'
     && pageState?.activeInfo?.fitBoundsSource === 'computed',
   fullDensityLargeScene: renderInfo?.largeScene?.fullDensity === true
-    && renderInfo?.largeScene?.strategy === 'full-density-source-order'
+    && renderInfo?.largeScene?.strategy === 'full-density-bucket-depth-sort'
     && renderInfo?.lod?.enabled === false
     && renderInfo?.renderedSplats === pageState?.activeInfo?.splats
-    && pageState?.pipeline?.sorting === 'source-order',
+    && pageState?.pipeline?.sorting === 'cpu-bucket-back-to-front'
+    && renderInfo?.sortEnabled === true
+    && renderInfo?.sortMode === 'bucket-depth'
+    && renderInfo?.sortedSplats === renderInfo?.renderedSplats,
   fullDensityEllipse: renderInfo?.ellipse?.profile === 'large-scene-full-density'
-    && renderInfo?.ellipse?.maxPixelAxis === 4.5
+    && renderInfo?.ellipse?.maxPixelAxis === 1024
     && renderInfo?.ellipse?.minPixelAxis === 0.35
+    && renderInfo?.ellipse?.preBlurAmount === 0.3
+    && renderInfo?.ellipse?.focalAdjustment === 2
     && renderInfo?.ellipse?.opacityScale < renderInfo?.ellipse?.baseOpacityScale,
+  sh1Pipeline: pageState?.pipeline?.shading === 'sh1-view-dependent'
+    && pageState?.pipeline?.sourceShDegree === 3
+    && pageState?.pipeline?.renderShDegree === 1
+    && pageState?.pipeline?.renderShRestCount === 9,
   visualGateResolved: ['passed', 'failed', 'unknown'].includes(pageState?.visualQualityGate?.status)
 };
 const passed = Object.values(checks).every(Boolean);

@@ -97,6 +97,8 @@ export type ArkGaussianInvalidPolicy = 'skip' | 'keep' | 'error';
 export type ArkGaussianDecodeOptions = {
   limit?: number;
   includeShRest?: boolean;
+  shRestLimit?: number;
+  shRestIndices?: readonly number[];
   invalidPolicy?: ArkGaussianInvalidPolicy;
   percentileBounds?: ArkGaussianPercentileSpec[];
 };

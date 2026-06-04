@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T12:27:42.043Z",
+  "generated_at": "2026-06-04T02:56:17.693Z",
   "target": "ARK first-party local source PLY smoke QA",
   "url": "http://127.0.0.1:5173/?renderer=ark-gaussian",
   "source_ply": "public/scenes/demo_room_001/gaussian/scene.ply",
@@ -15,7 +15,7 @@
     "fit_bounds": "ply_01_99 (computed)",
     "display_scale": "0.2825x",
     "splats": 1854627,
-    "visual_quality": "Passed (202.7)",
+    "visual_quality": "Passed (223.7)",
     "lod": {
       "enabled": false,
       "mode": "full-resolution",
@@ -28,10 +28,14 @@
     },
     "ellipse": {
       "profile": "large-scene-full-density",
-      "extent": 1.85,
+      "extent": 2.8284271247461903,
+      "maxStdDev": 2.8284271247461903,
+      "preBlurAmount": 0.3,
+      "blurAmount": 0,
+      "focalAdjustment": 2,
       "minPixelAxis": 0.35,
-      "maxPixelAxis": 4.5,
-      "opacityScale": 0.12,
+      "maxPixelAxis": 1024,
+      "opacityScale": 0.18,
       "baseOpacityScale": 0.44,
       "alphaCutoff": 0.003,
       "clipping": {
@@ -53,17 +57,18 @@
       "computedRobustFitBounds": true,
       "fullDensityLargeScene": true,
       "fullDensityEllipse": true,
+      "sh1Pipeline": true,
       "visualGateResolved": true
     },
-    "duration_seconds": 80.831
+    "duration_seconds": 75.475
   },
   "screenshot": "artifacts/first-party-full-scene/local-source-ply-smoke.png",
   "result": {
     "pageState": {
       "runtime": "Loaded",
-      "status": "scene.ply loaded in 2.1s.",
+      "status": "scene.ply loaded in 7.1s.",
       "fitBounds": "ply_01_99 (computed)",
-      "visualQuality": "Passed (202.7)",
+      "visualQuality": "Passed (223.7)",
       "source": "Local file",
       "displayScale": "0.2825x",
       "canvas": {
@@ -76,7 +81,7 @@
         "name": "Local source PLY smoke",
         "format": "PLY",
         "splats": 1854627,
-        "shDegree": 0,
+        "shDegree": 3,
         "denseMin": [
           -2.5351212358474733,
           -4.258497467041016,
@@ -129,7 +134,7 @@
           },
           "contrastAboveThreshold": {
             "passed": true,
-            "value": 202.66666666666669,
+            "value": 223.66666666666669,
             "message": "Pixel contrast is at least 12."
           }
         },
@@ -140,13 +145,13 @@
         "sample": {
           "status": "visible",
           "averageRgb": [
-            23.555555555555557,
-            26,
-            25.77777777777778
+            24.22222222222222,
+            27.333333333333332,
+            26.77777777777778
           ],
-          "contrast": 202.66666666666669
+          "contrast": 223.66666666666669
         },
-        "evaluatedAtMs": 54412
+        "evaluatedAtMs": 52102
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -156,13 +161,19 @@
         }
       },
       "pipeline": {
-        "shader": "sh0-instanced-ellipse-gaussian",
-        "sorting": "source-order",
+        "shader": "sh0-jacobian-covariance-gaussian",
+        "sorting": "cpu-bucket-back-to-front",
         "scaleAware": true,
         "opacityAware": true,
         "gaussianProjection": true,
         "covarianceProjection": true,
-        "instancing": true
+        "instancing": true,
+        "projectionModel": "jacobian-covariance",
+        "composite": "premultiplied-alpha",
+        "shading": "sh1-view-dependent",
+        "sourceShDegree": 3,
+        "renderShDegree": 1,
+        "renderShRestCount": 9
       },
       "scene": {
         "splats": 1854627,
@@ -171,13 +182,18 @@
         "sceneVersion": 1
       },
       "renderInfo": {
-        "lastLoadMs": 2124,
-        "lastSortMs": 0,
-        "sortEnabled": false,
-        "sortReason": "disabled-over-400000-rendered-splats",
+        "lastLoadMs": 7046,
+        "lastSortMs": 279.1,
+        "sortEnabled": true,
+        "sortMode": "bucket-depth",
+        "sortReason": "camera-depth-order",
+        "sortDepthRange": [
+          8.484722,
+          13.676867
+        ],
         "sortedSplats": 1854627,
         "renderedSplats": 1854627,
-        "sortVersion": 0,
+        "sortVersion": 1,
         "lod": {
           "enabled": false,
           "mode": "full-resolution",
@@ -191,39 +207,46 @@
         "performance": {
           "inputBytes": 460107500,
           "inputMiB": 438.793,
-          "readMs": 925.2,
-          "decodeMs": 971,
-          "packMs": 174.9,
-          "uploadMs": 52,
-          "totalLoadMs": 2124.2,
-          "retainedCpuBufferBytes": 103859112,
-          "retainedCpuBufferMiB": 99.048,
-          "gpuUploadBytes": 103859112,
-          "gpuUploadMiB": 99.048,
-          "loadPeakBytes": 675246788,
-          "loadPeakMiB": 643.966,
+          "readMs": 3844.5,
+          "decodeMs": 2767.8,
+          "packMs": 313.5,
+          "uploadMs": 117.3,
+          "totalLoadMs": 7045.7,
+          "retainedCpuBufferBytes": 356088384,
+          "retainedCpuBufferMiB": 339.592,
+          "gpuUploadBytes": 170625684,
+          "gpuUploadMiB": 162.721,
+          "loadPeakBytes": 994242632,
+          "loadPeakMiB": 948.184,
           "sortSplatLimit": 400000,
+          "bucketSortSplatLimit": 2000000,
+          "sortBucketCount": 65536,
           "fullDensitySplatLimit": 2000000
         },
         "largeScene": {
           "fullDensity": true,
           "fullDensitySplatLimit": 2000000,
           "cpuSortSplatLimit": 400000,
-          "sortingLimited": true,
-          "strategy": "full-density-source-order"
+          "bucketSortSplatLimit": 2000000,
+          "sortingLimited": false,
+          "strategy": "full-density-bucket-depth-sort"
         },
         "frameTiming": {
           "lastRenderMs": 0.1,
-          "maxRenderMs": 0.3,
-          "averageRenderMs": 0.1,
+          "maxRenderMs": 279.7,
+          "averageRenderMs": 55.98,
           "renderCount": 5
         },
         "ellipse": {
           "profile": "large-scene-full-density",
-          "extent": 1.85,
+          "extent": 2.8284271247461903,
+          "maxStdDev": 2.8284271247461903,
+          "preBlurAmount": 0.3,
+          "blurAmount": 0,
+          "focalAdjustment": 2,
           "minPixelAxis": 0.35,
-          "maxPixelAxis": 4.5,
-          "opacityScale": 0.12,
+          "maxPixelAxis": 1024,
+          "opacityScale": 0.18,
           "baseOpacityScale": 0.44,
           "alphaCutoff": 0.003,
           "clipping": {
@@ -238,20 +261,20 @@
             "mean": 0.005457
           }
         },
-        "note": "Instanced screen-space ellipse renderer using SH0 color, opacity, scale, rotation, full-density large-scene rendering, and source-order blending because CPU sorting is over budget."
+        "note": "Instanced Jacobian covariance Gaussian renderer using SH1 view-dependent color, opacity, scale, rotation, full-density large-scene rendering, bucket depth sorting, and premultiplied alpha compositing."
       },
       "renderSample": {
         "status": "visible",
         "averageRgb": [
-          23.555555555555557,
-          26,
-          25.77777777777778
+          24.22222222222222,
+          27.333333333333332,
+          26.77777777777778
         ],
-        "contrast": 202.66666666666669
+        "contrast": 223.66666666666669
       }
     },
     "error": null,
-    "elapsedMs": 54417,
+    "elapsedMs": 52106,
     "events": [
       {
         "method": "Runtime.consoleAPICalled",
@@ -263,13 +286,13 @@
               "value": "[vite] connecting..."
             }
           ],
-          "executionContextId": 2,
-          "timestamp": 1780489581574.551,
+          "executionContextId": 1,
+          "timestamp": 1780541702797.983,
           "stackTrace": {
             "callFrames": [
               {
                 "functionName": "",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 788,
                 "columnNumber": 8
@@ -288,62 +311,62 @@
               "value": "[vite] connected."
             }
           ],
-          "executionContextId": 2,
-          "timestamp": 1780489581599.345,
+          "executionContextId": 1,
+          "timestamp": 1780541702826.663,
           "stackTrace": {
             "callFrames": [
               {
                 "functionName": "handleMessage",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 911,
                 "columnNumber": 14
               },
               {
                 "functionName": "",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 489,
                 "columnNumber": 42
               },
               {
                 "functionName": "dequeue",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 515,
                 "columnNumber": 9
               },
               {
                 "functionName": "",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 503,
                 "columnNumber": 11
               },
               {
                 "functionName": "enqueue",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 497,
                 "columnNumber": 11
               },
               {
                 "functionName": "",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 489,
                 "columnNumber": 28
               },
               {
                 "functionName": "onMessage",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 308,
                 "columnNumber": 10
               },
               {
                 "functionName": "",
-                "scriptId": "6",
+                "scriptId": "5",
                 "url": "http://127.0.0.1:5173/@vite/client",
                 "lineNumber": 438,
                 "columnNumber": 8
@@ -353,6 +376,6 @@
         }
       }
     ],
-    "chromeErrors": "[45916:49644:0603/202621.369:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:16714/devtools/browser/92e49417-11dc-413c-9e8f-7dae3406da8d\r\n[45916:49488:0603/202626.711:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[45916:49488:0603/202626.763:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[45916:49488:0603/202626.764:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\nCreated TensorFlow Lite XNNPACK delegate for CPU.\r\n[45916:49488:0603/202652.942:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[45916:49488:0603/202740.497:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+    "chromeErrors": "[10920:14852:0604/105502.455:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19835/devtools/browser/775133a2-6949-4228-b01b-e7843a770b6a\r\n[10920:50912:0604/105506.064:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\nCreated TensorFlow Lite XNNPACK delegate for CPU.\r\n[10920:50912:0604/105531.886:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n[10920:50912:0604/105617.026:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
   }
 }

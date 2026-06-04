@@ -67,6 +67,45 @@ function createTinyGaussianPly() {
   return Buffer.concat([headerBytes, Buffer.from(body)]);
 }
 
+function createTinyGaussianShPly() {
+  const shRestProperties = Array.from({ length: 9 }, (_, index) => `property float f_rest_${index}`);
+  const header = [
+    'ply',
+    'format binary_little_endian 1.0',
+    'element vertex 1',
+    'property float x',
+    'property float y',
+    'property float z',
+    'property float f_dc_0',
+    'property float f_dc_1',
+    'property float f_dc_2',
+    'property float opacity',
+    'property float scale_0',
+    'property float scale_1',
+    'property float scale_2',
+    'property float rot_0',
+    'property float rot_1',
+    'property float rot_2',
+    'property float rot_3',
+    ...shRestProperties,
+    'end_header',
+    ''
+  ].join('\n');
+  const headerBytes = Buffer.from(header, 'ascii');
+  const stride = 23 * 4;
+  const body = new ArrayBuffer(stride);
+  const view = new DataView(body);
+  writeVertex(view, 0, [
+    0, 0, 0,
+    0.1, 0.2, 0.3,
+    logit(0.5),
+    0, 0, 0,
+    1, 0, 0, 0,
+    10, 11, 12, 13, 14, 15, 16, 17, 18
+  ]);
+  return Buffer.concat([headerBytes, Buffer.from(body)]);
+}
+
 async function loadParserModule() {
   const result = await build({
     entryPoints: ['src/sdk/gaussian/ply.ts'],
@@ -134,6 +173,20 @@ const limited = parser.decodeGaussianPly(fixture, { limit: 2 });
 assert(limited.count === 2, 'limit decoded count');
 assertArrayClose(Array.from(limited.sourceIndices), [0, 2], 'limit source indices');
 
+const shFixture = createTinyGaussianShPly();
+const shHeader = parser.parseGaussianPlyHeader(shFixture);
+assert(shHeader.shDegree === 1, 'SH fixture degree');
+assert(shHeader.shRestCount === 9, 'SH fixture rest count');
+const channelMajorSh = parser.decodeGaussianPly(shFixture, {
+  includeShRest: true,
+  shRestIndices: [0, 3, 6, 1, 4, 7, 2, 5, 8]
+});
+assertArrayClose(
+  Array.from(channelMajorSh.shRest),
+  [10, 13, 16, 11, 14, 17, 12, 15, 18],
+  'SH rest explicit index order'
+);
+
 let threw = false;
 try {
   parser.decodeGaussianPly(fixture, { invalidPolicy: 'error' });
@@ -141,6 +194,14 @@ try {
   threw = /invalid positions/u.test(String(error instanceof Error ? error.message : error));
 }
 assert(threw, 'error policy throws on invalid positions');
+
+let threwShRestIndex = false;
+try {
+  parser.decodeGaussianPly(shFixture, { includeShRest: true, shRestIndices: [9] });
+} catch (error) {
+  threwShRestIndex = /Invalid Gaussian PLY SH rest index/u.test(String(error instanceof Error ? error.message : error));
+}
+assert(threwShRestIndex, 'invalid SH rest index throws');
 
 console.log(JSON.stringify({
   fixture: 'public/scenes/fixtures/tiny_gaussian_invalid.ply',
@@ -159,5 +220,10 @@ console.log(JSON.stringify({
     count: filtered.count,
     sourceIndices: Array.from(filtered.sourceIndices),
     invalidSourceIndices: Array.from(filtered.invalidSourceIndices)
+  },
+  shRest: {
+    shDegree: shHeader.shDegree,
+    shRestCount: shHeader.shRestCount,
+    selected: Array.from(channelMajorSh.shRest)
   }
 }, null, 2));

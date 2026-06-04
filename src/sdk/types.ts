@@ -58,6 +58,8 @@ export type ArkGaussianLoadRequest = {
   name: string;
   filename: string;
   source: ArkSceneSource;
+  asset?: ArkGaussianAsset;
+  sourceSplats?: number;
   fitBounds?: ArkFitBounds;
   onStatus?: (status: ArkLoadStatus) => void;
 };
@@ -74,6 +76,12 @@ export type ArkLoadedSceneInfo = {
   fitBoundsId: string;
   fitBoundsSource: ArkBoundsSource;
   source: ArkSceneSource;
+  assetId?: string;
+  assetRole?: ArkGaussianAssetRole;
+  sourceAssetId?: string;
+  declaredSplats?: number;
+  sourceSplats?: number;
+  coverageRatio?: number;
 };
 
 export type ArkRenderSample = {

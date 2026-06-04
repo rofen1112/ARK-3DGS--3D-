@@ -212,6 +212,8 @@ function createAppShell() {
           <div><dt>Visual QA</dt><dd id="visualQualityState">-</dd></div>
           <div><dt>Display Scale</dt><dd id="displayScale">-</dd></div>
           <div><dt>Source</dt><dd id="sourceState">-</dd></div>
+          <div><dt>Asset</dt><dd id="assetState">-</dd></div>
+          <div><dt>Coverage</dt><dd id="coverageState">-</dd></div>
           <div><dt>Controls</dt><dd>Drag / wheel / WASD / Q / E</dd></div>
         </dl>
       </aside>
@@ -233,6 +235,8 @@ class ArkGaussianBrowser {
   private readonly visualQualityStateEl = requiredElement<HTMLElement>('#visualQualityState');
   private readonly displayScaleEl = requiredElement<HTMLElement>('#displayScale');
   private readonly sourceStateEl = requiredElement<HTMLElement>('#sourceState');
+  private readonly assetStateEl = requiredElement<HTMLElement>('#assetState');
+  private readonly coverageStateEl = requiredElement<HTMLElement>('#coverageState');
   private readonly loadBundledButton = requiredElement<HTMLButtonElement>('#loadBundled');
   private readonly fileInput = requiredElement<HTMLInputElement>('#fileInput');
   private readonly resetViewButton = requiredElement<HTMLButtonElement>('#resetView');
@@ -472,11 +476,18 @@ class ArkGaussianBrowser {
     const asset = selectManifestGaussianAsset(manifest, requestedAsset);
     const gaussianUrl = resolveSceneUrl(SCENE_MANIFEST_URL, asset.url);
     const fitBounds = await this.loadBundledFitBounds();
+    const sourceAsset = asset.sourceAssetId
+      ? manifest.gaussians?.items.find((item) => item.id === asset.sourceAssetId)
+      : asset.role === 'source'
+        ? asset
+        : manifest.gaussians?.items.find((item) => item.role === 'source');
     await this.loadUrl(
       gaussianUrl,
       requestedAsset ? `${manifest.name} (${asset.label ?? asset.id ?? asset.type.toUpperCase()})` : manifest.name,
       'bundled',
-      fitBounds
+      fitBounds,
+      asset,
+      sourceAsset?.splats
     );
   }
 
@@ -497,13 +508,22 @@ class ArkGaussianBrowser {
     }
   }
 
-  private async loadUrl(url: string, name: string, source: ArkLoadedSceneInfo['source'], fitBounds?: ArkFitBounds) {
+  private async loadUrl(
+    url: string,
+    name: string,
+    source: ArkLoadedSceneInfo['source'],
+    fitBounds?: ArkFitBounds,
+    asset?: ArkGaussianAsset,
+    sourceSplats?: number
+  ) {
     this.setLoading(`Loading ${name}...`);
     await this.loadSplatSource({
       input: url,
       name,
       filename: url,
       source,
+      asset,
+      sourceSplats,
       fitBounds
     });
   }
@@ -523,9 +543,11 @@ class ArkGaussianBrowser {
     name: string;
     filename: string;
     source: ArkLoadedSceneInfo['source'];
+    asset?: ArkGaussianAsset;
+    sourceSplats?: number;
     fitBounds?: ArkFitBounds;
   }) {
-    const { input, name, filename, source, fitBounds } = options;
+    const { input, name, filename, source, asset, sourceSplats, fitBounds } = options;
     const startedAt = performance.now();
 
     const info = await this.renderer.loadGaussian({
@@ -533,6 +555,8 @@ class ArkGaussianBrowser {
       name,
       filename,
       source,
+      asset,
+      sourceSplats,
       fitBounds,
       onStatus: (status) => {
         this.runtimeStateEl.textContent = status.phase;
@@ -684,6 +708,8 @@ class ArkGaussianBrowser {
     this.updateVisualQualityInfo();
     this.displayScaleEl.textContent = '-';
     this.sourceStateEl.textContent = '-';
+    this.assetStateEl.textContent = '-';
+    this.coverageStateEl.textContent = '-';
   }
 
   private updateInfo(info: ArkLoadedSceneInfo) {
@@ -695,6 +721,12 @@ class ArkGaussianBrowser {
     this.fitBoundsStateEl.textContent = `${info.fitBoundsId} (${info.fitBoundsSource})`;
     this.displayScaleEl.textContent = `${formatNumber(info.displayScale, 4)}x`;
     this.sourceStateEl.textContent = info.source === 'bundled' ? 'Bundled' : 'Local file';
+    this.assetStateEl.textContent = info.assetId
+      ? `${info.assetId}${info.assetRole ? ` (${info.assetRole})` : ''}`
+      : info.source === 'bundled' ? 'Bundled asset' : 'Local file';
+    this.coverageStateEl.textContent = info.sourceSplats && info.sourceSplats > 0
+      ? `${formatNumber(info.splats, 0)} / ${formatNumber(info.sourceSplats, 0)} (${formatNumber((info.coverageRatio ?? info.splats / info.sourceSplats) * 100, 2)}%)`
+      : 'Direct / unknown';
     this.cameraModeEl.textContent = this.activeInfo ? 'Free browse' : 'Fit preview';
   }
 

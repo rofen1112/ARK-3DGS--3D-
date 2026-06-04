@@ -46,12 +46,17 @@ function runVisualQa() {
         parseError = error instanceof Error ? error.message : String(error);
       }
       const isArkRenderer = result?.pageState?.renderer?.id === 'ark-gaussian-webgl2';
-      const hasDepthSorting = result?.pageState?.pipeline?.sorting === 'cpu-back-to-front'
+      const hasDepthSorting = result?.pageState?.pipeline?.sorting === 'cpu-exact-back-to-front'
         && result?.pageState?.renderInfo?.sortEnabled === true
+        && result?.pageState?.renderInfo?.sortMode === 'exact-depth'
         && result?.pageState?.renderInfo?.sortedSplats === result?.pageState?.activeInfo?.splats;
       const hasGaussianProjection = result?.pageState?.pipeline?.gaussianProjection === true
         && result?.pageState?.pipeline?.covarianceProjection === true
         && result?.pageState?.pipeline?.instancing === true
+        && result?.pageState?.pipeline?.projectionModel === 'jacobian-covariance'
+        && result?.pageState?.pipeline?.composite === 'premultiplied-alpha'
+        && result?.pageState?.pipeline?.shading === 'sh1-view-dependent'
+        && result?.pageState?.pipeline?.renderShDegree === 1
         && result?.pageState?.renderInfo?.ellipse?.sourceAxis?.max > 0;
       const clipping = result?.pageState?.renderInfo?.ellipse?.clipping;
       const hasClippingState = clipping?.centerClip === true
