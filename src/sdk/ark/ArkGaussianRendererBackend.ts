@@ -1,4 +1,5 @@
 import { decodeGaussianPly, parseGaussianPlyHeader } from '../gaussian/ply';
+import { computePackedGaussianCovariance3D, packGaussianCovariance } from '../gaussian/packedData';
 import type { ArkGaussianPercentileBounds, ArkGaussianPercentileSpec } from '../gaussian/types';
 import type {
   ArkFitBounds,
@@ -48,10 +49,12 @@ const FULL_DENSITY_ELLIPSE_EXTENT = MAX_STD_DEV;
 const FULL_DENSITY_MIN_PIXEL_AXIS = 0.35;
 const FULL_DENSITY_MAX_PIXEL_AXIS = 1024;
 const FULL_DENSITY_OPACITY_SCALE = 0.18;
+const DATA_TEXTURE_AUDIT_SPLAT_LIMIT = LARGE_SCENE_RENDER_SPLAT_BUDGET;
 
 type ArkGaussianCompositeMode = 'premultiplied-alpha' | 'straight-alpha';
 type ArkGaussianSortOverride = 'auto' | 'source-order' | 'exact-depth' | 'bucket-depth';
-type ArkGaussianProjectionProfile = 'default' | 'no-preblur' | 'unit-focal' | 'compact-kernel';
+type ArkGaussianProjectionProfile = 'default' | 'no-preblur' | 'unit-focal' | 'compact-kernel' | 'aholo-material';
+type ArkGaussianDataTextureMode = 'off' | 'texture-audit' | 'texture-fetch';
 
 type ArkGaussianProjectionSettings = {
   profile: ArkGaussianProjectionProfile;
@@ -66,6 +69,36 @@ type ArkGaussianDiagnostics = {
   sortOverride: ArkGaussianSortOverride;
   compositeMode: ArkGaussianCompositeMode;
   projectionProfile: ArkGaussianProjectionProfile;
+  dataTextureMode: ArkGaussianDataTextureMode;
+};
+
+type ArkGaussianDataTextureAudit = {
+  enabled: boolean;
+  mode: ArkGaussianDataTextureMode;
+  status: 'idle' | 'skipped' | 'passed' | 'failed';
+  reason: string;
+  sceneVersion: number;
+  sortVersion: number;
+  count: number;
+  textureSize: {
+    width: number;
+    height: number;
+  } | null;
+  sampleCount: number;
+  thresholds: {
+    centerMaxAbsDelta: number;
+    covarianceMaxAbsDelta: number;
+    orderMaxAbsDelta: number;
+  };
+  centerMaxAbsDelta: number | null;
+  covarianceMaxAbsDelta: number | null;
+  orderMaxAbsDelta: number | null;
+  textures: {
+    center: boolean;
+    covarianceA: boolean;
+    covarianceB: boolean;
+    order: boolean;
+  };
 };
 
 type RenderProfile = {
@@ -268,6 +301,59 @@ function bytesToMiB(bytes: number) {
   return Number((bytes / (1024 * 1024)).toFixed(3));
 }
 
+function createIdleDataTextureAudit(mode: ArkGaussianDataTextureMode): ArkGaussianDataTextureAudit {
+  return {
+    enabled: mode !== 'off',
+    mode,
+    status: mode === 'off' ? 'skipped' : 'idle',
+    reason: mode === 'off' ? 'disabled' : 'pending',
+    sceneVersion: 0,
+    sortVersion: 0,
+    count: 0,
+    textureSize: null,
+    sampleCount: 0,
+    thresholds: {
+      centerMaxAbsDelta: 0.00001,
+      covarianceMaxAbsDelta: 0.00001,
+      orderMaxAbsDelta: 0.5
+    },
+    centerMaxAbsDelta: null,
+    covarianceMaxAbsDelta: null,
+    orderMaxAbsDelta: null,
+    textures: {
+      center: false,
+      covarianceA: false,
+      covarianceB: false,
+      order: false
+    }
+  };
+}
+
+function resolveTextureLayout(count: number, maxTextureSize: number) {
+  const width = Math.max(1, Math.min(maxTextureSize, Math.ceil(Math.sqrt(Math.max(1, count)))));
+  const height = Math.max(1, Math.ceil(Math.max(1, count) / width));
+  if (height > maxTextureSize) {
+    throw new Error(`Packed texture layout exceeds max texture size ${maxTextureSize}.`);
+  }
+  return { width, height };
+}
+
+function textureCoord(index: number, width: number) {
+  return {
+    x: index % width,
+    y: Math.floor(index / width)
+  };
+}
+
+function textureSampleIndices(count: number) {
+  if (count <= 0) return [];
+  return Array.from(new Set([
+    0,
+    Math.floor((count - 1) / 2),
+    count - 1
+  ]));
+}
+
 function createRenderProfile(lodEnabled: boolean, renderedRatio: number, largeSceneFullDensity: boolean): RenderProfile {
   if (largeSceneFullDensity) {
     return {
@@ -304,6 +390,7 @@ function readDiagnostics(): ArkGaussianDiagnostics {
   const rawSort = params.get('arkDiagSort')?.toLowerCase();
   const rawComposite = params.get('arkDiagComposite')?.toLowerCase();
   const rawProjection = params.get('arkDiagProjection')?.toLowerCase();
+  const rawData = params.get('arkDiagData')?.toLowerCase();
   const sortOverride: ArkGaussianSortOverride = rawSort === 'source-order'
     ? 'source-order'
     : rawSort === 'exact-depth'
@@ -321,13 +408,28 @@ function readDiagnostics(): ArkGaussianDiagnostics {
       ? 'unit-focal'
       : rawProjection === 'compact-kernel'
         ? 'compact-kernel'
-        : 'default';
+        : rawProjection === 'aholo-material' || rawProjection === 'aholo-default'
+          ? 'aholo-material'
+          : 'default';
+  const dataTextureMode: ArkGaussianDataTextureMode = rawData === 'texture-fetch'
+    || rawData === 'fetch'
+    || rawData === 'draw-texture'
+    ? 'texture-fetch'
+    : rawData === 'texture-audit'
+    || rawData === 'packed-texture'
+    || rawData === 'upload-audit'
+      ? 'texture-audit'
+      : 'off';
 
   return {
-    enabled: sortOverride !== 'auto' || compositeMode !== 'premultiplied-alpha' || projectionProfile !== 'default',
+    enabled: sortOverride !== 'auto'
+      || compositeMode !== 'premultiplied-alpha'
+      || projectionProfile !== 'default'
+      || dataTextureMode !== 'off',
     sortOverride,
     compositeMode,
-    projectionProfile
+    projectionProfile,
+    dataTextureMode
   };
 }
 
@@ -357,6 +459,15 @@ function createProjectionSettings(profile: ArkGaussianProjectionProfile): ArkGau
       blurAmount: BLUR_AMOUNT,
       focalAdjustment: FOCAL_ADJUSTMENT,
       maxStdDev: 2.05
+    };
+  }
+  if (profile === 'aholo-material') {
+    return {
+      profile,
+      preBlurAmount: 0,
+      blurAmount: 0.3,
+      focalAdjustment: 1,
+      maxStdDev: MAX_STD_DEV
     };
   }
   return {
@@ -408,12 +519,18 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private readonly canvas: HTMLCanvasElement;
   private readonly gl: Gl;
   private readonly program: WebGLProgram;
+  private readonly textureFetchProgram: WebGLProgram;
   private readonly quadBuffer: WebGLBuffer;
   private readonly positionBuffer: WebGLBuffer;
   private readonly colorBuffer: WebGLBuffer;
   private readonly scaleBuffer: WebGLBuffer;
   private readonly rotationBuffer: WebGLBuffer;
   private readonly sh1Buffer: WebGLBuffer;
+  private dataTextureFramebuffer: WebGLFramebuffer | null = null;
+  private centerTexture: WebGLTexture | null = null;
+  private covarianceATexture: WebGLTexture | null = null;
+  private covarianceBTexture: WebGLTexture | null = null;
+  private orderTexture: WebGLTexture | null = null;
   private readonly viewProjectionLocation: WebGLUniformLocation | null;
   private readonly viewLocation: WebGLUniformLocation | null;
   private readonly projectionLocation: WebGLUniformLocation | null;
@@ -488,6 +605,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private renderShDegree = 0;
   private renderShRestCount = 0;
   private renderProfile = createRenderProfile(false, 1, false);
+  private dataTextureAudit = createIdleDataTextureAudit(this.diagnostics.dataTextureMode);
 
   constructor(private readonly host: HTMLElement) {
     this.canvas = document.createElement('canvas');
@@ -676,6 +794,186 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         }
       `
     );
+    this.textureFetchProgram = createProgram(
+      this.gl,
+      `#version 300 es
+        precision highp float;
+        in vec2 aQuad;
+        in vec4 aColor;
+        in vec3 aSh1_0;
+        in vec3 aSh1_1;
+        in vec3 aSh1_2;
+        uniform mat4 uViewProjection;
+        uniform mat4 uView;
+        uniform mat4 uProjection;
+        uniform vec3 uCameraPosition;
+        uniform vec2 uViewport;
+        uniform float uEllipseExtent;
+        uniform float uMinPixelAxis;
+        uniform float uMaxPixelAxis;
+        uniform float uPreBlurAmount;
+        uniform float uBlurAmount;
+        uniform float uMaxStdDev;
+        uniform float uFocalAdjustment;
+        uniform float uMinClipW;
+        uniform float uClipPadding;
+        uniform vec2 uDataTextureSize;
+        uniform sampler2D uCenterTex;
+        uniform sampler2D uCovarianceATex;
+        uniform sampler2D uCovarianceBTex;
+        uniform sampler2D uOrderTex;
+        out vec4 vColor;
+        out float vClipDiscard;
+        out vec2 vSplatUv;
+
+        ivec2 dataCoord(int index) {
+          int width = int(uDataTextureSize.x);
+          return ivec2(index - (index / width) * width, index / width);
+        }
+
+        int readSourceIndex(int sortedIndex) {
+          return int(texelFetch(uOrderTex, dataCoord(sortedIndex), 0).r + 0.5);
+        }
+
+        mat3 unpackCovariance3D(int sourceIndex) {
+          vec4 covA = texelFetch(uCovarianceATex, dataCoord(sourceIndex), 0);
+          vec4 covB = texelFetch(uCovarianceBTex, dataCoord(sourceIndex), 0);
+          float xx = exp2(covA.x);
+          float yy = exp2(covA.y);
+          float zz = exp2(covA.z);
+          float xy = covA.w * sqrt(max(xx * yy, 0.0));
+          float xz = covB.x * sqrt(max(xx * zz, 0.0));
+          float yz = covB.y * sqrt(max(yy * zz, 0.0));
+          return mat3(
+            xx, xy, xz,
+            xy, yy, yz,
+            xz, yz, zz
+          );
+        }
+
+        vec3 evaluateSh1Color(vec3 baseColor, vec3 viewDir) {
+          vec3 sh1 = aSh1_0 * (-${SH_C1.toFixed(7)} * viewDir.y)
+            + aSh1_1 * (${SH_C1.toFixed(7)} * viewDir.z)
+            + aSh1_2 * (-${SH_C1.toFixed(7)} * viewDir.x);
+          return clamp(baseColor + sh1, 0.0, 1.0);
+        }
+
+        mat3 transposeMat3(mat3 value) {
+          return mat3(
+            value[0][0], value[1][0], value[2][0],
+            value[0][1], value[1][1], value[2][1],
+            value[0][2], value[1][2], value[2][2]
+          );
+        }
+
+        void main() {
+          int sourceIndex = readSourceIndex(gl_InstanceID);
+          vec3 center = texelFetch(uCenterTex, dataCoord(sourceIndex), 0).xyz;
+          vec4 centerClip = uViewProjection * vec4(center, 1.0);
+          vClipDiscard = 0.0;
+          bool outsideClip = (
+            centerClip.w <= uMinClipW
+            || centerClip.z < -centerClip.w
+            || centerClip.z > centerClip.w
+          );
+          vec2 centerNdc = vec2(0.0);
+          if (!outsideClip) {
+            centerNdc = centerClip.xy / centerClip.w;
+            outsideClip = abs(centerNdc.x) > uClipPadding || abs(centerNdc.y) > uClipPadding;
+          }
+          if (outsideClip) {
+            gl_Position = vec4(2.0, 2.0, 0.0, 1.0);
+            vColor = vec4(0.0);
+            vSplatUv = vec2(999.0);
+            vClipDiscard = 1.0;
+            return;
+          }
+          mat3 cov3D = unpackCovariance3D(sourceIndex);
+          vec3 viewCenter = (uView * vec4(center, 1.0)).xyz;
+          vec2 scaledViewport = uViewport * uFocalAdjustment;
+          vec2 focal = 0.5 * scaledViewport * vec2(uProjection[0][0], uProjection[1][1]);
+          float invZ = 1.0 / min(viewCenter.z, -0.0001);
+          vec2 j1 = focal * invZ;
+          vec2 j2 = -(j1 * viewCenter.xy) * invZ;
+          mat3 jacobian = mat3(
+            j1.x, 0.0, 0.0,
+            0.0, j1.y, 0.0,
+            j2.x, j2.y, 0.0
+          );
+          mat3 viewLinear = mat3(uView);
+          mat3 transform = jacobian * viewLinear;
+          mat3 cov2D = transform * cov3D * transposeMat3(transform);
+          float covA = max(cov2D[0][0], 0.0) + uPreBlurAmount;
+          float covB = cov2D[0][1];
+          float covC = max(cov2D[1][1], 0.0) + uPreBlurAmount;
+          float detOriginal = max(covA * covC - covB * covB, 0.000001);
+          covA += uBlurAmount;
+          covC += uBlurAmount;
+          float det = max(covA * covC - covB * covB, 0.000001);
+          float blurAdjust = sqrt(max(0.0, detOriginal / det));
+          vec3 viewDir = normalize(center - uCameraPosition);
+          vec3 shadedColor = evaluateSh1Color(aColor.rgb, viewDir);
+          vec4 color = vec4(shadedColor, clamp(aColor.a * blurAdjust, 0.0, 1.0));
+          if (color.a < ${ALPHA_CUTOFF.toFixed(6)}) {
+            gl_Position = vec4(2.0, 2.0, 0.0, 1.0);
+            vColor = vec4(0.0);
+            vSplatUv = vec2(999.0);
+            vClipDiscard = 1.0;
+            return;
+          }
+
+          float avg = 0.5 * (covA + covC);
+          float delta = sqrt(max(avg * avg - det, 0.0));
+          float minAxisSq = uMinPixelAxis * uMinPixelAxis;
+          float lambdaMajor = max(avg + delta, minAxisSq);
+          float lambdaMinor = max(avg - delta, minAxisSq);
+          float maxRadius = min(uMaxPixelAxis * uFocalAdjustment, min(scaledViewport.x, scaledViewport.y));
+          float kernelStdDev = min(uEllipseExtent, uMaxStdDev);
+          float alphaFactor = min(1.0, 0.5 * sqrt(max(0.0, -log((1.0 / 255.0) / max(color.a, 0.0001)))));
+          float axisMajorPixels = min(maxRadius, kernelStdDev * sqrt(lambdaMajor));
+          float axisMinorPixels = min(maxRadius, kernelStdDev * sqrt(lambdaMinor));
+
+          vec2 majorAxis = vec2(covB, lambdaMajor - covA);
+          if (dot(majorAxis, majorAxis) < 0.0001) {
+            majorAxis = covA >= covC ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+          }
+          majorAxis = normalize(majorAxis);
+          vec2 minorAxis = vec2(-majorAxis.y, majorAxis.x);
+
+          vec2 pixelOffset = (
+            majorAxis * (aQuad.x * axisMajorPixels)
+            + minorAxis * (aQuad.y * axisMinorPixels)
+          ) * alphaFactor;
+          vec2 ndcOffset = pixelOffset * 2.0 / scaledViewport;
+
+          gl_Position = centerClip;
+          gl_Position.xy += ndcOffset * centerClip.w;
+          vColor = color;
+          vSplatUv = aQuad * kernelStdDev * alphaFactor;
+        }
+      `,
+      `#version 300 es
+        precision highp float;
+        uniform float uMaxStdDev;
+        uniform float uPremultipliedAlpha;
+        in vec4 vColor;
+        in vec2 vSplatUv;
+        in float vClipDiscard;
+        out vec4 outColor;
+        void main() {
+          if (vClipDiscard > 0.5) discard;
+          float r2 = dot(vSplatUv, vSplatUv);
+          if (r2 > uMaxStdDev * uMaxStdDev) discard;
+          float alpha = vColor.a * exp(-0.5 * r2);
+          if (alpha < ${ALPHA_CUTOFF.toFixed(6)}) discard;
+          if (uPremultipliedAlpha > 0.5) {
+            outColor = vec4(vColor.rgb * alpha, alpha);
+          } else {
+            outColor = vec4(vColor.rgb, alpha);
+          }
+        }
+      `
+    );
 
     const quad = this.gl.createBuffer();
     const position = this.gl.createBuffer();
@@ -725,6 +1023,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     if (!request.filename.toLowerCase().endsWith('.ply')) {
       throw new Error('ARK first-party Gaussian renderer currently supports PLY only.');
     }
+    this.resetDataTextureAudit();
 
     const startedAt = performance.now();
     request.onStatus?.({ phase: 'Parsing', message: 'ARK first-party parser reading PLY data...' });
@@ -954,6 +1253,12 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     if (this.renderSplatCount) {
       this.updateSortedBuffers();
+      this.runDataTextureAuditIfNeeded();
+      if (this.shouldUseTextureFetchDraw()) {
+        this.renderTextureFetchDraw();
+        this.recordRenderTiming(renderStartedAt);
+        return;
+      }
 
       this.gl.useProgram(this.program);
       const fovRadians = Math.PI / 3;
@@ -1038,6 +1343,7 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   }
 
   getDebugState(includeSample = false): ArkRendererDebugState {
+    const dataAccess = this.getDataAccessState();
     return {
       camera: {
         fov: 60,
@@ -1070,6 +1376,11 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         gaussianProjection: true,
         covarianceProjection: true,
         instancing: true,
+        dataPacking: dataAccess.dataPacking,
+        covarianceStorage: dataAccess.covarianceStorage,
+        orderAccess: dataAccess.orderAccess,
+        dataTextureMode: this.diagnostics.dataTextureMode,
+        dataTextureAudit: this.dataTextureAudit,
         projectionModel: 'jacobian-covariance',
         projectionProfile: this.projectionSettings.profile,
         composite: this.diagnostics.compositeMode,
@@ -1093,6 +1404,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         sortEnabled: this.sortEnabled,
         sortMode: this.sortMode,
         sortReason: this.sortReason,
+        dataPacking: dataAccess.dataPacking,
+        covarianceStorage: dataAccess.covarianceStorage,
+        orderAccess: dataAccess.orderAccess,
+        dataTextureAudit: this.dataTextureAudit,
         sortDepthRange: this.lastSortDepthRange,
         sortedSplats: this.lastSortedCount,
         renderedSplats: this.renderSplatCount,
@@ -1181,6 +1496,377 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       statistics: null,
       renderSample: includeSample ? this.sampleRender() : null
     };
+  }
+
+  private shouldUseTextureFetchDraw() {
+    return this.diagnostics.dataTextureMode === 'texture-fetch'
+      && this.dataTextureAudit.status === 'passed'
+      && Boolean(this.centerTexture && this.covarianceATexture && this.covarianceBTexture && this.orderTexture)
+      && Boolean(this.sortedColors && this.sortedSh1);
+  }
+
+  private getDataAccessState() {
+    if (this.shouldUseTextureFetchDraw()) {
+      return {
+        dataPacking: 'texture-fetch-hybrid',
+        covarianceStorage: 'packed-covariance-texture',
+        orderAccess: 'order-texture'
+      };
+    }
+    return {
+      dataPacking: 'attribute-buffer',
+      covarianceStorage: 'scale-rotation-attributes',
+      orderAccess: this.sortEnabled ? 'cpu-reordered-attributes' : 'source-attribute-order'
+    };
+  }
+
+  private setCommonGaussianUniforms(program: WebGLProgram) {
+    const fovRadians = Math.PI / 3;
+    const projection = perspective(fovRadians, this.canvas.width / this.canvas.height, 0.01, 10000);
+    const view = lookAt(this.cameraPosition, this.cameraTarget, [0, -1, 0]);
+    const viewProjection = multiplyMat4(projection, view);
+    this.gl.uniformMatrix4fv(this.gl.getUniformLocation(program, 'uViewProjection'), false, viewProjection);
+    this.gl.uniformMatrix4fv(this.gl.getUniformLocation(program, 'uView'), false, view);
+    this.gl.uniformMatrix4fv(this.gl.getUniformLocation(program, 'uProjection'), false, projection);
+    this.gl.uniform3f(this.gl.getUniformLocation(program, 'uCameraPosition'), this.cameraPosition[0], this.cameraPosition[1], this.cameraPosition[2]);
+    this.gl.uniform2f(this.gl.getUniformLocation(program, 'uViewport'), this.canvas.width, this.canvas.height);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uEllipseExtent'), Math.min(this.renderProfile.ellipseExtent, this.projectionSettings.maxStdDev));
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uMinPixelAxis'), this.renderProfile.minPixelAxis);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uMaxPixelAxis'), this.renderProfile.maxPixelAxis);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uPreBlurAmount'), this.projectionSettings.preBlurAmount);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uBlurAmount'), this.projectionSettings.blurAmount);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uMaxStdDev'), this.projectionSettings.maxStdDev);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uFocalAdjustment'), this.projectionSettings.focalAdjustment);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uPremultipliedAlpha'), this.diagnostics.compositeMode === 'premultiplied-alpha' ? 1 : 0);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uMinClipW'), MIN_CLIP_W);
+    this.gl.uniform1f(this.gl.getUniformLocation(program, 'uClipPadding'), OFFSCREEN_CLIP_PADDING);
+  }
+
+  private bindQuadAttribute(program: WebGLProgram) {
+    const quadLocation = this.gl.getAttribLocation(program, 'aQuad');
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.quadBuffer);
+    this.gl.enableVertexAttribArray(quadLocation);
+    this.gl.vertexAttribPointer(quadLocation, 2, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribDivisor(quadLocation, 0);
+  }
+
+  private bindColorAndShAttributes(program: WebGLProgram) {
+    if (!this.sortedColors || !this.sortedSh1) return;
+
+    const colorLocation = this.gl.getAttribLocation(program, 'aColor');
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+    this.gl.enableVertexAttribArray(colorLocation);
+    this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribDivisor(colorLocation, 1);
+
+    const sh10Location = this.gl.getAttribLocation(program, 'aSh1_0');
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.sh1Buffer);
+    this.gl.enableVertexAttribArray(sh10Location);
+    this.gl.vertexAttribPointer(sh10Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 0);
+    this.gl.vertexAttribDivisor(sh10Location, 1);
+
+    const sh11Location = this.gl.getAttribLocation(program, 'aSh1_1');
+    this.gl.enableVertexAttribArray(sh11Location);
+    this.gl.vertexAttribPointer(sh11Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 3 * 4);
+    this.gl.vertexAttribDivisor(sh11Location, 1);
+
+    const sh12Location = this.gl.getAttribLocation(program, 'aSh1_2');
+    this.gl.enableVertexAttribArray(sh12Location);
+    this.gl.vertexAttribPointer(sh12Location, 3, this.gl.FLOAT, false, RENDER_SH_REST_COUNT * 4, 6 * 4);
+    this.gl.vertexAttribDivisor(sh12Location, 1);
+  }
+
+  private bindTextureFetchSamplers(program: WebGLProgram) {
+    if (!this.centerTexture || !this.covarianceATexture || !this.covarianceBTexture || !this.orderTexture || !this.dataTextureAudit.textureSize) {
+      throw new Error('Texture-fetch draw requested before diagnostic textures are ready.');
+    }
+    this.gl.uniform2f(
+      this.gl.getUniformLocation(program, 'uDataTextureSize'),
+      this.dataTextureAudit.textureSize.width,
+      this.dataTextureAudit.textureSize.height
+    );
+
+    this.gl.activeTexture(this.gl.TEXTURE0);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.centerTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uCenterTex'), 0);
+
+    this.gl.activeTexture(this.gl.TEXTURE1);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.covarianceATexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uCovarianceATex'), 1);
+
+    this.gl.activeTexture(this.gl.TEXTURE2);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.covarianceBTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uCovarianceBTex'), 2);
+
+    this.gl.activeTexture(this.gl.TEXTURE3);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.orderTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uOrderTex'), 3);
+  }
+
+  private renderTextureFetchDraw() {
+    this.gl.useProgram(this.textureFetchProgram);
+    this.setCommonGaussianUniforms(this.textureFetchProgram);
+    this.bindTextureFetchSamplers(this.textureFetchProgram);
+    this.bindQuadAttribute(this.textureFetchProgram);
+    this.bindColorAndShAttributes(this.textureFetchProgram);
+    this.gl.disable(this.gl.DEPTH_TEST);
+    this.gl.enable(this.gl.BLEND);
+    if (this.diagnostics.compositeMode === 'premultiplied-alpha') {
+      this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+    } else {
+      this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    }
+    this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, 6, this.renderSplatCount);
+  }
+
+  private resetDataTextureAudit() {
+    for (const texture of [this.centerTexture, this.covarianceATexture, this.covarianceBTexture, this.orderTexture]) {
+      if (texture) this.gl.deleteTexture(texture);
+    }
+    if (this.dataTextureFramebuffer) {
+      this.gl.deleteFramebuffer(this.dataTextureFramebuffer);
+    }
+    this.centerTexture = null;
+    this.covarianceATexture = null;
+    this.covarianceBTexture = null;
+    this.orderTexture = null;
+    this.dataTextureFramebuffer = null;
+    this.dataTextureAudit = createIdleDataTextureAudit(this.diagnostics.dataTextureMode);
+  }
+
+  private createOrUpdateFloatTexture(texture: WebGLTexture | null, width: number, height: number, data: Float32Array) {
+    const targetTexture = texture ?? this.gl.createTexture();
+    if (!targetTexture) throw new Error('Could not create ARK Gaussian diagnostic texture.');
+    this.gl.bindTexture(this.gl.TEXTURE_2D, targetTexture);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D,
+      0,
+      this.gl.RGBA32F,
+      width,
+      height,
+      0,
+      this.gl.RGBA,
+      this.gl.FLOAT,
+      data
+    );
+    return targetTexture;
+  }
+
+  private readFloatTexturePixel(texture: WebGLTexture, x: number, y: number) {
+    this.dataTextureFramebuffer ??= this.gl.createFramebuffer();
+    if (!this.dataTextureFramebuffer) throw new Error('Could not create ARK Gaussian diagnostic framebuffer.');
+    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.dataTextureFramebuffer);
+    this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
+    const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
+    if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
+      throw new Error(`ARK Gaussian diagnostic framebuffer is incomplete: ${status}.`);
+    }
+    const pixel = new Float32Array(4);
+    this.gl.readPixels(x, y, 1, 1, this.gl.RGBA, this.gl.FLOAT, pixel);
+    return pixel;
+  }
+
+  private sortedSourceIndex(sortedIndex: number) {
+    if (!this.sortEnabled) return sortedIndex;
+    if (this.sortMode === 'bucket-depth') return this.sortOrder?.[sortedIndex] ?? sortedIndex;
+    return this.sortIndices[sortedIndex] ?? sortedIndex;
+  }
+
+  private runDataTextureAuditIfNeeded() {
+    if (this.diagnostics.dataTextureMode === 'off') return;
+    if (
+      this.dataTextureAudit.sceneVersion === this.sceneVersion
+      && this.dataTextureAudit.sortVersion === this.sortVersion
+      && (this.dataTextureAudit.status === 'passed' || this.dataTextureAudit.status === 'failed' || this.dataTextureAudit.status === 'skipped')
+    ) {
+      return;
+    }
+    if (
+      !this.rawPositions
+      || !this.rawScales
+      || !this.rawRotations
+      || this.renderSplatCount <= 0
+    ) {
+      this.dataTextureAudit = {
+        ...createIdleDataTextureAudit(this.diagnostics.dataTextureMode),
+        status: 'failed',
+        reason: 'missing-render-buffers',
+        sceneVersion: this.sceneVersion,
+        sortVersion: this.sortVersion,
+        count: this.renderSplatCount
+      };
+      return;
+    }
+    if (this.renderSplatCount > DATA_TEXTURE_AUDIT_SPLAT_LIMIT) {
+      this.dataTextureAudit = {
+        ...createIdleDataTextureAudit(this.diagnostics.dataTextureMode),
+        status: 'skipped',
+        reason: `rendered-splats-over-texture-audit-limit-${DATA_TEXTURE_AUDIT_SPLAT_LIMIT}`,
+        sceneVersion: this.sceneVersion,
+        sortVersion: this.sortVersion,
+        count: this.renderSplatCount
+      };
+      return;
+    }
+    if (!this.gl.getExtension('EXT_color_buffer_float')) {
+      this.dataTextureAudit = {
+        ...createIdleDataTextureAudit(this.diagnostics.dataTextureMode),
+        status: 'skipped',
+        reason: 'missing-ext-color-buffer-float',
+        sceneVersion: this.sceneVersion,
+        sortVersion: this.sortVersion,
+        count: this.renderSplatCount
+      };
+      return;
+    }
+
+    const thresholds = createIdleDataTextureAudit(this.diagnostics.dataTextureMode).thresholds;
+    try {
+      const layout = resolveTextureLayout(this.renderSplatCount, this.gl.getParameter(this.gl.MAX_TEXTURE_SIZE) as number);
+      const pixelCount = layout.width * layout.height;
+      const centerPixels = new Float32Array(pixelCount * 4);
+      const covarianceAPixels = new Float32Array(pixelCount * 4);
+      const covarianceBPixels = new Float32Array(pixelCount * 4);
+      const orderPixels = new Float32Array(pixelCount * 4);
+
+      for (let index = 0; index < this.renderSplatCount; index += 1) {
+        const pixelOffset = index * 4;
+        const positionOffset = index * 3;
+        centerPixels[pixelOffset] = this.rawPositions[positionOffset];
+        centerPixels[pixelOffset + 1] = this.rawPositions[positionOffset + 1];
+        centerPixels[pixelOffset + 2] = this.rawPositions[positionOffset + 2];
+        centerPixels[pixelOffset + 3] = 1;
+
+        const scaleOffset = index * 3;
+        const rotationOffset = index * 4;
+        const covariance = packGaussianCovariance(computePackedGaussianCovariance3D(
+          [
+            this.rawScales[scaleOffset],
+            this.rawScales[scaleOffset + 1],
+            this.rawScales[scaleOffset + 2]
+          ],
+          [
+            this.rawRotations[rotationOffset],
+            this.rawRotations[rotationOffset + 1],
+            this.rawRotations[rotationOffset + 2],
+            this.rawRotations[rotationOffset + 3]
+          ]
+        ));
+        covarianceAPixels[pixelOffset] = covariance[0];
+        covarianceAPixels[pixelOffset + 1] = covariance[1];
+        covarianceAPixels[pixelOffset + 2] = covariance[2];
+        covarianceAPixels[pixelOffset + 3] = covariance[3];
+        covarianceBPixels[pixelOffset] = covariance[4];
+        covarianceBPixels[pixelOffset + 1] = covariance[5];
+        covarianceBPixels[pixelOffset + 2] = 0;
+        covarianceBPixels[pixelOffset + 3] = 1;
+
+        const sortedSourceIndex = this.sortedSourceIndex(index);
+        orderPixels[pixelOffset] = sortedSourceIndex;
+        orderPixels[pixelOffset + 3] = 1;
+      }
+
+      this.centerTexture = this.createOrUpdateFloatTexture(this.centerTexture, layout.width, layout.height, centerPixels);
+      this.covarianceATexture = this.createOrUpdateFloatTexture(this.covarianceATexture, layout.width, layout.height, covarianceAPixels);
+      this.covarianceBTexture = this.createOrUpdateFloatTexture(this.covarianceBTexture, layout.width, layout.height, covarianceBPixels);
+      this.orderTexture = this.createOrUpdateFloatTexture(this.orderTexture, layout.width, layout.height, orderPixels);
+      const centerTexture = this.centerTexture;
+      const covarianceATexture = this.covarianceATexture;
+      const covarianceBTexture = this.covarianceBTexture;
+      const orderTexture = this.orderTexture;
+      if (!centerTexture || !covarianceATexture || !covarianceBTexture || !orderTexture) {
+        throw new Error('ARK Gaussian diagnostic texture upload did not return all textures.');
+      }
+
+      const sampleIndices = textureSampleIndices(this.renderSplatCount);
+      let centerMaxAbsDelta = 0;
+      let covarianceMaxAbsDelta = 0;
+      let orderMaxAbsDelta = 0;
+      for (const sortedIndex of sampleIndices) {
+        const sourceIndex = this.sortedSourceIndex(sortedIndex);
+        const orderCoord = textureCoord(sortedIndex, layout.width);
+        const orderPixel = this.readFloatTexturePixel(orderTexture, orderCoord.x, orderCoord.y);
+        orderMaxAbsDelta = Math.max(orderMaxAbsDelta, Math.abs(orderPixel[0] - sourceIndex));
+
+        const sourceCoord = textureCoord(sourceIndex, layout.width);
+        const centerPixel = this.readFloatTexturePixel(centerTexture, sourceCoord.x, sourceCoord.y);
+        const positionOffset = sourceIndex * 3;
+        centerMaxAbsDelta = Math.max(
+          centerMaxAbsDelta,
+          Math.abs(centerPixel[0] - this.rawPositions[positionOffset]),
+          Math.abs(centerPixel[1] - this.rawPositions[positionOffset + 1]),
+          Math.abs(centerPixel[2] - this.rawPositions[positionOffset + 2])
+        );
+
+        const covAPixel = this.readFloatTexturePixel(covarianceATexture, sourceCoord.x, sourceCoord.y);
+        const covBPixel = this.readFloatTexturePixel(covarianceBTexture, sourceCoord.x, sourceCoord.y);
+        const scaleOffset = sourceIndex * 3;
+        const rotationOffset = sourceIndex * 4;
+        const expectedCovariance = packGaussianCovariance(computePackedGaussianCovariance3D(
+          [
+            this.rawScales[scaleOffset],
+            this.rawScales[scaleOffset + 1],
+            this.rawScales[scaleOffset + 2]
+          ],
+          [
+            this.rawRotations[rotationOffset],
+            this.rawRotations[rotationOffset + 1],
+            this.rawRotations[rotationOffset + 2],
+            this.rawRotations[rotationOffset + 3]
+          ]
+        ));
+        covarianceMaxAbsDelta = Math.max(
+          covarianceMaxAbsDelta,
+          Math.abs(covAPixel[0] - expectedCovariance[0]),
+          Math.abs(covAPixel[1] - expectedCovariance[1]),
+          Math.abs(covAPixel[2] - expectedCovariance[2]),
+          Math.abs(covAPixel[3] - expectedCovariance[3]),
+          Math.abs(covBPixel[0] - expectedCovariance[4]),
+          Math.abs(covBPixel[1] - expectedCovariance[5])
+        );
+      }
+
+      const passed = centerMaxAbsDelta <= thresholds.centerMaxAbsDelta
+        && covarianceMaxAbsDelta <= thresholds.covarianceMaxAbsDelta
+        && orderMaxAbsDelta <= thresholds.orderMaxAbsDelta;
+      this.dataTextureAudit = {
+        enabled: true,
+        mode: this.diagnostics.dataTextureMode,
+        status: passed ? 'passed' : 'failed',
+        reason: passed ? 'texture-upload-readback-passed' : 'texture-upload-readback-delta-exceeded',
+        sceneVersion: this.sceneVersion,
+        sortVersion: this.sortVersion,
+        count: this.renderSplatCount,
+        textureSize: layout,
+        sampleCount: sampleIndices.length,
+        thresholds,
+        centerMaxAbsDelta,
+        covarianceMaxAbsDelta,
+        orderMaxAbsDelta,
+        textures: {
+          center: Boolean(this.centerTexture),
+          covarianceA: Boolean(this.covarianceATexture),
+          covarianceB: Boolean(this.covarianceBTexture),
+          order: Boolean(this.orderTexture)
+        }
+      };
+    } catch (error) {
+      this.dataTextureAudit = {
+        ...createIdleDataTextureAudit(this.diagnostics.dataTextureMode),
+        status: 'failed',
+        reason: error instanceof Error ? error.message : String(error),
+        sceneVersion: this.sceneVersion,
+        sortVersion: this.sortVersion,
+        count: this.renderSplatCount
+      };
+    } finally {
+      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+      this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+    }
   }
 
   private uploadGaussianBuffers(

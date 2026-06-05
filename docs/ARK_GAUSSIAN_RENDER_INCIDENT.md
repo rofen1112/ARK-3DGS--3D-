@@ -467,6 +467,40 @@ Pipeline isolation result:
   covariance/projection math against ARK's shader path and move renderer data
   access toward packed textures/order buffers before adding full SH3.
 
+Aholo material projection profile diagnostic:
+
+- Added `arkDiagProjection=aholo-material`, a combined diagnostic profile that
+  matches Aholo `SplattingMaterial` default values:
+  - `preBlurAmount=0`
+  - `blurAmount=0.3`
+  - `focalAdjustment=1`
+- Preview exhaustive isolation:
+  - default ARK vs Aholo SH0: `0.9728`
+  - `aholo-material` vs Aholo SH0: `1.3020`
+  - `aholo-material` vs ARK default: `0.4144`
+- Source core isolation:
+  - default ARK vs Aholo SH0: `1.6336`
+  - `aholo-material` vs Aholo SH0: `1.7203`
+  - `aholo-material` vs ARK default: `0.1627`
+- Decision: do not migrate ARK default projection constants to Aholo material
+  defaults. The earlier ARK-tuned default is closer to Aholo's observed output
+  under the same camera. The next focused repair should move from constant
+  tuning to packed covariance/order texture parity and projection data-layout
+  checks.
+
+Parameter debugging closure:
+
+- Added `docs/ARK_GAUSSIAN_PARAMETER_DEBUG_MEMO.md` as the permanent tuning
+  memo for this incident.
+- The incident repair is complete enough to stop parameter-first debugging:
+  source-density rendering is restored, same-camera baselines exist, SH3 was
+  checked as a color hypothesis, and sort/composite/projection parameter
+  variants were isolated.
+- This does not mean the Aholo replacement is complete. It means the next
+  project step should return to the core first-party renderer plan: packed
+  covariance/order texture parity, runtime SOG/SPZ conversion, GPU-friendly SH
+  packing, and production sorting/streaming.
+
 Remaining risk:
 
 - SH1 produced only a small source smoke change (`222.8` to `223.7`), so the

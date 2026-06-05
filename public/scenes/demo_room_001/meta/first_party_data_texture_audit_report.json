@@ -1,19 +1,15 @@
 {
   "generated_at": "2026-06-05T09:06:50.995Z",
-  "target": "ARK first-party Gaussian ellipse renderer preview QA",
-  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+  "target": "ARK first-party Gaussian packed texture upload/readback diagnostic",
+  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-audit",
   "summary": {
     "passed": true,
     "checks": {
       "visualQualityPassed": true,
       "isArkRenderer": true,
-      "hasDepthSorting": true,
-      "hasScaleAwarePipeline": true,
-      "hasGaussianProjection": true,
-      "hasClippingState": true,
-      "hasDataAccessState": true
+      "hasTextureAudit": true,
+      "drawPathUnchanged": true
     },
-    "runtime": "Loaded",
     "renderer": "ark-gaussian-webgl2",
     "pipeline": {
       "shader": "sh0-jacobian-covariance-gaussian",
@@ -26,30 +22,33 @@
       "dataPacking": "attribute-buffer",
       "covarianceStorage": "scale-rotation-attributes",
       "orderAccess": "cpu-reordered-attributes",
-      "dataTextureMode": "off",
+      "dataTextureMode": "texture-audit",
       "dataTextureAudit": {
-        "enabled": false,
-        "mode": "off",
-        "status": "skipped",
-        "reason": "disabled",
-        "sceneVersion": 0,
-        "sortVersion": 0,
-        "count": 0,
-        "textureSize": null,
-        "sampleCount": 0,
+        "enabled": true,
+        "mode": "texture-audit",
+        "status": "passed",
+        "reason": "texture-upload-readback-passed",
+        "sceneVersion": 1,
+        "sortVersion": 1,
+        "count": 99966,
+        "textureSize": {
+          "width": 317,
+          "height": 316
+        },
+        "sampleCount": 3,
         "thresholds": {
           "centerMaxAbsDelta": 0.00001,
           "covarianceMaxAbsDelta": 0.00001,
           "orderMaxAbsDelta": 0.5
         },
-        "centerMaxAbsDelta": null,
-        "covarianceMaxAbsDelta": null,
-        "orderMaxAbsDelta": null,
+        "centerMaxAbsDelta": 0,
+        "covarianceMaxAbsDelta": 9.151638451498911e-7,
+        "orderMaxAbsDelta": 0,
         "textures": {
-          "center": false,
-          "covarianceA": false,
-          "covarianceB": false,
-          "order": false
+          "center": true,
+          "covarianceA": true,
+          "covarianceB": true,
+          "order": true
         }
       },
       "projectionModel": "jacobian-covariance",
@@ -60,16 +59,16 @@
       "renderShDegree": 1,
       "renderShRestCount": 9,
       "diagnostics": {
-        "enabled": false,
+        "enabled": true,
         "sortOverride": "auto",
         "compositeMode": "premultiplied-alpha",
         "projectionProfile": "default",
-        "dataTextureMode": "off"
+        "dataTextureMode": "texture-audit"
       }
     },
     "renderInfo": {
-      "lastLoadMs": 444,
-      "lastSortMs": 28,
+      "lastLoadMs": 439,
+      "lastSortMs": 25.2,
       "sortEnabled": true,
       "sortMode": "exact-depth",
       "sortReason": "camera-depth-order",
@@ -77,28 +76,31 @@
       "covarianceStorage": "scale-rotation-attributes",
       "orderAccess": "cpu-reordered-attributes",
       "dataTextureAudit": {
-        "enabled": false,
-        "mode": "off",
-        "status": "skipped",
-        "reason": "disabled",
-        "sceneVersion": 0,
-        "sortVersion": 0,
-        "count": 0,
-        "textureSize": null,
-        "sampleCount": 0,
+        "enabled": true,
+        "mode": "texture-audit",
+        "status": "passed",
+        "reason": "texture-upload-readback-passed",
+        "sceneVersion": 1,
+        "sortVersion": 1,
+        "count": 99966,
+        "textureSize": {
+          "width": 317,
+          "height": 316
+        },
+        "sampleCount": 3,
         "thresholds": {
           "centerMaxAbsDelta": 0.00001,
           "covarianceMaxAbsDelta": 0.00001,
           "orderMaxAbsDelta": 0.5
         },
-        "centerMaxAbsDelta": null,
-        "covarianceMaxAbsDelta": null,
-        "orderMaxAbsDelta": null,
+        "centerMaxAbsDelta": 0,
+        "covarianceMaxAbsDelta": 9.151638451498911e-7,
+        "orderMaxAbsDelta": 0,
         "textures": {
-          "center": false,
-          "covarianceA": false,
-          "covarianceB": false,
-          "order": false
+          "center": true,
+          "covarianceA": true,
+          "covarianceB": true,
+          "order": true
         }
       },
       "sortDepthRange": null,
@@ -116,20 +118,20 @@
         "reason": "not-needed"
       },
       "diagnostics": {
-        "enabled": false,
+        "enabled": true,
         "sortOverride": "auto",
         "compositeMode": "premultiplied-alpha",
         "projectionProfile": "default",
-        "dataTextureMode": "off"
+        "dataTextureMode": "texture-audit"
       },
       "performance": {
         "inputBytes": 24793098,
         "inputMiB": 23.645,
-        "readMs": 333.5,
-        "decodeMs": 87.8,
-        "packMs": 17.4,
-        "uploadMs": 3.3,
-        "totalLoadMs": 443.8,
+        "readMs": 333.2,
+        "decodeMs": 83.5,
+        "packMs": 16.8,
+        "uploadMs": 3.5,
+        "totalLoadMs": 438.9,
         "retainedCpuBufferBytes": 19193472,
         "retainedCpuBufferMiB": 18.304,
         "gpuUploadBytes": 9196872,
@@ -150,9 +152,9 @@
         "strategy": "full-resolution-sorted"
       },
       "frameTiming": {
-        "lastRenderMs": 0.1,
-        "maxRenderMs": 28.6,
-        "averageRenderMs": 2.691,
+        "lastRenderMs": 0,
+        "maxRenderMs": 58.1,
+        "averageRenderMs": 5.4,
         "renderCount": 11
       },
       "ellipse": {
@@ -184,20 +186,17 @@
     "splats": 99966,
     "visual_quality": "Passed (87.1)",
     "contrast": 87.11111111111111,
-    "duration_seconds": 46.061
+    "duration_seconds": 46.064
   },
   "result": {
-    "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
-    "screenshot": "artifacts/first-party/ark-gaussian-preview.png",
+    "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-audit",
+    "screenshot": "artifacts/first-party/ark-gaussian-data-texture-audit.png",
     "passed": true,
     "checks": {
       "visualQualityPassed": true,
       "isArkRenderer": true,
-      "hasDepthSorting": true,
-      "hasScaleAwarePipeline": true,
-      "hasGaussianProjection": true,
-      "hasClippingState": true,
-      "hasDataAccessState": true
+      "hasTextureAudit": true,
+      "drawPathUnchanged": true
     },
     "exitCode": 0,
     "pageState": {
@@ -291,7 +290,7 @@
           ],
           "contrast": 87.11111111111111
         },
-        "evaluatedAtMs": 7889
+        "evaluatedAtMs": 7898
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -311,30 +310,33 @@
         "dataPacking": "attribute-buffer",
         "covarianceStorage": "scale-rotation-attributes",
         "orderAccess": "cpu-reordered-attributes",
-        "dataTextureMode": "off",
+        "dataTextureMode": "texture-audit",
         "dataTextureAudit": {
-          "enabled": false,
-          "mode": "off",
-          "status": "skipped",
-          "reason": "disabled",
-          "sceneVersion": 0,
-          "sortVersion": 0,
-          "count": 0,
-          "textureSize": null,
-          "sampleCount": 0,
+          "enabled": true,
+          "mode": "texture-audit",
+          "status": "passed",
+          "reason": "texture-upload-readback-passed",
+          "sceneVersion": 1,
+          "sortVersion": 1,
+          "count": 99966,
+          "textureSize": {
+            "width": 317,
+            "height": 316
+          },
+          "sampleCount": 3,
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
             "orderMaxAbsDelta": 0.5
           },
-          "centerMaxAbsDelta": null,
-          "covarianceMaxAbsDelta": null,
-          "orderMaxAbsDelta": null,
+          "centerMaxAbsDelta": 0,
+          "covarianceMaxAbsDelta": 9.151638451498911e-7,
+          "orderMaxAbsDelta": 0,
           "textures": {
-            "center": false,
-            "covarianceA": false,
-            "covarianceB": false,
-            "order": false
+            "center": true,
+            "covarianceA": true,
+            "covarianceB": true,
+            "order": true
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -345,11 +347,11 @@
         "renderShDegree": 1,
         "renderShRestCount": 9,
         "diagnostics": {
-          "enabled": false,
+          "enabled": true,
           "sortOverride": "auto",
           "compositeMode": "premultiplied-alpha",
           "projectionProfile": "default",
-          "dataTextureMode": "off"
+          "dataTextureMode": "texture-audit"
         }
       },
       "scene": {
@@ -359,8 +361,8 @@
         "sceneVersion": 1
       },
       "renderInfo": {
-        "lastLoadMs": 444,
-        "lastSortMs": 28,
+        "lastLoadMs": 439,
+        "lastSortMs": 25.2,
         "sortEnabled": true,
         "sortMode": "exact-depth",
         "sortReason": "camera-depth-order",
@@ -368,28 +370,31 @@
         "covarianceStorage": "scale-rotation-attributes",
         "orderAccess": "cpu-reordered-attributes",
         "dataTextureAudit": {
-          "enabled": false,
-          "mode": "off",
-          "status": "skipped",
-          "reason": "disabled",
-          "sceneVersion": 0,
-          "sortVersion": 0,
-          "count": 0,
-          "textureSize": null,
-          "sampleCount": 0,
+          "enabled": true,
+          "mode": "texture-audit",
+          "status": "passed",
+          "reason": "texture-upload-readback-passed",
+          "sceneVersion": 1,
+          "sortVersion": 1,
+          "count": 99966,
+          "textureSize": {
+            "width": 317,
+            "height": 316
+          },
+          "sampleCount": 3,
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
             "orderMaxAbsDelta": 0.5
           },
-          "centerMaxAbsDelta": null,
-          "covarianceMaxAbsDelta": null,
-          "orderMaxAbsDelta": null,
+          "centerMaxAbsDelta": 0,
+          "covarianceMaxAbsDelta": 9.151638451498911e-7,
+          "orderMaxAbsDelta": 0,
           "textures": {
-            "center": false,
-            "covarianceA": false,
-            "covarianceB": false,
-            "order": false
+            "center": true,
+            "covarianceA": true,
+            "covarianceB": true,
+            "order": true
           }
         },
         "sortDepthRange": null,
@@ -407,20 +412,20 @@
           "reason": "not-needed"
         },
         "diagnostics": {
-          "enabled": false,
+          "enabled": true,
           "sortOverride": "auto",
           "compositeMode": "premultiplied-alpha",
           "projectionProfile": "default",
-          "dataTextureMode": "off"
+          "dataTextureMode": "texture-audit"
         },
         "performance": {
           "inputBytes": 24793098,
           "inputMiB": 23.645,
-          "readMs": 333.5,
-          "decodeMs": 87.8,
-          "packMs": 17.4,
-          "uploadMs": 3.3,
-          "totalLoadMs": 443.8,
+          "readMs": 333.2,
+          "decodeMs": 83.5,
+          "packMs": 16.8,
+          "uploadMs": 3.5,
+          "totalLoadMs": 438.9,
           "retainedCpuBufferBytes": 19193472,
           "retainedCpuBufferMiB": 18.304,
           "gpuUploadBytes": 9196872,
@@ -441,9 +446,9 @@
           "strategy": "full-resolution-sorted"
         },
         "frameTiming": {
-          "lastRenderMs": 0.1,
-          "maxRenderMs": 28.6,
-          "averageRenderMs": 2.691,
+          "lastRenderMs": 0,
+          "maxRenderMs": 58.1,
+          "averageRenderMs": 5.4,
           "renderCount": 11
         },
         "ellipse": {

@@ -12,6 +12,7 @@ const signatureHeight = 54;
 const includeAholoSh3 = process.argv.includes('--include-aholo-sh3');
 const pipelineCore = process.argv.includes('--pipeline-core');
 const pipelineIsolation = pipelineCore || process.argv.includes('--pipeline-isolation');
+const includeTextureFetch = process.argv.includes('--texture-fetch');
 const assetArg = process.argv.find((arg) => arg.startsWith('--asset='));
 const asset = assetArg ? assetArg.slice('--asset='.length) : 'source-ply';
 
@@ -32,6 +33,17 @@ const arkTargets = [
     expectedRenderer: 'ark-gaussian-webgl2',
     requiresSignature: true
   },
+  ...(includeTextureFetch
+    ? [
+      {
+        label: 'ark-texture-fetch',
+        role: 'data-texture-diagnostic',
+        url: targetUrl({ renderer: 'ark-gaussian', arkDiagData: 'texture-fetch' }),
+        expectedRenderer: 'ark-gaussian-webgl2',
+        requiresSignature: true
+      }
+    ]
+    : []),
   ...(pipelineIsolation
     ? [
       {
@@ -45,6 +57,13 @@ const arkTargets = [
         label: 'ark-composite-straight',
         role: 'composite-diagnostic',
         url: targetUrl({ renderer: 'ark-gaussian', arkDiagComposite: 'straight' }),
+        expectedRenderer: 'ark-gaussian-webgl2',
+        requiresSignature: true
+      },
+      {
+        label: 'ark-projection-aholo-material',
+        role: 'projection-diagnostic',
+        url: targetUrl({ renderer: 'ark-gaussian', arkDiagProjection: 'aholo-material' }),
         expectedRenderer: 'ark-gaussian-webgl2',
         requiresSignature: true
       }
@@ -644,7 +663,7 @@ if (aholoSh0Result) {
   }
 }
 
-if (pipelineIsolation && arkDefaultResult) {
+if ((pipelineIsolation || includeTextureFetch) && arkDefaultResult) {
   for (const arkResult of arkResults.slice(1)) {
     pairs.push(buildPair(arkResult, arkDefaultResult));
   }
@@ -687,6 +706,7 @@ const report = {
   pipeline_isolation: {
     enabled: pipelineIsolation,
     mode: pipelineCore ? 'core' : pipelineIsolation ? 'exhaustive' : 'disabled',
+    texture_fetch_enabled: includeTextureFetch,
     diagnostic_target_count: Math.max(0, arkTargets.length - 1),
     default_target: canonicalTarget.label,
     reference_target: 'aholo-adapter-sh0',

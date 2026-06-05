@@ -108,7 +108,14 @@ function createTinyGaussianShPly() {
 
 async function loadParserModule() {
   const result = await build({
-    entryPoints: ['src/sdk/gaussian/ply.ts'],
+    stdin: {
+      contents: [
+        "export { parseGaussianPlyHeader, summarizeGaussianPly, decodeGaussianPly } from './src/sdk/gaussian/ply.ts';",
+        "export { buildArkGaussianPackedData, auditArkGaussianPackedCovariance, auditArkGaussianPackedCovarianceFromPackedData } from './src/sdk/gaussian/packedData.ts';"
+      ].join('\n'),
+      resolveDir: process.cwd(),
+      loader: 'ts'
+    },
     bundle: true,
     format: 'esm',
     platform: 'browser',
@@ -154,6 +161,26 @@ assertArrayClose(Array.from(filtered.invalidSourceIndices), [1], 'filtered inval
 assertArrayClose(Array.from(filtered.centers.slice(0, 3)), [1, 2, 3], 'filtered first center');
 assertArrayClose(Array.from(filtered.centers.slice(3, 6)), [-1, -2, -3], 'filtered second center');
 assertClose(filtered.opacities[0], 0, 'filtered keeps raw opacity logit');
+
+const packed = parser.buildArkGaussianPackedData(filtered);
+assert(packed.count === 3, 'packed decoded count');
+assert(packed.dataPacking === 'packed-covariance-cpu-audit', 'packed data mode');
+assert(packed.covarianceStorage === 'log-variance-correlation-float32', 'packed covariance storage');
+assert(packed.displayScale === 1, 'packed display scale');
+assertArrayClose(Array.from(packed.dataIndices), [0, 1, 2], 'packed data indices');
+assertArrayClose(Array.from(packed.sourceIndices), [0, 2, 3], 'packed source indices');
+assertArrayClose(Array.from(packed.centers.slice(0, 3)), [1, 2, 3], 'packed first center');
+assertClose(packed.covariances[0], 0, 'packed first log xx');
+assertClose(packed.covariances[1], 2, 'packed first log yy');
+assertClose(packed.covariances[2], Math.log2(9), 'packed first log zz', 1e-6);
+assertClose(packed.covariances[3], 0, 'packed first rho xy');
+assertClose(packed.covariances[4], 0, 'packed first rho xz');
+assertClose(packed.covariances[5], 0, 'packed first rho yz');
+const packedAudit = parser.auditArkGaussianPackedCovariance(filtered, { sampleCount: 3 });
+assert(packedAudit.status === 'passed', 'packed covariance audit passes');
+assert(packedAudit.sampledCount === 3, 'packed covariance audit sample count');
+const packedAuditFromBuiltData = parser.auditArkGaussianPackedCovarianceFromPackedData(filtered, packed, { sampleCount: 3 });
+assert(packedAuditFromBuiltData.status === 'passed', 'packed covariance audit from built data passes');
 
 const decodedWithPercentiles = parser.decodeGaussianPly(fixture, {
   percentileBounds: [
@@ -225,5 +252,13 @@ console.log(JSON.stringify({
     shDegree: shHeader.shDegree,
     shRestCount: shHeader.shRestCount,
     selected: Array.from(channelMajorSh.shRest)
+  },
+  packed: {
+    dataPacking: packed.dataPacking,
+    covarianceStorage: packed.covarianceStorage,
+    count: packed.count,
+    auditStatus: packedAudit.status,
+    maxAbsDelta: packedAudit.maxAbsDelta,
+    maxRelativeDelta: packedAudit.maxRelativeDelta
   }
 }, null, 2));

@@ -170,6 +170,85 @@ Round 7 pipeline isolation:
   focal adjustment, falloff, and data packing/order-access assumptions against
   Aholo and local open-source references.
 
+Round 8 Aholo material profile diagnostic:
+
+- Aholo's visible `SplattingMaterial` defaults are `preBlurAmount=0`,
+  `blurAmount=0.3`, and `focalAdjustment=1`. ARK's current tuned default is
+  `preBlurAmount=0.3`, `blurAmount=0`, and `focalAdjustment=2`.
+- Added `arkDiagProjection=aholo-material` to test Aholo's default material
+  constants as one combined profile without changing ARK's default path.
+- Preview result: default ARK vs Aholo SH0 is `0.9728`; `aholo-material` vs
+  Aholo SH0 worsens to `1.3020`.
+- Full-source result: default ARK vs Aholo SH0 is `1.6336`;
+  `aholo-material` vs Aholo SH0 worsens to `1.7203`.
+- Decision: constant matching is not enough and should not be promoted. The
+  next audit should inspect packed covariance/order texture semantics, source
+  scale/covariance reconstruction, and whether ARK's attribute-buffer prototype
+  differs from Aholo's packed data contract before doing more projection
+  parameter tuning.
+
+Round 9 packed data architecture audit:
+
+- Added `docs/ARK_GAUSSIAN_PACKED_DATA_AUDIT.md` after inspecting the visible
+  Aholo packed covariance, center texture, order texture, worker sort, and
+  optional repack paths.
+- Confirmed that Aholo separates stable packed source data from draw order:
+  sorted draw order is represented as source indices in an order buffer or as
+  repacked sorted textures.
+- Confirmed that ARK's current renderer is still an attribute-buffer prototype:
+  covariance is rebuilt from scale/quaternion attributes in the vertex shader,
+  and sorted CPU copies are re-uploaded for the active draw order.
+- Added the first diagnostic packed covariance builder and CPU round-trip parity
+  audit in `src/sdk/gaussian/packedData.ts`, plus `validate:packed-data`.
+- Full source PLY packed audit passes on this workstation:
+  `1,854,627` decoded splats, `639` invalid source positions skipped, `2,048`
+  covariance samples, max absolute covariance delta `6.956697071160362e-7`, and
+  estimated packed audit payload `106.123MiB`.
+- Default `ark-gaussian` now exposes data access state in debug output:
+  `dataPacking="attribute-buffer"`,
+  `covarianceStorage="scale-rotation-attributes"`, and sorted preview
+  `orderAccess="cpu-reordered-attributes"`. `qa:first-party-gaussian` checks
+  these fields.
+- Decision: CPU packed covariance parity is stable enough to proceed to the
+  next diagnostic layer. Do not change default projection, alpha, density, or
+  sorting constants until a dev-only texture-fetch prototype has separate
+  evidence.
+
+Round 10 GPU texture upload/readback diagnostic:
+
+- Added `arkDiagData=texture-audit`, a dev-only WebGL2 diagnostic that uploads
+  source-order center, packed covariance A, packed covariance B, and sorted
+  order textures. The normal draw path remains attribute buffers.
+- Added `qa:first-party-data-texture` and
+  `public/scenes/demo_room_001/meta/first_party_data_texture_audit_report.json`.
+- Preview PLY result: `99,966` splats, texture size `317 x 316`, `3` readback
+  samples, center max delta `0`, covariance max delta
+  `9.151638451498911e-7`, order max delta `0`, visual QA still `Passed (87.1)`.
+- Decision: GPU texture upload/readback is stable enough for the next dev-only
+  step: a separate texture-fetch draw program or shader branch. Do not replace
+  the default draw path until same-camera comparison proves parity.
+
+Round 11 dev-only texture-fetch draw path:
+
+- Added `arkDiagData=texture-fetch`, a dev-only draw path that uses
+  `gl_InstanceID` plus the order texture to fetch source-order center and packed
+  covariance textures. Color and SH1 remain sorted attributes in this first
+  hybrid step.
+- Added `qa:first-party-texture-fetch` and
+  `public/scenes/demo_room_001/meta/first_party_texture_fetch_renderer_report.json`.
+- Added `qa:first-party-texture-fetch-compare` and
+  `public/scenes/demo_room_001/meta/first_party_texture_fetch_compare_report.json`.
+- Preview result: texture-fetch visual QA passes with `99,966` splats,
+  `dataPacking="texture-fetch-hybrid"`,
+  `covarianceStorage="packed-covariance-texture"`, and
+  `orderAccess="order-texture"`.
+- Same-camera A/B result: `ark-texture-fetch` vs default `ark-gaussian` has
+  mean absolute RGB delta `0`, RMS `0`, max RGB delta `0`, and similarity `1`.
+- Decision: preview geometry/order texture fetching is equivalent to the
+  attribute-buffer path. The next step is to move color/SH into packed textures
+  or validate this path against source-density constraints; default rendering
+  remains unchanged.
+
 ## External Renderer Framework Trigger
 
 Only start the external renderer framework path after these have been audited:

@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-06-05T08:42:40.327Z",
+  "input": "G:\\code-program\\anything-work\\20260525-3DGS\\public\\scenes\\demo_room_001\\gaussian\\scene-preview-100k.ply",
+  "status": "passed",
+  "data": {
+    "sourceCount": 99966,
+    "decodedCount": 99966,
+    "invalidSourceCount": 0,
+    "shDegree": 3
+  },
+  "packed": {
+    "dataPacking": "packed-covariance-cpu-audit",
+    "covarianceStorage": "log-variance-correlation-float32",
+    "orderAccess": "source-index-order",
+    "count": 99966,
+    "displayScale": 1,
+    "center": [
+      0,
+      0,
+      0
+    ],
+    "opacityScale": 1,
+    "estimatedBytes": 5997960,
+    "estimatedMiB": 5.72
+  },
+  "covarianceAudit": {
+    "status": "passed",
+    "dataPacking": "packed-covariance-cpu-audit",
+    "covarianceStorage": "log-variance-correlation-float32",
+    "sourceCount": 99966,
+    "decodedCount": 99966,
+    "sampledCount": 512,
+    "finiteSampledCount": 512,
+    "maxAbsDelta": 2.081743596465892e-7,
+    "meanAbsDelta": 1.7145250119131618e-10,
+    "maxRelativeDelta": 2.081743596465892e-7,
+    "thresholds": {
+      "maxAbsDelta": 0.0005,
+      "maxRelativeDelta": 0.0005
+    },
+    "worstSample": {
+      "sampleOrdinal": 507,
+      "dataIndex": 98865,
+      "sourceIndex": 98865,
+      "component": "xz",
+      "direct": 0.00026991071237353754,
+      "unpacked": 0.00026970253801389095,
+      "absDelta": 2.081743596465892e-7,
+      "relativeDelta": 2.081743596465892e-7
+    }
+  },
+  "durationMs": 129.856
+}

@@ -26,6 +26,16 @@ Parser regression command:
 npm.cmd run test:gaussian
 ```
 
+Packed covariance data audit command:
+
+```bash
+npm.cmd run validate:packed-data
+npm.cmd run validate:packed-data:source
+npm.cmd run qa:first-party-data-texture
+npm.cmd run qa:first-party-texture-fetch
+npm.cmd run qa:first-party-texture-fetch-compare
+```
+
 Preview generation command:
 
 ```bash
@@ -436,16 +446,19 @@ Current same-camera pipeline isolation:
 | ARK default vs Aholo SH0 | `preview-ply` | `0.9728` | `3.5066` | `0.996185` | Preview baseline |
 | ARK source-order vs Aholo SH0 | `preview-ply` | `0.9758` | `3.5421` | `0.996173` | Sorting override is slightly worse |
 | ARK straight alpha vs Aholo SH0 | `preview-ply` | `0.9728` | `3.5066` | `0.996185` | Blend override is identical to default |
+| ARK Aholo material profile vs Aholo SH0 | `preview-ply` | `1.3020` | `6.6146` | `0.994894` | Aholo material constants are worse than ARK default |
 | ARK no-preblur vs Aholo SH0 | `preview-ply` | `1.0002` | `3.7612` | `0.996078` | Projection shortcut is worse |
 | ARK unit-focal vs Aholo SH0 | `preview-ply` | `0.9985` | `3.5961` | `0.996084` | Projection shortcut is worse |
 | ARK compact-kernel vs Aholo SH0 | `preview-ply` | `1.0090` | `3.8946` | `0.996043` | Projection shortcut is worse |
 | ARK default vs Aholo SH0 | `source-ply` | `1.6336` | `7.5424` | `0.993594` | Source baseline |
 | ARK source-order vs Aholo SH0 | `source-ply` | `1.6602` | `7.8448` | `0.993489` | Sorting override is worse |
 | ARK straight alpha vs Aholo SH0 | `source-ply` | `1.6336` | `7.5424` | `0.993594` | Blend override is identical to default |
+| ARK Aholo material profile vs Aholo SH0 | `source-ply` | `1.7203` | `8.0751` | `0.993254` | Aholo material constants are worse than ARK default |
 
 This isolates the current renderer gap away from splat count, source-order
-sorting, and the tested alpha blend function. Projection remains sensitive, but
-the tested parameter shortcuts did not improve parity.
+sorting, the tested alpha blend function, and direct adoption of Aholo material
+defaults. Projection remains sensitive, but the tested parameter shortcuts did
+not improve parity.
 
 Important current asset coverage limitation:
 
@@ -524,6 +537,8 @@ Primary functions:
 ## Next Data Contract Work
 
 - Persist visual QA outputs into versioned scene reports.
+- Use `docs/ARK_GAUSSIAN_PACKED_DATA_AUDIT.md` as the active guide for packed covariance/order texture semantics before more projection constant tuning.
+- Continue from the diagnostic `ArkGaussianPackedData` builder and CPU covariance round-trip audit. Preview and source PLY packed covariance audits now pass, preview GPU texture upload/readback passes, and preview texture-fetch draw matches the default attribute-buffer path exactly. The next data-layer task is packed color/SH texture access or source-density texture constraints.
 - Move first-party renderer sorting from CPU main-thread sort toward worker or GPU-assisted sorting after the projection and packed data path is stable.
 - Add SOG/SPZ direct loading or a first-party runtime conversion path.
 - Use the runtime format probe as the next decoder entry point: SOG exposes WEBP channels and a summarized `meta.json` layout; SPZ is currently only identified as GZIP.

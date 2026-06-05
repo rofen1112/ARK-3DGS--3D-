@@ -63,6 +63,12 @@ function runVisualQa() {
         && clipping?.nearFarClip === true
         && clipping?.minClipW > 0
         && clipping?.offscreenPadding >= 1;
+      const hasDataAccessState = result?.pageState?.pipeline?.dataPacking === 'attribute-buffer'
+        && result?.pageState?.pipeline?.covarianceStorage === 'scale-rotation-attributes'
+        && result?.pageState?.pipeline?.orderAccess === 'cpu-reordered-attributes'
+        && result?.pageState?.renderInfo?.dataPacking === result?.pageState?.pipeline?.dataPacking
+        && result?.pageState?.renderInfo?.covarianceStorage === result?.pageState?.pipeline?.covarianceStorage
+        && result?.pageState?.renderInfo?.orderAccess === result?.pageState?.pipeline?.orderAccess;
       const hasScaleAwarePipeline = result?.pageState?.pipeline?.scaleAware === true
         && result?.pageState?.pipeline?.opacityAware === true
         && hasGaussianProjection;
@@ -75,14 +81,16 @@ function runVisualQa() {
           && hasDepthSorting
           && hasScaleAwarePipeline
           && hasGaussianProjection
-          && hasClippingState,
+          && hasClippingState
+          && hasDataAccessState,
         checks: {
           visualQualityPassed: result?.pageState?.visualQualityGate?.status === 'passed',
           isArkRenderer,
           hasDepthSorting,
           hasScaleAwarePipeline,
           hasGaussianProjection,
-          hasClippingState
+          hasClippingState,
+          hasDataAccessState
         },
         exitCode,
         pageState: result?.pageState ?? null,
