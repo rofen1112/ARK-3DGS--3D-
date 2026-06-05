@@ -1,8 +1,9 @@
 import { spawn } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { resolveChromePath } from './chrome-path.mjs';
 
-const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const chromePath = resolveChromePath();
 const targetUrl = process.argv[2] ?? 'http://127.0.0.1:5173/';
 const output = resolve(process.argv[3] ?? 'artifacts/cdp-screenshot.png');
 const maxWaitMs = Number(process.argv[4] ?? 60000);

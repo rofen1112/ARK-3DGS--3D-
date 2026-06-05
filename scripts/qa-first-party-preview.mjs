@@ -13,7 +13,7 @@ async function ensureDevServer() {
     if (response.ok) return;
     throw new Error(`HTTP ${response.status}`);
   } catch (error) {
-    throw new Error(`ARK dev server is not reachable at ${url}. Start it with npm.cmd run dev -- --port 5173. ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`ARK dev server is not reachable at ${url}. Start it with npm run dev -- --port 5173. ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

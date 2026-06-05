@@ -1,8 +1,9 @@
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { resolveChromePath } from './chrome-path.mjs';
 
-const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const chromePath = resolveChromePath();
 const outputPath = resolve(process.argv[2] ?? 'public/scenes/demo_room_001/meta/first_party_full_scene_source_ply_smoke_report.json');
 const screenshotPath = resolve(process.argv[3] ?? 'artifacts/first-party-full-scene/source-ply-smoke.png');
 const timeoutMs = Number(process.argv[4] ?? 300000);
@@ -30,7 +31,7 @@ async function ensureDevServer() {
     if (response.ok) return;
     throw new Error(`HTTP ${response.status}`);
   } catch (error) {
-    throw new Error(`ARK dev server is not reachable at ${url}. Start it with npm.cmd run dev -- --port 5173. ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`ARK dev server is not reachable at ${url}. Start it with npm run dev -- --port 5173. ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

@@ -2,8 +2,9 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { resolveChromePath } from './chrome-path.mjs';
 
-const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const chromePath = resolveChromePath();
 const sourcePlyPath = resolve('public/scenes/demo_room_001/gaussian/scene.ply');
 const sourcePlyUrl = '/scenes/demo_room_001/gaussian/scene.ply';
 const outputPath = resolve(process.argv[2] ?? 'public/scenes/demo_room_001/meta/first_party_local_source_ply_smoke_report.json');

@@ -17,6 +17,13 @@ npm.cmd install --cache .\.npm-cache
 npm.cmd run dev -- --port 5173
 ```
 
+On macOS/Linux, use `npm` instead of `npm.cmd`:
+
+```bash
+npm install
+npm run dev -- --port 5173
+```
+
 Open the browser shell:
 
 ```text
@@ -45,6 +52,12 @@ Tracked runtime assets are enough to open and inspect the demo scene:
 
 Scripts that validate or regenerate data derived from the full source PLY may
 need the ignored local PLY files to be present on the development machine.
+
+macOS migration and Hugging Face asset pull notes:
+
+```text
+docs/MACOS_AND_HF_ASSET_MIGRATION.md
+```
 
 ## Browser Controls
 
