@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-05T08:42:55.746Z",
-  "input": "G:\\code-program\\anything-work\\20260525-3DGS\\public\\scenes\\demo_room_001\\gaussian\\scene.ply",
+  "generatedAt": "2026-06-08T07:24:23.780Z",
+  "input": "C:\\Users\\CodexSandboxOffline\\.codex\\.sandbox\\cwd\\d40bb89b7f2e49b6\\public\\scenes\\demo_room_001\\gaussian\\scene.ply",
   "status": "passed",
   "data": {
     "sourceCount": 1855266,
@@ -49,5 +49,5 @@
       "relativeDelta": 6.956697071160362e-7
     }
   },
-  "durationMs": 1682.043
+  "durationMs": 2201.558
 }

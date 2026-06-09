@@ -59,6 +59,10 @@ macOS migration and Hugging Face asset pull notes:
 docs/MACOS_AND_HF_ASSET_MIGRATION.md
 ```
 
+Local tokens and machine-specific asset settings belong in `.env.local`, copied
+from `.env.example`. Run `npm run check:secrets` before Git sync to scan staged
+changes for common token formats.
+
 ## Browser Controls
 
 - Drag: free-look around the current camera position

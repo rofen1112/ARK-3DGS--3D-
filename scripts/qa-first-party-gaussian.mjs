@@ -5,7 +5,8 @@ import { dirname, relative, resolve } from 'node:path';
 const outputPath = resolve(process.argv[2] ?? 'public/scenes/demo_room_001/meta/first_party_gaussian_renderer_report.json');
 const screenshotPath = resolve(process.argv[3] ?? 'artifacts/first-party/ark-gaussian-preview.png');
 const timeoutMs = Number(process.argv[4] ?? 120000);
-const url = 'http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian';
+const baseUrl = process.env.ARK_DEV_SERVER_URL ?? 'http://127.0.0.1:5173';
+const url = `${baseUrl}/?autoload=1&asset=ply-preview&renderer=ark-gaussian`;
 
 async function ensureDevServer() {
   try {

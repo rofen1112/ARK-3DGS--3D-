@@ -87,8 +87,8 @@ hf upload your-name/ark-3dgs-assets \
 Pull the source PLY from a new machine:
 
 ```bash
-export ARK_HF_REPO="your-name/ark-3dgs-assets"
-export HF_TOKEN="hf_..."
+export ARK_HF_REPO="rofenbb/ark-3dgs-renderer"
+export HF_TOKEN="your-local-token"
 npm run assets:pull:hf -- --dry-run
 npm run assets:pull:hf
 ```
@@ -96,11 +96,15 @@ npm run assets:pull:hf
 Windows PowerShell:
 
 ```powershell
-$env:ARK_HF_REPO="your-name/ark-3dgs-assets"
-$env:HF_TOKEN="hf_..."
+$env:ARK_HF_REPO="rofenbb/ark-3dgs-renderer"
+$env:HF_TOKEN="your-local-token"
 npm.cmd run assets:pull:hf -- --dry-run
 npm.cmd run assets:pull:hf
 ```
+
+For repeated local use, copy `.env.example` to `.env.local` and fill only local
+values there. `.env.local` is ignored by Git and is loaded automatically by the
+asset pull script.
 
 By default, `npm run assets:pull:hf` downloads:
 
@@ -122,6 +126,12 @@ Use `--force` to overwrite an existing local file:
 
 ```bash
 npm run assets:pull:hf -- --force
+```
+
+Run the staged secret scanner before Git sync:
+
+```bash
+npm run check:secrets
 ```
 
 ## Official Hugging Face references

@@ -4,7 +4,7 @@ import { dirname, relative, resolve } from 'node:path';
 import { resolveChromePath } from './chrome-path.mjs';
 
 const chromePath = resolveChromePath();
-const baseUrl = 'http://127.0.0.1:5173';
+const baseUrl = process.env.ARK_DEV_SERVER_URL ?? 'http://127.0.0.1:5173';
 const outputPath = resolve(process.argv[2] ?? 'public/scenes/demo_room_001/meta/first_party_same_camera_comparison_report.json');
 const screenshotDir = resolve(process.argv[3] ?? 'artifacts/first-party-same-camera');
 const timeoutMs = Number(process.argv[4] ?? 300000);

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-05T09:06:50.986Z",
+  "generated_at": "2026-06-08T07:22:39.982Z",
   "target": "ARK first-party Gaussian texture-fetch renderer diagnostic",
-  "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
+  "url": "http://127.0.0.1:5174/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
   "summary": {
     "passed": true,
     "checks": {
@@ -22,6 +22,8 @@
       "dataPacking": "texture-fetch-hybrid",
       "covarianceStorage": "packed-covariance-texture",
       "orderAccess": "order-texture",
+      "colorStorage": "color-texture",
+      "shStorage": "sh1-texture",
       "dataTextureMode": "texture-fetch",
       "dataTextureAudit": {
         "enabled": true,
@@ -39,16 +41,24 @@
         "thresholds": {
           "centerMaxAbsDelta": 0.00001,
           "covarianceMaxAbsDelta": 0.00001,
-          "orderMaxAbsDelta": 0.5
+          "orderMaxAbsDelta": 0.5,
+          "colorMaxAbsDelta": 0.00001,
+          "sh1MaxAbsDelta": 0.00001
         },
         "centerMaxAbsDelta": 0,
         "covarianceMaxAbsDelta": 9.151638451498911e-7,
         "orderMaxAbsDelta": 0,
+        "colorMaxAbsDelta": 0,
+        "sh1MaxAbsDelta": 0,
         "textures": {
           "center": true,
           "covarianceA": true,
           "covarianceB": true,
-          "order": true
+          "order": true,
+          "color": true,
+          "sh1A": true,
+          "sh1B": true,
+          "sh1C": true
         }
       },
       "projectionModel": "jacobian-covariance",
@@ -67,14 +77,16 @@
       }
     },
     "renderInfo": {
-      "lastLoadMs": 461,
-      "lastSortMs": 27.4,
+      "lastLoadMs": 160,
+      "lastSortMs": 24.2,
       "sortEnabled": true,
       "sortMode": "exact-depth",
       "sortReason": "camera-depth-order",
       "dataPacking": "texture-fetch-hybrid",
       "covarianceStorage": "packed-covariance-texture",
       "orderAccess": "order-texture",
+      "colorStorage": "color-texture",
+      "shStorage": "sh1-texture",
       "dataTextureAudit": {
         "enabled": true,
         "mode": "texture-fetch",
@@ -91,16 +103,24 @@
         "thresholds": {
           "centerMaxAbsDelta": 0.00001,
           "covarianceMaxAbsDelta": 0.00001,
-          "orderMaxAbsDelta": 0.5
+          "orderMaxAbsDelta": 0.5,
+          "colorMaxAbsDelta": 0.00001,
+          "sh1MaxAbsDelta": 0.00001
         },
         "centerMaxAbsDelta": 0,
         "covarianceMaxAbsDelta": 9.151638451498911e-7,
         "orderMaxAbsDelta": 0,
+        "colorMaxAbsDelta": 0,
+        "sh1MaxAbsDelta": 0,
         "textures": {
           "center": true,
           "covarianceA": true,
           "covarianceB": true,
-          "order": true
+          "order": true,
+          "color": true,
+          "sh1A": true,
+          "sh1B": true,
+          "sh1C": true
         }
       },
       "sortDepthRange": null,
@@ -127,11 +147,11 @@
       "performance": {
         "inputBytes": 24793098,
         "inputMiB": 23.645,
-        "readMs": 340.7,
-        "decodeMs": 95.1,
-        "packMs": 18.6,
-        "uploadMs": 4.1,
-        "totalLoadMs": 460.7,
+        "readMs": 56.5,
+        "decodeMs": 81.6,
+        "packMs": 16.6,
+        "uploadMs": 3.5,
+        "totalLoadMs": 159.9,
         "retainedCpuBufferBytes": 19193472,
         "retainedCpuBufferMiB": 18.304,
         "gpuUploadBytes": 9196872,
@@ -153,8 +173,8 @@
       },
       "frameTiming": {
         "lastRenderMs": 0,
-        "maxRenderMs": 60.2,
-        "averageRenderMs": 5.573,
+        "maxRenderMs": 61.1,
+        "averageRenderMs": 5.655,
         "renderCount": 11
       },
       "ellipse": {
@@ -186,10 +206,10 @@
     "splats": 99966,
     "visual_quality": "Passed (87.1)",
     "contrast": 87.11111111111111,
-    "duration_seconds": 46.048
+    "duration_seconds": 10.217
   },
   "result": {
-    "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
+    "url": "http://127.0.0.1:5174/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
     "screenshot": "artifacts/first-party/ark-gaussian-texture-fetch.png",
     "passed": true,
     "checks": {
@@ -201,7 +221,7 @@
     "exitCode": 0,
     "pageState": {
       "runtime": "Loaded",
-      "status": "scene-preview-100k.ply loaded in 0.5s.",
+      "status": "scene-preview-100k.ply loaded in 0.2s.",
       "fitBounds": "broad_01_99 (sidecar)",
       "visualQuality": "Passed (87.1)",
       "canvas": {
@@ -290,7 +310,7 @@
           ],
           "contrast": 87.11111111111111
         },
-        "evaluatedAtMs": 8411
+        "evaluatedAtMs": 7123
       },
       "renderer": {
         "id": "ark-gaussian-webgl2",
@@ -310,6 +330,8 @@
         "dataPacking": "texture-fetch-hybrid",
         "covarianceStorage": "packed-covariance-texture",
         "orderAccess": "order-texture",
+        "colorStorage": "color-texture",
+        "shStorage": "sh1-texture",
         "dataTextureMode": "texture-fetch",
         "dataTextureAudit": {
           "enabled": true,
@@ -327,16 +349,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": 0,
           "covarianceMaxAbsDelta": 9.151638451498911e-7,
           "orderMaxAbsDelta": 0,
+          "colorMaxAbsDelta": 0,
+          "sh1MaxAbsDelta": 0,
           "textures": {
             "center": true,
             "covarianceA": true,
             "covarianceB": true,
-            "order": true
+            "order": true,
+            "color": true,
+            "sh1A": true,
+            "sh1B": true,
+            "sh1C": true
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -361,14 +391,16 @@
         "sceneVersion": 1
       },
       "renderInfo": {
-        "lastLoadMs": 461,
-        "lastSortMs": 27.4,
+        "lastLoadMs": 160,
+        "lastSortMs": 24.2,
         "sortEnabled": true,
         "sortMode": "exact-depth",
         "sortReason": "camera-depth-order",
         "dataPacking": "texture-fetch-hybrid",
         "covarianceStorage": "packed-covariance-texture",
         "orderAccess": "order-texture",
+        "colorStorage": "color-texture",
+        "shStorage": "sh1-texture",
         "dataTextureAudit": {
           "enabled": true,
           "mode": "texture-fetch",
@@ -385,16 +417,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": 0,
           "covarianceMaxAbsDelta": 9.151638451498911e-7,
           "orderMaxAbsDelta": 0,
+          "colorMaxAbsDelta": 0,
+          "sh1MaxAbsDelta": 0,
           "textures": {
             "center": true,
             "covarianceA": true,
             "covarianceB": true,
-            "order": true
+            "order": true,
+            "color": true,
+            "sh1A": true,
+            "sh1B": true,
+            "sh1C": true
           }
         },
         "sortDepthRange": null,
@@ -421,11 +461,11 @@
         "performance": {
           "inputBytes": 24793098,
           "inputMiB": 23.645,
-          "readMs": 340.7,
-          "decodeMs": 95.1,
-          "packMs": 18.6,
-          "uploadMs": 4.1,
-          "totalLoadMs": 460.7,
+          "readMs": 56.5,
+          "decodeMs": 81.6,
+          "packMs": 16.6,
+          "uploadMs": 3.5,
+          "totalLoadMs": 159.9,
           "retainedCpuBufferBytes": 19193472,
           "retainedCpuBufferMiB": 18.304,
           "gpuUploadBytes": 9196872,
@@ -447,8 +487,8 @@
         },
         "frameTiming": {
           "lastRenderMs": 0,
-          "maxRenderMs": 60.2,
-          "averageRenderMs": 5.573,
+          "maxRenderMs": 61.1,
+          "averageRenderMs": 5.655,
           "renderCount": 11
         },
         "ellipse": {

@@ -3,6 +3,9 @@ import { mkdir, rename, stat, unlink } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import { loadLocalEnv } from './env-loader.mjs';
+
+loadLocalEnv();
 
 const repoId = process.env.ARK_HF_REPO;
 const repoType = process.env.ARK_HF_REPO_TYPE ?? 'model';
@@ -23,7 +26,8 @@ function requireRepoId() {
   if (repoId) return;
   throw new Error([
     'ARK_HF_REPO is required.',
-    'Example: ARK_HF_REPO=your-name/ark-3dgs-assets npm run assets:pull:hf'
+    'Copy .env.example to .env.local, set ARK_HF_REPO, and rerun npm run assets:pull:hf.',
+    'Example ARK_HF_REPO=rofenbb/ark-3dgs-renderer.'
   ].join(' '));
 }
 

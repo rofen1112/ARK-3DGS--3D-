@@ -5,7 +5,8 @@ import { dirname, relative, resolve } from 'node:path';
 const outputPath = resolve(process.argv[2] ?? 'public/scenes/demo_room_001/meta/first_party_data_texture_audit_report.json');
 const screenshotPath = resolve(process.argv[3] ?? 'artifacts/first-party/ark-gaussian-data-texture-audit.png');
 const timeoutMs = Number(process.argv[4] ?? 120000);
-const url = 'http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-audit';
+const baseUrl = process.env.ARK_DEV_SERVER_URL ?? 'http://127.0.0.1:5173';
+const url = `${baseUrl}/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-audit`;
 
 async function ensureDevServer() {
   try {
@@ -59,13 +60,23 @@ function runVisualQa() {
         && audit?.textures?.covarianceA === true
         && audit?.textures?.covarianceB === true
         && audit?.textures?.order === true
+        && audit?.textures?.color === true
+        && audit?.textures?.sh1A === true
+        && audit?.textures?.sh1B === true
+        && audit?.textures?.sh1C === true
         && audit?.centerMaxAbsDelta <= thresholds?.centerMaxAbsDelta
         && audit?.covarianceMaxAbsDelta <= thresholds?.covarianceMaxAbsDelta
-        && audit?.orderMaxAbsDelta <= thresholds?.orderMaxAbsDelta;
+        && audit?.orderMaxAbsDelta <= thresholds?.orderMaxAbsDelta
+        && audit?.colorMaxAbsDelta <= thresholds?.colorMaxAbsDelta
+        && audit?.sh1MaxAbsDelta <= thresholds?.sh1MaxAbsDelta;
       const drawPathUnchanged = pageState?.pipeline?.dataPacking === 'attribute-buffer'
         && pageState?.pipeline?.covarianceStorage === 'scale-rotation-attributes'
         && pageState?.pipeline?.orderAccess === 'cpu-reordered-attributes'
+        && pageState?.pipeline?.colorStorage === 'color-attribute'
+        && pageState?.pipeline?.shStorage === 'sh1-attributes'
         && pageState?.renderInfo?.dataPacking === 'attribute-buffer'
+        && pageState?.renderInfo?.colorStorage === 'color-attribute'
+        && pageState?.renderInfo?.shStorage === 'sh1-attributes'
         && pageState?.renderInfo?.dataTextureAudit?.status === 'passed';
       const isArkRenderer = pageState?.renderer?.id === 'ark-gaussian-webgl2';
       resolveRun({

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T08:42:40.327Z",
+  "generatedAt": "2026-06-08T07:12:01.650Z",
   "input": "G:\\code-program\\anything-work\\20260525-3DGS\\public\\scenes\\demo_room_001\\gaussian\\scene-preview-100k.ply",
   "status": "passed",
   "data": {
@@ -49,5 +49,5 @@
       "relativeDelta": 2.081743596465892e-7
     }
   },
-  "durationMs": 129.856
+  "durationMs": 121.854
 }

@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-06-08T08:33:02.583Z",
+  "target": "ARK first-party full-source packed texture capacity assessment",
+  "base_url": "http://127.0.0.1:5174",
+  "summary": {
+    "passed": true,
+    "checks": {
+      "webgl2Available": true,
+      "sourceFitsMaxTextureSize": true,
+      "manifestFitsMaxTextureSize": true,
+      "vertexTextureUnitsEnough": true,
+      "combinedTextureUnitsEnough": true,
+      "floatColorBufferAvailable": true,
+      "diagnosticTextureMemoryUnderBudget": true,
+      "sourceAuditPassed": true,
+      "fullSourceSmokePreviouslyPassed": true
+    },
+    "recommendation": "capacity-ok-for-guarded-source-texture-diagnostic",
+    "memory_pressure": "medium",
+    "decoded_source_splats": 1854627,
+    "manifest_splats": 1855266,
+    "max_texture_size": 8192,
+    "required_vertex_texture_units": 8,
+    "source_texture_total_mib": 226.446,
+    "previous_attribute_gpu_mib": 162.721,
+    "previous_load_peak_mib": 948.184,
+    "diagnostic_load_peak_estimate_mib": 1174.63
+  },
+  "webgl": {
+    "webgl2": true,
+    "maxTextureSize": 8192,
+    "maxVertexTextureImageUnits": 32,
+    "maxTextureImageUnits": 32,
+    "maxCombinedTextureImageUnits": 64,
+    "maxRenderbufferSize": 8192,
+    "hasFloatColorBuffer": true,
+    "hasFloatTextureLinear": true,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)"
+  },
+  "estimates": {
+    "source": {
+      "count": 1854627,
+      "textureCount": 8,
+      "layout": {
+        "width": 1362,
+        "height": 1362,
+        "pixelCount": 1855044,
+        "fitsMaxTextureSize": true
+      },
+      "textureBytes": 29680704,
+      "textureMiB": 28.306,
+      "totalBytes": 237445632,
+      "totalMiB": 226.446,
+      "overheadPixels": 417,
+      "overheadRatio": 0.000225
+    },
+    "manifestDeclared": {
+      "count": 1855266,
+      "textureCount": 8,
+      "layout": {
+        "width": 1363,
+        "height": 1362,
+        "pixelCount": 1856406,
+        "fitsMaxTextureSize": true
+      },
+      "textureBytes": 29702496,
+      "textureMiB": 28.327,
+      "totalBytes": 237619968,
+      "totalMiB": 226.612,
+      "overheadPixels": 1140,
+      "overheadRatio": 0.000614
+    },
+    "textures": [
+      "center",
+      "covarianceA",
+      "covarianceB",
+      "order",
+      "color",
+      "sh1A",
+      "sh1B",
+      "sh1C"
+    ],
+    "rgba32fBytesPerPixel": 16,
+    "diagnosticMemoryBudgetMiB": 512
+  },
+  "inputs": {
+    "sourceAudit": {
+      "path": "public/scenes/demo_room_001/meta/packed_gaussian_source_data_audit_report.json",
+      "status": "passed",
+      "decodedCount": 1854627,
+      "invalidSourceCount": 639,
+      "maxCovarianceDelta": 6.956697071160362e-7
+    },
+    "fullSceneSmoke": {
+      "path": "public/scenes/demo_room_001/meta/first_party_full_scene_source_ply_smoke_report.json",
+      "smokePassed": true,
+      "renderedSplats": 1854627,
+      "gpuUploadMiB": 162.721,
+      "loadPeakMiB": 948.184
+    }
+  },
+  "notes": [
+    "This report is a capacity gate only. It does not upload full-source textures and does not change renderer output.",
+    "The current diagnostic texture-fetch path still keeps attribute buffers, so full-source texture diagnostics would add texture memory on top of the existing full-source smoke memory.",
+    "A passed result allows a guarded source texture diagnostic; it does not make texture-fetch ready as the default renderer path."
+  ],
+  "chromeErrors": "[22344:8660:0608/163302.444:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18805/devtools/browser/f93ac490-c71f-406b-abef-8895fb6a89e8\r\n"
+}

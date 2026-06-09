@@ -89,15 +89,23 @@ type ArkGaussianDataTextureAudit = {
     centerMaxAbsDelta: number;
     covarianceMaxAbsDelta: number;
     orderMaxAbsDelta: number;
+    colorMaxAbsDelta: number;
+    sh1MaxAbsDelta: number;
   };
   centerMaxAbsDelta: number | null;
   covarianceMaxAbsDelta: number | null;
   orderMaxAbsDelta: number | null;
+  colorMaxAbsDelta: number | null;
+  sh1MaxAbsDelta: number | null;
   textures: {
     center: boolean;
     covarianceA: boolean;
     covarianceB: boolean;
     order: boolean;
+    color: boolean;
+    sh1A: boolean;
+    sh1B: boolean;
+    sh1C: boolean;
   };
 };
 
@@ -315,16 +323,24 @@ function createIdleDataTextureAudit(mode: ArkGaussianDataTextureMode): ArkGaussi
     thresholds: {
       centerMaxAbsDelta: 0.00001,
       covarianceMaxAbsDelta: 0.00001,
-      orderMaxAbsDelta: 0.5
+      orderMaxAbsDelta: 0.5,
+      colorMaxAbsDelta: 0.00001,
+      sh1MaxAbsDelta: 0.00001
     },
     centerMaxAbsDelta: null,
     covarianceMaxAbsDelta: null,
     orderMaxAbsDelta: null,
+    colorMaxAbsDelta: null,
+    sh1MaxAbsDelta: null,
     textures: {
       center: false,
       covarianceA: false,
       covarianceB: false,
-      order: false
+      order: false,
+      color: false,
+      sh1A: false,
+      sh1B: false,
+      sh1C: false
     }
   };
 }
@@ -531,6 +547,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private covarianceATexture: WebGLTexture | null = null;
   private covarianceBTexture: WebGLTexture | null = null;
   private orderTexture: WebGLTexture | null = null;
+  private colorTexture: WebGLTexture | null = null;
+  private sh1ATexture: WebGLTexture | null = null;
+  private sh1BTexture: WebGLTexture | null = null;
+  private sh1CTexture: WebGLTexture | null = null;
   private readonly viewProjectionLocation: WebGLUniformLocation | null;
   private readonly viewLocation: WebGLUniformLocation | null;
   private readonly projectionLocation: WebGLUniformLocation | null;
@@ -799,10 +819,6 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       `#version 300 es
         precision highp float;
         in vec2 aQuad;
-        in vec4 aColor;
-        in vec3 aSh1_0;
-        in vec3 aSh1_1;
-        in vec3 aSh1_2;
         uniform mat4 uViewProjection;
         uniform mat4 uView;
         uniform mat4 uProjection;
@@ -822,6 +838,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         uniform sampler2D uCovarianceATex;
         uniform sampler2D uCovarianceBTex;
         uniform sampler2D uOrderTex;
+        uniform sampler2D uColorTex;
+        uniform sampler2D uSh1ATex;
+        uniform sampler2D uSh1BTex;
+        uniform sampler2D uSh1CTex;
         out vec4 vColor;
         out float vClipDiscard;
         out vec2 vSplatUv;
@@ -851,10 +871,13 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           );
         }
 
-        vec3 evaluateSh1Color(vec3 baseColor, vec3 viewDir) {
-          vec3 sh1 = aSh1_0 * (-${SH_C1.toFixed(7)} * viewDir.y)
-            + aSh1_1 * (${SH_C1.toFixed(7)} * viewDir.z)
-            + aSh1_2 * (-${SH_C1.toFixed(7)} * viewDir.x);
+        vec3 evaluateSh1Color(int sourceIndex, vec3 baseColor, vec3 viewDir) {
+          vec3 sh1A = texelFetch(uSh1ATex, dataCoord(sourceIndex), 0).xyz;
+          vec3 sh1B = texelFetch(uSh1BTex, dataCoord(sourceIndex), 0).xyz;
+          vec3 sh1C = texelFetch(uSh1CTex, dataCoord(sourceIndex), 0).xyz;
+          vec3 sh1 = sh1A * (-${SH_C1.toFixed(7)} * viewDir.y)
+            + sh1B * (${SH_C1.toFixed(7)} * viewDir.z)
+            + sh1C * (-${SH_C1.toFixed(7)} * viewDir.x);
           return clamp(baseColor + sh1, 0.0, 1.0);
         }
 
@@ -912,8 +935,9 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           float det = max(covA * covC - covB * covB, 0.000001);
           float blurAdjust = sqrt(max(0.0, detOriginal / det));
           vec3 viewDir = normalize(center - uCameraPosition);
-          vec3 shadedColor = evaluateSh1Color(aColor.rgb, viewDir);
-          vec4 color = vec4(shadedColor, clamp(aColor.a * blurAdjust, 0.0, 1.0));
+          vec4 sourceColor = texelFetch(uColorTex, dataCoord(sourceIndex), 0);
+          vec3 shadedColor = evaluateSh1Color(sourceIndex, sourceColor.rgb, viewDir);
+          vec4 color = vec4(shadedColor, clamp(sourceColor.a * blurAdjust, 0.0, 1.0));
           if (color.a < ${ALPHA_CUTOFF.toFixed(6)}) {
             gl_Position = vec4(2.0, 2.0, 0.0, 1.0);
             vColor = vec4(0.0);
@@ -1379,6 +1403,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         dataPacking: dataAccess.dataPacking,
         covarianceStorage: dataAccess.covarianceStorage,
         orderAccess: dataAccess.orderAccess,
+        colorStorage: dataAccess.colorStorage,
+        shStorage: dataAccess.shStorage,
         dataTextureMode: this.diagnostics.dataTextureMode,
         dataTextureAudit: this.dataTextureAudit,
         projectionModel: 'jacobian-covariance',
@@ -1407,6 +1433,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         dataPacking: dataAccess.dataPacking,
         covarianceStorage: dataAccess.covarianceStorage,
         orderAccess: dataAccess.orderAccess,
+        colorStorage: dataAccess.colorStorage,
+        shStorage: dataAccess.shStorage,
         dataTextureAudit: this.dataTextureAudit,
         sortDepthRange: this.lastSortDepthRange,
         sortedSplats: this.lastSortedCount,
@@ -1501,8 +1529,16 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   private shouldUseTextureFetchDraw() {
     return this.diagnostics.dataTextureMode === 'texture-fetch'
       && this.dataTextureAudit.status === 'passed'
-      && Boolean(this.centerTexture && this.covarianceATexture && this.covarianceBTexture && this.orderTexture)
-      && Boolean(this.sortedColors && this.sortedSh1);
+      && Boolean(
+        this.centerTexture
+        && this.covarianceATexture
+        && this.covarianceBTexture
+        && this.orderTexture
+        && this.colorTexture
+        && this.sh1ATexture
+        && this.sh1BTexture
+        && this.sh1CTexture
+      );
   }
 
   private getDataAccessState() {
@@ -1510,13 +1546,17 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       return {
         dataPacking: 'texture-fetch-hybrid',
         covarianceStorage: 'packed-covariance-texture',
-        orderAccess: 'order-texture'
+        orderAccess: 'order-texture',
+        colorStorage: 'color-texture',
+        shStorage: 'sh1-texture'
       };
     }
     return {
       dataPacking: 'attribute-buffer',
       covarianceStorage: 'scale-rotation-attributes',
-      orderAccess: this.sortEnabled ? 'cpu-reordered-attributes' : 'source-attribute-order'
+      orderAccess: this.sortEnabled ? 'cpu-reordered-attributes' : 'source-attribute-order',
+      colorStorage: 'color-attribute',
+      shStorage: 'sh1-attributes'
     };
   }
 
@@ -1577,7 +1617,17 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   }
 
   private bindTextureFetchSamplers(program: WebGLProgram) {
-    if (!this.centerTexture || !this.covarianceATexture || !this.covarianceBTexture || !this.orderTexture || !this.dataTextureAudit.textureSize) {
+    if (
+      !this.centerTexture
+      || !this.covarianceATexture
+      || !this.covarianceBTexture
+      || !this.orderTexture
+      || !this.colorTexture
+      || !this.sh1ATexture
+      || !this.sh1BTexture
+      || !this.sh1CTexture
+      || !this.dataTextureAudit.textureSize
+    ) {
       throw new Error('Texture-fetch draw requested before diagnostic textures are ready.');
     }
     this.gl.uniform2f(
@@ -1601,6 +1651,22 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.gl.activeTexture(this.gl.TEXTURE3);
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.orderTexture);
     this.gl.uniform1i(this.gl.getUniformLocation(program, 'uOrderTex'), 3);
+
+    this.gl.activeTexture(this.gl.TEXTURE4);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.colorTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uColorTex'), 4);
+
+    this.gl.activeTexture(this.gl.TEXTURE5);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.sh1ATexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uSh1ATex'), 5);
+
+    this.gl.activeTexture(this.gl.TEXTURE6);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.sh1BTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uSh1BTex'), 6);
+
+    this.gl.activeTexture(this.gl.TEXTURE7);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, this.sh1CTexture);
+    this.gl.uniform1i(this.gl.getUniformLocation(program, 'uSh1CTex'), 7);
   }
 
   private renderTextureFetchDraw() {
@@ -1608,7 +1674,6 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.setCommonGaussianUniforms(this.textureFetchProgram);
     this.bindTextureFetchSamplers(this.textureFetchProgram);
     this.bindQuadAttribute(this.textureFetchProgram);
-    this.bindColorAndShAttributes(this.textureFetchProgram);
     this.gl.disable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.BLEND);
     if (this.diagnostics.compositeMode === 'premultiplied-alpha') {
@@ -1620,7 +1685,16 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
   }
 
   private resetDataTextureAudit() {
-    for (const texture of [this.centerTexture, this.covarianceATexture, this.covarianceBTexture, this.orderTexture]) {
+    for (const texture of [
+      this.centerTexture,
+      this.covarianceATexture,
+      this.covarianceBTexture,
+      this.orderTexture,
+      this.colorTexture,
+      this.sh1ATexture,
+      this.sh1BTexture,
+      this.sh1CTexture
+    ]) {
       if (texture) this.gl.deleteTexture(texture);
     }
     if (this.dataTextureFramebuffer) {
@@ -1630,6 +1704,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     this.covarianceATexture = null;
     this.covarianceBTexture = null;
     this.orderTexture = null;
+    this.colorTexture = null;
+    this.sh1ATexture = null;
+    this.sh1BTexture = null;
+    this.sh1CTexture = null;
     this.dataTextureFramebuffer = null;
     this.dataTextureAudit = createIdleDataTextureAudit(this.diagnostics.dataTextureMode);
   }
@@ -1687,8 +1765,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
     }
     if (
       !this.rawPositions
+      || !this.rawColors
       || !this.rawScales
       || !this.rawRotations
+      || !this.rawSh1
       || this.renderSplatCount <= 0
     ) {
       this.dataTextureAudit = {
@@ -1732,6 +1812,10 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       const covarianceAPixels = new Float32Array(pixelCount * 4);
       const covarianceBPixels = new Float32Array(pixelCount * 4);
       const orderPixels = new Float32Array(pixelCount * 4);
+      const colorPixels = new Float32Array(pixelCount * 4);
+      const sh1APixels = new Float32Array(pixelCount * 4);
+      const sh1BPixels = new Float32Array(pixelCount * 4);
+      const sh1CPixels = new Float32Array(pixelCount * 4);
 
       for (let index = 0; index < this.renderSplatCount; index += 1) {
         const pixelOffset = index * 4;
@@ -1768,17 +1852,54 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         const sortedSourceIndex = this.sortedSourceIndex(index);
         orderPixels[pixelOffset] = sortedSourceIndex;
         orderPixels[pixelOffset + 3] = 1;
+
+        const colorOffset = index * 4;
+        colorPixels[pixelOffset] = this.rawColors[colorOffset];
+        colorPixels[pixelOffset + 1] = this.rawColors[colorOffset + 1];
+        colorPixels[pixelOffset + 2] = this.rawColors[colorOffset + 2];
+        colorPixels[pixelOffset + 3] = this.rawColors[colorOffset + 3];
+
+        const shOffset = index * RENDER_SH_REST_COUNT;
+        sh1APixels[pixelOffset] = this.rawSh1[shOffset];
+        sh1APixels[pixelOffset + 1] = this.rawSh1[shOffset + 1];
+        sh1APixels[pixelOffset + 2] = this.rawSh1[shOffset + 2];
+        sh1APixels[pixelOffset + 3] = 1;
+        sh1BPixels[pixelOffset] = this.rawSh1[shOffset + 3];
+        sh1BPixels[pixelOffset + 1] = this.rawSh1[shOffset + 4];
+        sh1BPixels[pixelOffset + 2] = this.rawSh1[shOffset + 5];
+        sh1BPixels[pixelOffset + 3] = 1;
+        sh1CPixels[pixelOffset] = this.rawSh1[shOffset + 6];
+        sh1CPixels[pixelOffset + 1] = this.rawSh1[shOffset + 7];
+        sh1CPixels[pixelOffset + 2] = this.rawSh1[shOffset + 8];
+        sh1CPixels[pixelOffset + 3] = 1;
       }
 
       this.centerTexture = this.createOrUpdateFloatTexture(this.centerTexture, layout.width, layout.height, centerPixels);
       this.covarianceATexture = this.createOrUpdateFloatTexture(this.covarianceATexture, layout.width, layout.height, covarianceAPixels);
       this.covarianceBTexture = this.createOrUpdateFloatTexture(this.covarianceBTexture, layout.width, layout.height, covarianceBPixels);
       this.orderTexture = this.createOrUpdateFloatTexture(this.orderTexture, layout.width, layout.height, orderPixels);
+      this.colorTexture = this.createOrUpdateFloatTexture(this.colorTexture, layout.width, layout.height, colorPixels);
+      this.sh1ATexture = this.createOrUpdateFloatTexture(this.sh1ATexture, layout.width, layout.height, sh1APixels);
+      this.sh1BTexture = this.createOrUpdateFloatTexture(this.sh1BTexture, layout.width, layout.height, sh1BPixels);
+      this.sh1CTexture = this.createOrUpdateFloatTexture(this.sh1CTexture, layout.width, layout.height, sh1CPixels);
       const centerTexture = this.centerTexture;
       const covarianceATexture = this.covarianceATexture;
       const covarianceBTexture = this.covarianceBTexture;
       const orderTexture = this.orderTexture;
-      if (!centerTexture || !covarianceATexture || !covarianceBTexture || !orderTexture) {
+      const colorTexture = this.colorTexture;
+      const sh1ATexture = this.sh1ATexture;
+      const sh1BTexture = this.sh1BTexture;
+      const sh1CTexture = this.sh1CTexture;
+      if (
+        !centerTexture
+        || !covarianceATexture
+        || !covarianceBTexture
+        || !orderTexture
+        || !colorTexture
+        || !sh1ATexture
+        || !sh1BTexture
+        || !sh1CTexture
+      ) {
         throw new Error('ARK Gaussian diagnostic texture upload did not return all textures.');
       }
 
@@ -1786,6 +1907,8 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
       let centerMaxAbsDelta = 0;
       let covarianceMaxAbsDelta = 0;
       let orderMaxAbsDelta = 0;
+      let colorMaxAbsDelta = 0;
+      let sh1MaxAbsDelta = 0;
       for (const sortedIndex of sampleIndices) {
         const sourceIndex = this.sortedSourceIndex(sortedIndex);
         const orderCoord = textureCoord(sortedIndex, layout.width);
@@ -1828,11 +1951,40 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
           Math.abs(covBPixel[0] - expectedCovariance[4]),
           Math.abs(covBPixel[1] - expectedCovariance[5])
         );
+
+        const colorPixel = this.readFloatTexturePixel(colorTexture, sourceCoord.x, sourceCoord.y);
+        const colorOffset = sourceIndex * 4;
+        colorMaxAbsDelta = Math.max(
+          colorMaxAbsDelta,
+          Math.abs(colorPixel[0] - this.rawColors[colorOffset]),
+          Math.abs(colorPixel[1] - this.rawColors[colorOffset + 1]),
+          Math.abs(colorPixel[2] - this.rawColors[colorOffset + 2]),
+          Math.abs(colorPixel[3] - this.rawColors[colorOffset + 3])
+        );
+
+        const sh1APixel = this.readFloatTexturePixel(sh1ATexture, sourceCoord.x, sourceCoord.y);
+        const sh1BPixel = this.readFloatTexturePixel(sh1BTexture, sourceCoord.x, sourceCoord.y);
+        const sh1CPixel = this.readFloatTexturePixel(sh1CTexture, sourceCoord.x, sourceCoord.y);
+        const shOffset = sourceIndex * RENDER_SH_REST_COUNT;
+        sh1MaxAbsDelta = Math.max(
+          sh1MaxAbsDelta,
+          Math.abs(sh1APixel[0] - this.rawSh1[shOffset]),
+          Math.abs(sh1APixel[1] - this.rawSh1[shOffset + 1]),
+          Math.abs(sh1APixel[2] - this.rawSh1[shOffset + 2]),
+          Math.abs(sh1BPixel[0] - this.rawSh1[shOffset + 3]),
+          Math.abs(sh1BPixel[1] - this.rawSh1[shOffset + 4]),
+          Math.abs(sh1BPixel[2] - this.rawSh1[shOffset + 5]),
+          Math.abs(sh1CPixel[0] - this.rawSh1[shOffset + 6]),
+          Math.abs(sh1CPixel[1] - this.rawSh1[shOffset + 7]),
+          Math.abs(sh1CPixel[2] - this.rawSh1[shOffset + 8])
+        );
       }
 
       const passed = centerMaxAbsDelta <= thresholds.centerMaxAbsDelta
         && covarianceMaxAbsDelta <= thresholds.covarianceMaxAbsDelta
-        && orderMaxAbsDelta <= thresholds.orderMaxAbsDelta;
+        && orderMaxAbsDelta <= thresholds.orderMaxAbsDelta
+        && colorMaxAbsDelta <= thresholds.colorMaxAbsDelta
+        && sh1MaxAbsDelta <= thresholds.sh1MaxAbsDelta;
       this.dataTextureAudit = {
         enabled: true,
         mode: this.diagnostics.dataTextureMode,
@@ -1847,11 +1999,17 @@ export class ArkGaussianRendererBackend implements ArkRendererBackend {
         centerMaxAbsDelta,
         covarianceMaxAbsDelta,
         orderMaxAbsDelta,
+        colorMaxAbsDelta,
+        sh1MaxAbsDelta,
         textures: {
           center: Boolean(this.centerTexture),
           covarianceA: Boolean(this.covarianceATexture),
           covarianceB: Boolean(this.covarianceBTexture),
-          order: Boolean(this.orderTexture)
+          order: Boolean(this.orderTexture),
+          color: Boolean(this.colorTexture),
+          sh1A: Boolean(this.sh1ATexture),
+          sh1B: Boolean(this.sh1BTexture),
+          sh1C: Boolean(this.sh1CTexture)
         }
       };
     } catch (error) {

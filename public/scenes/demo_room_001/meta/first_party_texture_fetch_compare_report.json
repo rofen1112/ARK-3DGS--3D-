@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T09:09:37.613Z",
+  "generated_at": "2026-06-08T07:23:08.868Z",
   "target": "ARK first-party Gaussian same-camera comparison",
   "asset": "ply-preview",
   "timeout_ms": 180000,
@@ -76,7 +76,7 @@
     "primary_mean_abs_rgb": 0.9728,
     "primary_similarity_score": 0.996185,
     "visual_difference_gated": false,
-    "duration_seconds": 28.113
+    "duration_seconds": 28.468
   },
   "targets": [
     {
@@ -102,6 +102,8 @@
         "dataPacking": "attribute-buffer",
         "covarianceStorage": "scale-rotation-attributes",
         "orderAccess": "cpu-reordered-attributes",
+        "colorStorage": "color-attribute",
+        "shStorage": "sh1-attributes",
         "dataTextureMode": "off",
         "dataTextureAudit": {
           "enabled": false,
@@ -116,16 +118,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": null,
           "covarianceMaxAbsDelta": null,
           "orderMaxAbsDelta": null,
+          "colorMaxAbsDelta": null,
+          "sh1MaxAbsDelta": null,
           "textures": {
             "center": false,
             "covarianceA": false,
             "covarianceB": false,
-            "order": false
+            "order": false,
+            "color": false,
+            "sh1A": false,
+            "sh1B": false,
+            "sh1C": false
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -234,6 +244,8 @@
         "dataPacking": "texture-fetch-hybrid",
         "covarianceStorage": "packed-covariance-texture",
         "orderAccess": "order-texture",
+        "colorStorage": "color-texture",
+        "shStorage": "sh1-texture",
         "dataTextureMode": "texture-fetch",
         "dataTextureAudit": {
           "enabled": true,
@@ -251,16 +263,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": 0,
           "covarianceMaxAbsDelta": 9.151638451498911e-7,
           "orderMaxAbsDelta": 0,
+          "colorMaxAbsDelta": 0,
+          "sh1MaxAbsDelta": 0,
           "textures": {
             "center": true,
             "covarianceA": true,
             "covarianceB": true,
-            "order": true
+            "order": true,
+            "color": true,
+            "sh1A": true,
+            "sh1B": true,
+            "sh1C": true
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -589,7 +609,7 @@
     {
       "label": "ark-gaussian",
       "role": "candidate",
-      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
+      "url": "http://127.0.0.1:5174/?autoload=1&asset=ply-preview&renderer=ark-gaussian",
       "screenshot": "artifacts/first-party-texture-fetch-compare/ark-gaussian.png",
       "passed": true,
       "checks": {
@@ -612,6 +632,8 @@
         "dataPacking": "attribute-buffer",
         "covarianceStorage": "scale-rotation-attributes",
         "orderAccess": "cpu-reordered-attributes",
+        "colorStorage": "color-attribute",
+        "shStorage": "sh1-attributes",
         "dataTextureMode": "off",
         "dataTextureAudit": {
           "enabled": false,
@@ -626,16 +648,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": null,
           "covarianceMaxAbsDelta": null,
           "orderMaxAbsDelta": null,
+          "colorMaxAbsDelta": null,
+          "sh1MaxAbsDelta": null,
           "textures": {
             "center": false,
             "covarianceA": false,
             "covarianceB": false,
-            "order": false
+            "order": false,
+            "color": false,
+            "sh1A": false,
+            "sh1B": false,
+            "sh1C": false
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -746,7 +776,7 @@
             ],
             "contrast": 87.11111111111111
           },
-          "evaluatedAtMs": 8871
+          "evaluatedAtMs": 8889
         },
         "renderer": {
           "id": "ark-gaussian-webgl2",
@@ -766,6 +796,8 @@
           "dataPacking": "attribute-buffer",
           "covarianceStorage": "scale-rotation-attributes",
           "orderAccess": "cpu-reordered-attributes",
+          "colorStorage": "color-attribute",
+          "shStorage": "sh1-attributes",
           "dataTextureMode": "off",
           "dataTextureAudit": {
             "enabled": false,
@@ -780,16 +812,24 @@
             "thresholds": {
               "centerMaxAbsDelta": 0.00001,
               "covarianceMaxAbsDelta": 0.00001,
-              "orderMaxAbsDelta": 0.5
+              "orderMaxAbsDelta": 0.5,
+              "colorMaxAbsDelta": 0.00001,
+              "sh1MaxAbsDelta": 0.00001
             },
             "centerMaxAbsDelta": null,
             "covarianceMaxAbsDelta": null,
             "orderMaxAbsDelta": null,
+            "colorMaxAbsDelta": null,
+            "sh1MaxAbsDelta": null,
             "textures": {
               "center": false,
               "covarianceA": false,
               "covarianceB": false,
-              "order": false
+              "order": false,
+              "color": false,
+              "sh1A": false,
+              "sh1B": false,
+              "sh1C": false
             }
           },
           "projectionModel": "jacobian-covariance",
@@ -838,14 +878,16 @@
           "pitch": -0.20000000000000004
         },
         "renderInfo": {
-          "lastLoadMs": 169,
-          "lastSortMs": 23.5,
+          "lastLoadMs": 157,
+          "lastSortMs": 24.1,
           "sortEnabled": true,
           "sortMode": "exact-depth",
           "sortReason": "camera-change-within-sort-threshold",
           "dataPacking": "attribute-buffer",
           "covarianceStorage": "scale-rotation-attributes",
           "orderAccess": "cpu-reordered-attributes",
+          "colorStorage": "color-attribute",
+          "shStorage": "sh1-attributes",
           "dataTextureAudit": {
             "enabled": false,
             "mode": "off",
@@ -859,16 +901,24 @@
             "thresholds": {
               "centerMaxAbsDelta": 0.00001,
               "covarianceMaxAbsDelta": 0.00001,
-              "orderMaxAbsDelta": 0.5
+              "orderMaxAbsDelta": 0.5,
+              "colorMaxAbsDelta": 0.00001,
+              "sh1MaxAbsDelta": 0.00001
             },
             "centerMaxAbsDelta": null,
             "covarianceMaxAbsDelta": null,
             "orderMaxAbsDelta": null,
+            "colorMaxAbsDelta": null,
+            "sh1MaxAbsDelta": null,
             "textures": {
               "center": false,
               "covarianceA": false,
               "covarianceB": false,
-              "order": false
+              "order": false,
+              "color": false,
+              "sh1A": false,
+              "sh1B": false,
+              "sh1C": false
             }
           },
           "sortDepthRange": null,
@@ -895,11 +945,11 @@
           "performance": {
             "inputBytes": 24793098,
             "inputMiB": 23.645,
-            "readMs": 66.5,
-            "decodeMs": 81.6,
-            "packMs": 15.8,
-            "uploadMs": 2.9,
-            "totalLoadMs": 168.5,
+            "readMs": 55.7,
+            "decodeMs": 79.3,
+            "packMs": 16.6,
+            "uploadMs": 3.4,
+            "totalLoadMs": 156.9,
             "retainedCpuBufferBytes": 19193472,
             "retainedCpuBufferMiB": 18.304,
             "gpuUploadBytes": 9196872,
@@ -920,9 +970,9 @@
             "strategy": "full-resolution-sorted"
           },
           "frameTiming": {
-            "lastRenderMs": 0,
-            "maxRenderMs": 24,
-            "averageRenderMs": 1.673,
+            "lastRenderMs": 0.1,
+            "maxRenderMs": 24.7,
+            "averageRenderMs": 1.68,
             "renderCount": 15
           },
           "ellipse": {
@@ -1043,12 +1093,12 @@
         "contrast": 177
       },
       "splats": 99966,
-      "chromeErrors": "[42064:47088:0605/170909.653:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:17115/devtools/browser/ddc1d224-feea-4fa7-9e32-95b62c8014e3\r\n[42064:33108:0605/170913.714:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+      "chromeErrors": "[28760:46476:0608/152240.548:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19521/devtools/browser/35757ee2-0259-4307-9ea7-d4c0400cf5e9\r\n[28760:58132:0608/152246.742:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:702]   Error code: 401  Error message: Authentication Failed: wrong_secret\r\n[28760:58132:0608/152246.742:ERROR:google_apis\\gcm\\engine\\mcs_client.cc:704] Failed to log in to GCM, resetting connection.\r\n[28760:58132:0608/152246.900:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
     },
     {
       "label": "ark-texture-fetch",
       "role": "data-texture-diagnostic",
-      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
+      "url": "http://127.0.0.1:5174/?autoload=1&asset=ply-preview&renderer=ark-gaussian&arkDiagData=texture-fetch",
       "screenshot": "artifacts/first-party-texture-fetch-compare/ark-texture-fetch.png",
       "passed": true,
       "checks": {
@@ -1071,6 +1121,8 @@
         "dataPacking": "texture-fetch-hybrid",
         "covarianceStorage": "packed-covariance-texture",
         "orderAccess": "order-texture",
+        "colorStorage": "color-texture",
+        "shStorage": "sh1-texture",
         "dataTextureMode": "texture-fetch",
         "dataTextureAudit": {
           "enabled": true,
@@ -1088,16 +1140,24 @@
           "thresholds": {
             "centerMaxAbsDelta": 0.00001,
             "covarianceMaxAbsDelta": 0.00001,
-            "orderMaxAbsDelta": 0.5
+            "orderMaxAbsDelta": 0.5,
+            "colorMaxAbsDelta": 0.00001,
+            "sh1MaxAbsDelta": 0.00001
           },
           "centerMaxAbsDelta": 0,
           "covarianceMaxAbsDelta": 9.151638451498911e-7,
           "orderMaxAbsDelta": 0,
+          "colorMaxAbsDelta": 0,
+          "sh1MaxAbsDelta": 0,
           "textures": {
             "center": true,
             "covarianceA": true,
             "covarianceB": true,
-            "order": true
+            "order": true,
+            "color": true,
+            "sh1A": true,
+            "sh1B": true,
+            "sh1C": true
           }
         },
         "projectionModel": "jacobian-covariance",
@@ -1208,7 +1268,7 @@
             ],
             "contrast": 87.11111111111111
           },
-          "evaluatedAtMs": 8951
+          "evaluatedAtMs": 9233
         },
         "renderer": {
           "id": "ark-gaussian-webgl2",
@@ -1228,6 +1288,8 @@
           "dataPacking": "texture-fetch-hybrid",
           "covarianceStorage": "packed-covariance-texture",
           "orderAccess": "order-texture",
+          "colorStorage": "color-texture",
+          "shStorage": "sh1-texture",
           "dataTextureMode": "texture-fetch",
           "dataTextureAudit": {
             "enabled": true,
@@ -1245,16 +1307,24 @@
             "thresholds": {
               "centerMaxAbsDelta": 0.00001,
               "covarianceMaxAbsDelta": 0.00001,
-              "orderMaxAbsDelta": 0.5
+              "orderMaxAbsDelta": 0.5,
+              "colorMaxAbsDelta": 0.00001,
+              "sh1MaxAbsDelta": 0.00001
             },
             "centerMaxAbsDelta": 0,
             "covarianceMaxAbsDelta": 9.151638451498911e-7,
             "orderMaxAbsDelta": 0,
+            "colorMaxAbsDelta": 0,
+            "sh1MaxAbsDelta": 0,
             "textures": {
               "center": true,
               "covarianceA": true,
               "covarianceB": true,
-              "order": true
+              "order": true,
+              "color": true,
+              "sh1A": true,
+              "sh1B": true,
+              "sh1C": true
             }
           },
           "projectionModel": "jacobian-covariance",
@@ -1303,14 +1373,16 @@
           "pitch": -0.20000000000000004
         },
         "renderInfo": {
-          "lastLoadMs": 174,
-          "lastSortMs": 23.5,
+          "lastLoadMs": 162,
+          "lastSortMs": 23.4,
           "sortEnabled": true,
           "sortMode": "exact-depth",
           "sortReason": "camera-change-within-sort-threshold",
           "dataPacking": "texture-fetch-hybrid",
           "covarianceStorage": "packed-covariance-texture",
           "orderAccess": "order-texture",
+          "colorStorage": "color-texture",
+          "shStorage": "sh1-texture",
           "dataTextureAudit": {
             "enabled": true,
             "mode": "texture-fetch",
@@ -1327,16 +1399,24 @@
             "thresholds": {
               "centerMaxAbsDelta": 0.00001,
               "covarianceMaxAbsDelta": 0.00001,
-              "orderMaxAbsDelta": 0.5
+              "orderMaxAbsDelta": 0.5,
+              "colorMaxAbsDelta": 0.00001,
+              "sh1MaxAbsDelta": 0.00001
             },
             "centerMaxAbsDelta": 0,
             "covarianceMaxAbsDelta": 9.151638451498911e-7,
             "orderMaxAbsDelta": 0,
+            "colorMaxAbsDelta": 0,
+            "sh1MaxAbsDelta": 0,
             "textures": {
               "center": true,
               "covarianceA": true,
               "covarianceB": true,
-              "order": true
+              "order": true,
+              "color": true,
+              "sh1A": true,
+              "sh1B": true,
+              "sh1C": true
             }
           },
           "sortDepthRange": null,
@@ -1363,11 +1443,11 @@
           "performance": {
             "inputBytes": 24793098,
             "inputMiB": 23.645,
-            "readMs": 73.4,
-            "decodeMs": 80.1,
-            "packMs": 16.1,
-            "uploadMs": 2.9,
-            "totalLoadMs": 174.3,
+            "readMs": 54.4,
+            "decodeMs": 85.8,
+            "packMs": 16.5,
+            "uploadMs": 3.1,
+            "totalLoadMs": 161.8,
             "retainedCpuBufferBytes": 19193472,
             "retainedCpuBufferMiB": 18.304,
             "gpuUploadBytes": 9196872,
@@ -1388,9 +1468,9 @@
             "strategy": "full-resolution-sorted"
           },
           "frameTiming": {
-            "lastRenderMs": 0.1,
-            "maxRenderMs": 48.4,
-            "averageRenderMs": 3.3,
+            "lastRenderMs": 0,
+            "maxRenderMs": 58.7,
+            "averageRenderMs": 3.98,
             "renderCount": 15
           },
           "ellipse": {
@@ -1511,12 +1591,12 @@
         "contrast": 177
       },
       "splats": 99966,
-      "chromeErrors": "[24700:25332:0605/170922.201:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:18958/devtools/browser/5147921d-49b8-461a-ad3a-5b65565542a5\r\n[24700:35020:0605/170927.760:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT\r\n"
+      "chromeErrors": "[63516:66784:0608/152253.022:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19857/devtools/browser/35aae649-dbc4-4c12-a81a-c6a775365f5e\r\n[63516:57360:0608/152259.318:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[63516:57360:0608/152259.518:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n[63516:57360:0608/152259.518:ERROR:google_apis\\gcm\\engine\\registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR\r\n"
     },
     {
       "label": "aholo-adapter-sh0",
       "role": "reference",
-      "url": "http://127.0.0.1:5173/?autoload=1&asset=ply-preview&sh=0",
+      "url": "http://127.0.0.1:5174/?autoload=1&asset=ply-preview&sh=0",
       "screenshot": "artifacts/first-party-texture-fetch-compare/aholo-adapter-sh0.png",
       "passed": true,
       "checks": {
@@ -1713,7 +1793,7 @@
             ],
             "contrast": 128.88888888888889
           },
-          "evaluatedAtMs": 515
+          "evaluatedAtMs": 479
         },
         "renderer": {
           "id": "aholo",
@@ -1866,7 +1946,7 @@
         },
         "splattingPlugin": {
           "counters": {
-            "updateEffect": 87,
+            "updateEffect": 88,
             "updateRenderGraph": 2,
             "addSortTask": 2,
             "flushSortTask": 4,
@@ -1970,7 +2050,7 @@
         "contrast": 193
       },
       "splats": 99966,
-      "chromeErrors": "[33692:41524:0605/170934.890:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:19932/devtools/browser/518152df-4cb2-4fbd-a36c-ca4b47896662\r\n"
+      "chromeErrors": "[58300:54072:0608/152306.089:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:17278/devtools/browser/dd1dcc8a-336c-4f9e-b835-712644f62e68\r\n"
     }
   ]
 }
