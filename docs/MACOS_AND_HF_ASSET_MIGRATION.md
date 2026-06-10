@@ -80,36 +80,41 @@ Upload the full source PLY:
 ```bash
 hf upload your-name/ark-3dgs-assets \
   public/scenes/demo_room_001/gaussian/scene.ply \
-  scenes/demo_room_001/gaussian/scene.ply \
+  scene.ply \
   --commit-message "Add demo source PLY"
 ```
 
 Pull the source PLY from a new machine:
 
 ```bash
-export ARK_HF_REPO="rofenbb/ark-3dgs-renderer"
-export HF_TOKEN="your-local-token"
-npm run assets:pull:hf -- --dry-run
+npm run assets:check:hf
 npm run assets:pull:hf
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:ARK_HF_REPO="rofenbb/ark-3dgs-renderer"
-$env:HF_TOKEN="your-local-token"
-npm.cmd run assets:pull:hf -- --dry-run
+npm.cmd run assets:check:hf
 npm.cmd run assets:pull:hf
 ```
 
-For repeated local use, copy `.env.example` to `.env.local` and fill only local
-values there. `.env.local` is ignored by Git and is loaded automatically by the
-asset pull script.
-
-By default, `npm run assets:pull:hf` downloads:
+The asset pull script defaults to the project asset repository:
 
 ```text
-remote: scenes/demo_room_001/gaussian/scene.ply
+repo:   rofenbb/ark-3dgs-renderer
+remote: scene.ply
+local:  public/scenes/demo_room_001/gaussian/scene.ply
+```
+
+If the Hugging Face repository is private, copy `.env.example` to `.env.local`
+and set only `HF_TOKEN` there. `.env.local` is ignored by Git and is loaded
+automatically by the asset pull script.
+
+By default, `npm run assets:check:hf` verifies the remote file without
+downloading it, and `npm run assets:pull:hf` downloads:
+
+```text
+remote: scene.ply
 local:  public/scenes/demo_room_001/gaussian/scene.ply
 ```
 
@@ -118,7 +123,8 @@ Optional overrides:
 ```bash
 export ARK_HF_REPO_TYPE="model"
 export ARK_HF_REVISION="main"
-export ARK_HF_SOURCE_PLY_PATH="scenes/demo_room_001/gaussian/scene.ply"
+export ARK_HF_SOURCE_PLY_PATH="scene.ply"
+export ARK_HF_SOURCE_PLY_URL="https://huggingface.co/rofenbb/ark-3dgs-renderer/resolve/main/scene.ply"
 export ARK_SOURCE_PLY_PATH="public/scenes/demo_room_001/gaussian/scene.ply"
 ```
 

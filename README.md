@@ -59,6 +59,10 @@ macOS migration and Hugging Face asset pull notes:
 docs/MACOS_AND_HF_ASSET_MIGRATION.md
 ```
 
+After the full source PLY has been uploaded to the project Hugging Face repo,
+run `npm run assets:check:hf` to verify the remote file and
+`npm run assets:pull:hf` to restore it locally.
+
 Local tokens and machine-specific asset settings belong in `.env.local`, copied
 from `.env.example`. Run `npm run check:secrets` before Git sync to scan staged
 changes for common token formats.

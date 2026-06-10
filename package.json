@@ -17,6 +17,7 @@
     "validate:packed-data:source": "node scripts/audit-packed-gaussian-data.mjs public/scenes/demo_room_001/gaussian/scene.ply public/scenes/demo_room_001/meta/packed_gaussian_source_data_audit_report.json 2048",
     "validate:ply": "node scripts/validate-gaussian-ply.mjs",
     "prepare:ply-preview": "node scripts/create-gaussian-ply-preview.mjs",
+    "assets:check:hf": "node scripts/pull-hf-assets.mjs --dry-run --remote-check",
     "assets:pull:hf": "node scripts/pull-hf-assets.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
     "qa:visual": "node scripts/cdp-screenshot.mjs http://127.0.0.1:5173/?autoload=1 artifacts/visual-qa.png 60000",

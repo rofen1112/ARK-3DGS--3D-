@@ -7,29 +7,28 @@ import { loadLocalEnv } from './env-loader.mjs';
 
 loadLocalEnv();
 
-const repoId = process.env.ARK_HF_REPO;
-const repoType = process.env.ARK_HF_REPO_TYPE ?? 'model';
-const revision = process.env.ARK_HF_REVISION ?? 'main';
+const defaultRepoId = 'rofenbb/ark-3dgs-renderer';
+const defaultRepoType = 'model';
+const defaultRevision = 'main';
+const defaultSourcePlyRemotePath = 'scene.ply';
+const defaultSourcePlyLocalPath = 'public/scenes/demo_room_001/gaussian/scene.ply';
+
+const repoId = process.env.ARK_HF_REPO ?? defaultRepoId;
+const repoType = process.env.ARK_HF_REPO_TYPE ?? defaultRepoType;
+const revision = process.env.ARK_HF_REVISION ?? defaultRevision;
 const token = process.env.HF_TOKEN ?? process.env.HUGGING_FACE_HUB_TOKEN;
 const dryRun = process.argv.includes('--dry-run');
 const force = process.argv.includes('--force');
+const remoteCheck = process.argv.includes('--remote-check');
 
 const assets = [
   {
     label: 'demo source PLY',
-    remotePath: process.env.ARK_HF_SOURCE_PLY_PATH ?? 'scenes/demo_room_001/gaussian/scene.ply',
-    localPath: process.env.ARK_SOURCE_PLY_PATH ?? 'public/scenes/demo_room_001/gaussian/scene.ply'
+    remotePath: process.env.ARK_HF_SOURCE_PLY_PATH ?? defaultSourcePlyRemotePath,
+    localPath: process.env.ARK_SOURCE_PLY_PATH ?? defaultSourcePlyLocalPath,
+    url: process.env.ARK_HF_SOURCE_PLY_URL
   }
 ];
-
-function requireRepoId() {
-  if (repoId) return;
-  throw new Error([
-    'ARK_HF_REPO is required.',
-    'Copy .env.example to .env.local, set ARK_HF_REPO, and rerun npm run assets:pull:hf.',
-    'Example ARK_HF_REPO=rofenbb/ark-3dgs-renderer.'
-  ].join(' '));
-}
 
 function repoPrefix(type) {
   if (type === 'model') return '';
@@ -46,6 +45,10 @@ function resolveUrl(remotePath) {
   return `https://huggingface.co/${repoPrefix(repoType)}${repoId}/resolve/${encodeURIComponent(revision)}/${encodePath(remotePath)}`;
 }
 
+function resolveAssetUrl(asset) {
+  return asset.url ?? resolveUrl(asset.remotePath);
+}
+
 async function fileSize(path) {
   try {
     return (await stat(path)).size;
@@ -54,11 +57,29 @@ async function fileSize(path) {
   }
 }
 
+async function checkRemoteAsset(asset, url) {
+  const response = await fetch(url, {
+    method: 'HEAD',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    redirect: 'follow'
+  });
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    statusText: response.statusText,
+    contentLength: response.headers.get('content-length'),
+    contentType: response.headers.get('content-type'),
+    etag: response.headers.get('etag')
+  };
+}
+
 async function downloadAsset(asset) {
   const localPath = resolve(asset.localPath);
   const relativeLocalPath = relative(process.cwd(), localPath).replaceAll('\\', '/');
   const existingSize = await fileSize(localPath);
-  const url = resolveUrl(asset.remotePath);
+  const url = resolveAssetUrl(asset);
+  const remote = remoteCheck ? await checkRemoteAsset(asset, url) : undefined;
 
   if (dryRun) {
     return {
@@ -66,6 +87,7 @@ async function downloadAsset(asset) {
       remotePath: asset.remotePath,
       localPath: relativeLocalPath,
       url,
+      remote,
       wouldDownload: force || existingSize === null,
       existingSize
     };
@@ -74,7 +96,10 @@ async function downloadAsset(asset) {
   if (existingSize !== null && !force) {
     return {
       label: asset.label,
+      remotePath: asset.remotePath,
       localPath: relativeLocalPath,
+      url,
+      remote,
       skipped: true,
       reason: 'file exists; pass --force to overwrite',
       existingSize
@@ -104,12 +129,12 @@ async function downloadAsset(asset) {
     label: asset.label,
     remotePath: asset.remotePath,
     localPath: relativeLocalPath,
+    url,
+    remote,
     downloaded: true,
     bytes: await fileSize(localPath)
   };
 }
-
-requireRepoId();
 
 const results = [];
 for (const asset of assets) {
@@ -122,5 +147,6 @@ console.log(JSON.stringify({
   revision,
   dryRun,
   force,
+  remoteCheck,
   results
 }, null, 2));
